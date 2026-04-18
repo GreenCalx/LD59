@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d9a125d662f3794b96b83c920da93e7, type: 3}
   m_Name: Level_Default
   m_EditorClassIdentifier: SpaceRider.Game::LevelConfig
-  levelLength: 1000
+  levelLength: 3000
   lookAhead: 11.2
   decayLength: 4.55
   playfieldRadius: 98.99
