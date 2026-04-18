@@ -58,16 +58,42 @@ public class WaveGeneratorTests
     }
 
     [Test]
-    public void SampleDerivativeAtHero_Matches_Finite_Difference()
+    public void Parameter_Change_Does_Not_Reshape_Already_Spawned_Samples()
     {
-        _scope.VirtualDistance = 0.1f;
-        float analytical = _gen.SampleDerivativeAtHero();
+        // Force the buffer to initialize at amplitude = 1.
+        _gen.Amplitude = 1f;
+        float yBefore = _gen.SampleAtLocalZ(10f).y;
 
-        float h = 1e-3f;
-        float yMinus = _gen.SampleAtLocalZ(-h).y;
-        float yPlus  = _gen.SampleAtLocalZ(+h).y;
-        float fd = (yPlus - yMinus) / (2f * h);
+        // Bump amplitude without advancing VirtualDistance. No new samples
+        // should spawn, so the sample already at localZ=10 must keep its
+        // frozen Y — the hallmark of the propagating model.
+        _gen.Amplitude = 100f;
+        _gen.Tick(0f);
 
-        Assert.AreEqual(fd, analytical, 1e-2f);
+        float yAfter = _gen.SampleAtLocalZ(10f).y;
+        Assert.AreEqual(yBefore, yAfter, 1e-4f);
+    }
+
+    [Test]
+    public void New_Amplitude_Only_Reaches_Samples_Spawned_After_Change()
+    {
+        // Drain the initial buffer by scrolling the full look-ahead window at amp=1.
+        _gen.Amplitude = 1f;
+        _gen.Tick(0f);
+        _scope.VirtualDistance = _scope.LookAhead + _scope.DecayLength + 1f;
+
+        // Jump amplitude and let new samples spawn into the freshly-exposed window.
+        _gen.Amplitude = 10f;
+        _gen.Tick(0f);
+
+        // Scan well ahead of the hero. Peak magnitude over a window averages
+        // out the sine phase, so it should land near the new (smoothed) amp.
+        float peak = 0f;
+        for (int i = 0; i < 64; i++)
+        {
+            float z = Mathf.Lerp(_scope.LookAhead * 0.5f, _scope.LookAhead * 0.95f, i / 63f);
+            peak = Mathf.Max(peak, Mathf.Abs(_gen.SampleAtLocalZ(z).y));
+        }
+        Assert.Greater(peak, 2f, "Newly-spawned samples should reflect the larger amplitude.");
     }
 }
