@@ -1,32 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9089319804775732992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/BGM/BGM Drum
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
-  Path: event:/BGM/BGM Drum
-  Guid:
-    Data1: 338396332
-    Data2: 1309012035
-    Data3: -898781538
-    Data4: -602786696
-  Banks:
-  - {fileID: 8058862277923774482}
-  IsStream: 0
-  Is3D: 1
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 16000
 --- !u!114 &-8033650145506318753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42,12 +15,12 @@ MonoBehaviour:
   Path: Assets/#GAME/BGM/fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639121310506873845
+  lastModified: 639121332797420902
   FileSizes:
   - Name: Desktop
-    Value: 872
+    Value: 918
   Exists: 1
---- !u!114 &-5099602595171636414
+--- !u!114 &-5049201939347701222
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -74,7 +47,64 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 16000
---- !u!114 &-388232759808955089
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EventCache
+  EditorBanks:
+  - {fileID: -8033650145506318753}
+  - {fileID: 8058862277923774482}
+  EditorEvents:
+  - {fileID: 7374593423985995384}
+  - {fileID: -5049201939347701222}
+  - {fileID: 8193408551256169905}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: 8058862277923774482}
+  StringsBanks:
+  - {fileID: -8033650145506318753}
+  cacheVersion: 131859
+  cacheTime: 639121332797420902
+  SerializableEventsDict:
+  - key: event:/BGM/BGM Main Loop
+    index: 0
+  - key: event:/BGM/LEAD
+    index: 1
+  - key: event:/BGM/BGM Drum
+    index: 2
+--- !u!114 &3767349555484576002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BGM Main Loop/Pan
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Pan
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0.5013889
+  ID:
+    data1: 2974312517
+    data2: 2326008675
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &7374593423985995384
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,43 +127,11 @@ MonoBehaviour:
   IsStream: 0
   Is3D: 1
   IsOneShot: 1
-  Parameters: []
+  Parameters:
+  - {fileID: 3767349555484576002}
   MinDistance: 1
   MaxDistance: 20
   Length: 16000
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
-  m_Name: FMODStudioCache
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EventCache
-  EditorBanks:
-  - {fileID: -8033650145506318753}
-  - {fileID: 8058862277923774482}
-  EditorEvents:
-  - {fileID: -388232759808955089}
-  - {fileID: -5099602595171636414}
-  - {fileID: -9089319804775732992}
-  EditorParameters: []
-  MasterBanks:
-  - {fileID: 8058862277923774482}
-  StringsBanks:
-  - {fileID: -8033650145506318753}
-  cacheVersion: 131859
-  cacheTime: 639121310506873845
-  SerializableEventsDict:
-  - key: event:/BGM/BGM Main Loop
-    index: 0
-  - key: event:/BGM/LEAD
-    index: 1
-  - key: event:/BGM/BGM Drum
-    index: 2
 --- !u!114 &8058862277923774482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,8 +147,35 @@ MonoBehaviour:
   Path: Assets/#GAME/BGM/fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639121310506839139
+  lastModified: 639121332797410933
   FileSizes:
   - Name: Desktop
-    Value: 723200
+    Value: 723744
   Exists: 1
+--- !u!114 &8193408551256169905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/BGM/BGM Drum
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorEventRef
+  Path: event:/BGM/BGM Drum
+  Guid:
+    Data1: 338396332
+    Data2: 1309012035
+    Data3: -898781538
+    Data4: -602786696
+  Banks:
+  - {fileID: 8058862277923774482}
+  IsStream: 0
+  Is3D: 1
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 16000
