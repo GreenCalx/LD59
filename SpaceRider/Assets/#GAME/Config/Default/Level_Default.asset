@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Level_Default
   m_EditorClassIdentifier: SpaceRider.Game::LevelConfig
   levelLength: 1000
-  lookAhead: 30
-  decayLength: 5
-  playfieldRadius: 100
+  lookAhead: 11.2
+  decayLength: 4.55
+  playfieldRadius: 74.69

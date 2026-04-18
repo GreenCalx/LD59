@@ -10,6 +10,12 @@ public class Surfer : MonoBehaviour
     [SerializeField] private WaveGenerator   waveGenerator;
     [SerializeField] private GameConfig      config;
 
+    private Animator _animator;
+    private float    _smSlope;
+    private float    _smPan;
+
+    private void Awake() => _animator = GetComponentInChildren<Animator>();
+
     private void Update()
     {
         if (splineContainer == null || config?.level == null || config?.surfer == null) return;
@@ -49,6 +55,27 @@ public class Surfer : MonoBehaviour
 
         float pan      = waveGenerator != null ? waveGenerator.GetEffectivePanAtHero() : 0f;
         transform.rotation = yaw * Quaternion.AngleAxis(-pan * maxTilt, Vector3.forward);
+
+        DriveAnimator(pan);
+    }
+
+    private void DriveAnimator(float effectivePan)
+    {
+        if (_animator == null || waveGenerator == null || config?.surfer == null) return;
+        if (!Application.isPlaying) return;
+
+        float scale      = config.surfer.slopeAnimScale;
+        float smoothTime = config.surfer.animSmoothTime;
+        float lerpT      = smoothTime > 0f ? Time.deltaTime / smoothTime : 1f;
+
+        float targetSlope = Mathf.Clamp(waveGenerator.SampleDerivativeAtHero() / scale, -1f, 1f);
+        float targetPan   = effectivePan;
+
+        _smSlope = Mathf.Lerp(_smSlope, targetSlope, lerpT);
+        _smPan   = Mathf.Lerp(_smPan,   targetPan,   lerpT);
+
+        _animator.SetFloat("Slope", _smSlope);
+        _animator.SetFloat("Pan",   _smPan);
     }
 
     private void OnDrawGizmos()
