@@ -15,4 +15,7 @@ public class WaveGeneratorConfig : ScriptableObject
     [Header("Frequency Mapping")]
     [Min(0f)] public float frequencyMin = 0.1f;
     [Min(0f)] public float frequencyMax = 1f;
+
+    [Header("Tilt")]
+    [Min(0f)] public float maxTiltDegrees = 30f;
 }

@@ -103,6 +103,10 @@ public class RibbonVisualizer : MonoBehaviour
         var colors = new Color[vertCount];
         var tris   = new int[triCount];
 
+        float maxLateral = config?.waveGenerator?.panLateralScale ?? 0.2f;
+        float maxTilt    = config?.waveGenerator?.maxTiltDegrees  ?? 30f;
+        float maxYawRad  = Mathf.Atan(Mathf.Max(maxLateral, 1e-4f));
+
         // --- Vertices ---
         for (int i = 0; i < N; i++)
         {
@@ -110,12 +114,19 @@ public class RibbonVisualizer : MonoBehaviour
             float t = math.lerp(tMin, tMax, s);         // actual spline parameter
             SplineUtility.Evaluate(spline, t, out float3 pos, out float3 tan, out float3 _);
 
-            // Flat ribbon: right from world-up × forward (no banking)
             float3 fwd = math.normalizesafe(tan, new float3(0, 0, 1));
             float3 right = math.cross(new float3(0, 1, 0), fwd);
             if (math.lengthsq(right) < 0.0001f)
                 right = math.cross(new float3(0, 0, 1), fwd);
             right = math.normalizesafe(right, new float3(1, 0, 0));
+
+            // Bank into the turn: measure yaw from the tangent, normalize by max possible yaw
+            float yawRad  = Mathf.Atan2(fwd.x, fwd.z);
+            float tiltDeg = -Mathf.Clamp(yawRad / maxYawRad, -1f, 1f) * maxTilt;
+            right = math.normalizesafe(
+                (float3)(Quaternion.AngleAxis(tiltDeg, (Vector3)fwd) * (Vector3)right),
+                new float3(1, 0, 0));
+
             float3 up = math.cross(fwd, right);
 
             Vector3 l = (Vector3)(pos - right * halfW) + RibbonOffset;

@@ -27,6 +27,7 @@ public class WaveGenerator : MonoBehaviour
     public int Pan       { get => pan;       set => pan = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
 
     private float PanLateralScale        => config?.waveGenerator?.panLateralScale        ?? 0.2f;
+    private float MaxTiltDegrees         => config?.waveGenerator?.maxTiltDegrees         ?? 30f;
     private float Bpm                    => config?.waveGenerator?.bpm                    ?? 120f;
     private float SampleDensity          => config?.waveGenerator?.sampleDensity          ?? 4f;
     private float ParamSmoothingDistance => config?.waveGenerator?.paramSmoothingDistance ?? 2f;
