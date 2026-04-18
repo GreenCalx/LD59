@@ -599,7 +599,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "AngleOffset",
     "m_StageCapability": 3,
-    "m_Value": 18.600000381469728,
+    "m_Value": 6.0,
     "m_DefaultValue": 2.0,
     "m_Labels": [],
     "m_LiteralMode": false
@@ -1731,8 +1731,8 @@
     "m_ObjectId": "9bc15480237c4e0f9e7755106d54355f",
     "m_Title": "SKY UV",
     "m_Position": {
-        "x": -3625.999755859375,
-        "y": -5.000007629394531
+        "x": -3626.0,
+        "y": -5.0
     }
 }
 
@@ -1893,7 +1893,7 @@
     "m_Hidden": false,
     "m_PerRendererData": false,
     "m_customAttributes": [],
-    "m_Value": 43.439998626708987,
+    "m_Value": 5000.0,
     "m_FloatType": 0,
     "m_LiteralFloatMode": false,
     "m_RangeValues": {

@@ -38,9 +38,12 @@ public class SpaceRiderCamera : MonoBehaviour
 
     private void RotateCamera()
     {
-        Vector3 lookTarget = finishLine != null
-            ? finishLine.position
-            : transform.position + transform.forward * 100f;
+        Vector3 lookTarget = transform.position + new Vector3(0f, 0f, 100f);
+        if (finishLine != null)
+        {
+            Vector3 toFinish = finishLine.position - transform.position;
+            if (toFinish.z > 2f) lookTarget = finishLine.position;
+        }
 
         Vector3 toTarget = lookTarget - transform.position;
         if (toTarget.sqrMagnitude < 1e-4f) return;

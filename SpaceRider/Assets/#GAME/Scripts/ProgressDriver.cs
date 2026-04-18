@@ -10,14 +10,16 @@ public class ProgressDriver : MonoBehaviour
     [SerializeField] private Transform     world;
     [SerializeField] private GameConfig    config;
 
-    private bool _finished;
+    private bool  _finished;
+    private float _currentSpeed;
 
     public event Action OnFinish;
 
     private float BaseScrollSpeed    => config?.progress?.baseScrollSpeed    ?? 10f;
-    private float SignalGain         => config?.progress?.signalGain         ?? 0.05f;
-    private float MinSpeedMultiplier => config?.progress?.minSpeedMultiplier ?? 0.5f;
-    private float MaxSpeedMultiplier => config?.progress?.maxSpeedMultiplier ?? 2f;
+    private float SignalGain         => config?.progress?.signalGain         ?? 5f;
+    private float MinSpeedMultiplier => config?.progress?.minSpeedMultiplier ?? 0.3f;
+    private float MaxSpeedMultiplier => config?.progress?.maxSpeedMultiplier ?? 2.5f;
+    private float DragRate           => config?.progress?.dragRate           ?? 1.5f;
 
     public void Setup(LevelScope scope, WaveGenerator gen) { levelScope = scope; waveGenerator = gen; }
     public void SetConfig(GameConfig c) { config = c; }
@@ -33,9 +35,16 @@ public class ProgressDriver : MonoBehaviour
         if (levelScope == null || waveGenerator == null) return;
         if (_finished) { levelScope.ScrollSpeed = 0f; return; }
 
-        float derivative = waveGenerator.SampleDerivativeAtHero();
-        float multiplier = Mathf.Clamp(1f + SignalGain * derivative, MinSpeedMultiplier, MaxSpeedMultiplier);
-        float speed      = BaseScrollSpeed * multiplier;
+        if (_currentSpeed == 0f) _currentSpeed = BaseScrollSpeed;
+
+        float derivative  = waveGenerator.SampleDerivativeAtHero();
+        float slopeAccel  = -SignalGain * derivative;
+        float dragAccel   = (BaseScrollSpeed - _currentSpeed) * DragRate;
+        _currentSpeed    += (slopeAccel + dragAccel) * dt;
+        _currentSpeed     = Mathf.Clamp(_currentSpeed,
+                                BaseScrollSpeed * MinSpeedMultiplier,
+                                BaseScrollSpeed * MaxSpeedMultiplier);
+        float speed = _currentSpeed;
 
         levelScope.ScrollSpeed    = speed;
         levelScope.VirtualDistance = levelScope.VirtualDistance + speed * dt;
