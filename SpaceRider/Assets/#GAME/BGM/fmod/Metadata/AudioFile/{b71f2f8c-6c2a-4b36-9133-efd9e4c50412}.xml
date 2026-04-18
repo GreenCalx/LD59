@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{b71f2f8c-6c2a-4b36-9133-efd9e4c50412}">
+		<property name="assetPath">
+			<value>BGM Drum.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>16</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b2be94b1-a7fe-4d15-9db0-640c5bb634f9}</destination>
+		</relationship>
+	</object>
+</objects>
