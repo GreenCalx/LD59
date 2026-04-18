@@ -48,6 +48,7 @@ MonoBehaviour:
   amplitude: 1
   frequency: 5.42
   pan: 0
+  panLateralScale: 0.2
   bpm: 120
   levelScope: {fileID: 0}
 --- !u!1 &3578307382072764107
@@ -77,7 +78,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3578307382072764107}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0624185, y: -0, z: -0, w: 0.9980501}
+  m_LocalRotation: {x: -0.062418498, y: -0, z: -0, w: 0.9980501}
   m_LocalPosition: {x: 0, y: -0.0013164487, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -98,7 +99,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   splineContainer: {fileID: 3061614563479877959}
   levelScope: {fileID: 0}
+  waveGenerator: {fileID: 0}
   alignToTangent: 1
+  maxTiltDegrees: 45
 --- !u!23 &5163699683384994972
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -326,14 +329,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1774385ce274fe2429918017f4ffe391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::WaveInputController
-  waveGenerator: {fileID: 0}
+  waveGenerator: {fileID: 1157119773178602790}
+  frequencyAxis:
+    m_Name: Frequency
+    m_Type: 0
+    m_ExpectedControlType: Axis
+    m_Id: 6506e978-9f75-476a-a574-d3abafcb655f
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  panAxis:
+    m_Name: Pan
+    m_Type: 0
+    m_ExpectedControlType: Axis
+    m_Id: 1f89c617-8e78-4065-9548-b113cdd54491
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  amplitudeAxis:
+    m_Name: Amplitude
+    m_Type: 0
+    m_ExpectedControlType: Axis
+    m_Id: 8fe6abeb-4c31-4872-ab33-32fc2b5b4f3a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   frequencyRate: 0.5
   panRate: 2
   amplitudeRate: 1
   minFrequency: 0.1
-  maxFrequency: 5
-  minAmplitude: 0
-  maxAmplitude: 5
+  maxFrequency: 1
+  minAmplitude: 0.5
+  maxAmplitude: 2
 --- !u!1 &6815036471117056926
 GameObject:
   m_ObjectHideFlags: 0
@@ -1461,7 +1491,7 @@ MonoBehaviour:
           z: 0
           w: 0.99805963
     - Position:
-        x: -0
+        x: 0
         y: -0.000033943572
         z: 25
       TangentIn:
@@ -1479,7 +1509,7 @@ MonoBehaviour:
           z: 0
           w: 0.9980501
     - Position:
-        x: -0
+        x: 0
         y: -0.06979379
         z: 25.555555
       TangentIn:
@@ -1497,7 +1527,7 @@ MonoBehaviour:
           z: 0
           w: 0.99805963
     - Position:
-        x: -0
+        x: 0
         y: -0.13921358
         z: 26.11111
       TangentIn:
@@ -1515,7 +1545,7 @@ MonoBehaviour:
           z: 0
           w: 0.9980876
     - Position:
-        x: -0
+        x: 0
         y: -0.20795506
         z: 26.666666
       TangentIn:
@@ -1533,7 +1563,7 @@ MonoBehaviour:
           z: 0
           w: 0.99813366
     - Position:
-        x: -0
+        x: 0
         y: -0.2756833
         z: 27.222223
       TangentIn:
@@ -1551,7 +1581,7 @@ MonoBehaviour:
           z: 0
           w: 0.9981969
     - Position:
-        x: -0
+        x: 0
         y: -0.3420683
         z: 27.777779
       TangentIn:
@@ -1569,7 +1599,7 @@ MonoBehaviour:
           z: 0
           w: 0.9982762
     - Position:
-        x: -0
+        x: 0
         y: -0.40678665
         z: 28.333334
       TangentIn:
@@ -1587,7 +1617,7 @@ MonoBehaviour:
           z: 0
           w: 0.99837
     - Position:
-        x: -0
+        x: 0
         y: -0.46952295
         z: 28.88889
       TangentIn:
@@ -1605,7 +1635,7 @@ MonoBehaviour:
           z: 0
           w: 0.9984764
     - Position:
-        x: -0
+        x: 0
         y: -0.5299716
         z: 29.444445
       TangentIn:
@@ -1623,7 +1653,7 @@ MonoBehaviour:
           z: 0
           w: 0.9985937
     - Position:
-        x: -0
+        x: 0
         y: -0.58783793
         z: 30
       TangentIn:
