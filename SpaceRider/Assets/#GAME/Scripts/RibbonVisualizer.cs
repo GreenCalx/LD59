@@ -2,27 +2,28 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
-/// <summary>
-/// Generates a double-sided ribbon mesh along a <see cref="SplineContainer"/>.
-/// Only emits geometry between <c>waveSource</c> and <c>surfer + decayLength</c>.
-/// Vertex color alpha fades in the decay region past the surfer.
-/// UVs: U = [0,1] across width, V = [0,1] along visible length.
-/// </summary>
 [ExecuteAlways]
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class RibbonVisualizer : MonoBehaviour
 {
     [SerializeField] private SplineContainer splineContainer;
-    [SerializeField] private Material material;
-    [SerializeField] private float width = 1f;
-    [SerializeField, Min(2)] private int segments = 256;
-    [Tooltip("World-space offset applied to the ribbon mesh (e.g. negative Y to place it under the surfer's feet)")]
-    [SerializeField] private Vector3 ribbonOffset = Vector3.zero;
+    [SerializeField] private Material        material;
+    [SerializeField] private GameConfig      config;
+
+    [Header("Fallback (used when config.ribbon is null)")]
+    [SerializeField] private float   width        = 1f;
+    [SerializeField, Min(2)] private int segments  = 256;
+    [SerializeField] private Vector3 ribbonOffset  = Vector3.zero;
 
     [Header("Visibility")]
     [SerializeField] private Transform waveSource;
     [SerializeField] private Transform surfer;
-    [SerializeField] private float decayLength = 5f;
+    [SerializeField] private float     decayLength = 5f;
+
+    private float   Width        => config?.ribbon?.width        ?? width;
+    private int     Segments     => config?.ribbon != null ? config.ribbon.segments : segments;
+    private Vector3 RibbonOffset => config?.ribbon?.ribbonOffset ?? ribbonOffset;
+    private float   DecayLength  => config?.ribbon?.decayLength  ?? decayLength;
 
     private Mesh _mesh;
     private MeshFilter _meshFilter;
@@ -61,8 +62,8 @@ public class RibbonVisualizer : MonoBehaviour
 
     private void RebuildMesh(Spline spline)
     {
-        int N       = segments;
-        float halfW = width * 0.5f;
+        int N       = Segments;
+        float halfW = Width * 0.5f;
 
         // --- Determine visible t-range [tMin .. tMax] ---
         // Ribbon runs: waveSource ---(opaque)--- surfer ---(fade)--- surfer+decay
@@ -85,7 +86,7 @@ public class RibbonVisualizer : MonoBehaviour
             float3 surferLocal = splineContainer.transform.InverseTransformPoint(surfer.position);
             SplineUtility.GetNearestPoint(spline, surferLocal, out _, out tHero);
 
-            float decayT = splineLen > 0f ? decayLength / splineLen : 0f;
+            float decayT = splineLen > 0f ? DecayLength / splineLen : 0f;
             tMin = math.max(0f, tHero - decayT);
         }
 
@@ -117,8 +118,8 @@ public class RibbonVisualizer : MonoBehaviour
             right = math.normalizesafe(right, new float3(1, 0, 0));
             float3 up = math.cross(fwd, right);
 
-            Vector3 l = (Vector3)(pos - right * halfW) + ribbonOffset;
-            Vector3 r = (Vector3)(pos + right * halfW) + ribbonOffset;
+            Vector3 l = (Vector3)(pos - right * halfW) + RibbonOffset;
+            Vector3 r = (Vector3)(pos + right * halfW) + RibbonOffset;
             Vector3 n = (Vector3)up;
 
             // Alpha: decay zone [tMin .. tHero] fades 0→1, opaque after tHero

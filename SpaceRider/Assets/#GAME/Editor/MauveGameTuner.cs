@@ -3,19 +3,20 @@ using UnityEditor;
 
 public class MauveGameTuner : EditorWindow
 {
-    private const string PrefGizmos    = "MAUVE_ShowGizmos";
-    private const string PrefFoldWave  = "MAUVE_FoldWaveInput";
-    private const string PrefFoldGen   = "MAUVE_FoldWaveGen";
-    private const string PrefFoldLevel = "MAUVE_FoldLevel";
-    private const string PrefFoldProg  = "MAUVE_FoldProgress";
-    private const string PrefFoldCam   = "MAUVE_FoldCamera";
-    private const string PrefFoldSurf  = "MAUVE_FoldSurfer";
+    private const string PrefGizmos      = "MAUVE_ShowGizmos";
+    private const string PrefFoldWave    = "MAUVE_FoldWaveInput";
+    private const string PrefFoldGen     = "MAUVE_FoldWaveGen";
+    private const string PrefFoldLevel   = "MAUVE_FoldLevel";
+    private const string PrefFoldProg    = "MAUVE_FoldProgress";
+    private const string PrefFoldCam     = "MAUVE_FoldCamera";
+    private const string PrefFoldSurf    = "MAUVE_FoldSurfer";
+    private const string PrefFoldRibbon  = "MAUVE_FoldRibbon";
 
     private GameConfig _config;
     private Editor     _waveInputEditor, _waveGenEditor, _levelEditor;
-    private Editor     _progressEditor,  _cameraEditor,  _surferEditor;
+    private Editor     _progressEditor,  _cameraEditor,  _surferEditor, _ribbonEditor;
     private Vector2    _scroll;
-    private bool _foldWave, _foldGen, _foldLevel, _foldProg, _foldCam, _foldSurf;
+    private bool _foldWave, _foldGen, _foldLevel, _foldProg, _foldCam, _foldSurf, _foldRibbon;
 
     [MenuItem("MAUVE/Game Tuner")]
     public static void Open() => GetWindow<MauveGameTuner>("MAUVE Game Tuner");
@@ -29,7 +30,8 @@ public class MauveGameTuner : EditorWindow
         _foldLevel = EditorPrefs.GetBool(PrefFoldLevel, true);
         _foldProg  = EditorPrefs.GetBool(PrefFoldProg,  true);
         _foldCam   = EditorPrefs.GetBool(PrefFoldCam,   true);
-        _foldSurf  = EditorPrefs.GetBool(PrefFoldSurf,  true);
+        _foldSurf   = EditorPrefs.GetBool(PrefFoldSurf,   true);
+        _foldRibbon = EditorPrefs.GetBool(PrefFoldRibbon, true);
     }
 
     private void OnDestroy() => ClearEditors();
@@ -45,7 +47,8 @@ public class MauveGameTuner : EditorWindow
         DrawSection("Level",          PrefFoldLevel, ref _foldLevel, ref _levelEditor,     _config.level);
         DrawSection("Progress",       PrefFoldProg,  ref _foldProg,  ref _progressEditor,  _config.progress);
         DrawSection("Camera",         PrefFoldCam,   ref _foldCam,   ref _cameraEditor,    _config.camera);
-        DrawSection("Surfer",         PrefFoldSurf,  ref _foldSurf,  ref _surferEditor,    _config.surfer);
+        DrawSection("Surfer",         PrefFoldSurf,   ref _foldSurf,   ref _surferEditor,   _config.surfer);
+        DrawSection("Ribbon",         PrefFoldRibbon, ref _foldRibbon, ref _ribbonEditor,   _config.ribbon);
         EditorGUILayout.EndScrollView();
     }
 
@@ -110,6 +113,7 @@ public class MauveGameTuner : EditorWindow
         DestroyImmediate(_progressEditor);   _progressEditor  = null;
         DestroyImmediate(_cameraEditor);     _cameraEditor    = null;
         DestroyImmediate(_surferEditor);     _surferEditor    = null;
+        DestroyImmediate(_ribbonEditor);     _ribbonEditor    = null;
     }
 
     private void CreateDefaultConfig()
@@ -128,6 +132,7 @@ public class MauveGameTuner : EditorWindow
         var progress      = CreateOrLoad<ProgressConfig>(folder,      "Progress_Default");
         var camera        = CreateOrLoad<CameraConfig>(folder,        "Camera_Default");
         var surfer        = CreateOrLoad<SurferConfig>(folder,        "Surfer_Default");
+        var ribbon        = CreateOrLoad<RibbonConfig>(folder,        "Ribbon_Default");
 
         var cfg = CreateOrLoad<GameConfig>(folder, "GameConfig_Default");
         cfg.waveInput     = waveInput;
@@ -136,6 +141,7 @@ public class MauveGameTuner : EditorWindow
         cfg.progress      = progress;
         cfg.camera        = camera;
         cfg.surfer        = surfer;
+        cfg.ribbon        = ribbon;
 
         EditorUtility.SetDirty(cfg);
         AssetDatabase.SaveAssets();

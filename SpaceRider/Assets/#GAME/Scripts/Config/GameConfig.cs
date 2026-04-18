@@ -9,4 +9,5 @@ public class GameConfig : ScriptableObject
     public ProgressConfig      progress;
     public CameraConfig        camera;
     public SurferConfig        surfer;
+    public RibbonConfig        ribbon;
 }
