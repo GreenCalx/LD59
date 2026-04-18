@@ -136,6 +136,7 @@ public class WaveGenerator : MonoBehaviour
         float spacing = 1f / SampleDensity;
         float alpha   = ParamSmoothingDistance > 0f
             ? 1f - Mathf.Exp(-spacing / ParamSmoothingDistance) : 1f;
+        float speed   = Mathf.Max(0.1f, EstimatedSpeed);
 
         WaveSample last = _samples[_samples.Count - 1];
         while (last.virtualZ + spacing <= frontVZ + 1e-4f)
@@ -144,8 +145,10 @@ public class WaveGenerator : MonoBehaviour
             _smFreq += (Mapped_frequency() - _smFreq) * alpha;
             _smPan  += (Mapped_pan() - _smPan)  * alpha;
 
-            float nextVZ = last.virtualZ + spacing;
-            float y = _smAmp * Mathf.Sin(_phase);
+            float nextVZ          = last.virtualZ + spacing;
+            float omega           = _smFreq * Bpm / 60f * Mathf.PI * 2f;
+            float phaseAtEmission = _phase - (frontVZ - nextVZ) / speed * omega;
+            float y = _smAmp * Mathf.Sin(phaseAtEmission);
             float x = last.x + _smPan * PanLateralScale * spacing;
             last = new WaveSample { virtualZ = nextVZ, x = x, y = y };
             _samples.Add(last);
