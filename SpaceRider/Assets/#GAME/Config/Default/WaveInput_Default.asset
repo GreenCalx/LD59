@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9079c9df863f2546959902c557f679d, type: 3}
   m_Name: WaveInput_Default
   m_EditorClassIdentifier: SpaceRider.Game::WaveInputConfig
-  freqInitial: 0
-  frequencyRate: 0.5
-  ampInitial: 0
-  amplitudeRate: 1
+  freqInitial: 500
+  frequencyRate: 200
+  ampInitial: 500
+  amplitudeRate: 200
   panInitial: 500
-  panRate: 2
+  panRate: 200
