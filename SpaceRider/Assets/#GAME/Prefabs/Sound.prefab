@@ -62,6 +62,10 @@ MonoBehaviour:
   Params:
   - Name: Pan
     Value: 0.5
+  - Name: Amplitude
+    Value: 0.5
+  - Name: Frequency
+    Value: 0.5
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20

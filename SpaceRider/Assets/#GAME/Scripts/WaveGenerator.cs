@@ -53,9 +53,13 @@ public class WaveGenerator : MonoBehaviour
         Tick(Time.deltaTime);
 
         float bgm_pan = (float)pan / Constants.INTEGER_RANGE;
+        float bgm_frequency = (float)frequency / Constants.INTEGER_RANGE;
+        float bgm_amplitude = (float)amplitude / Constants.INTEGER_RANGE;
         if (bgm_emitter != null)
         {
             bgm_emitter.SetParameter("Pan", bgm_pan);
+            bgm_emitter.SetParameter("Frequency", bgm_frequency);
+            bgm_emitter.SetParameter("Amplitude", bgm_amplitude);
         }
     }
 

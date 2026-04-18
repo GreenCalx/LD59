@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SpaceRider.Game::WaveInputConfig
   freqInitial: 0
   frequencyRate: 0.5
-  ampInitial: 1
+  ampInitial: 0
   amplitudeRate: 1
   panInitial: 500
   panRate: 2
