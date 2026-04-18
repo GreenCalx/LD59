@@ -3,11 +3,22 @@ using UnityEngine;
 
 public class LevelScopeTests
 {
+    private GameConfig MakeConfig(float length)
+    {
+        var lc = ScriptableObject.CreateInstance<LevelConfig>();
+        lc.levelLength = length;
+        lc.lookAhead   = 30f;
+        lc.decayLength = 5f;
+        var cfg = ScriptableObject.CreateInstance<GameConfig>();
+        cfg.level = lc;
+        return cfg;
+    }
+
     private LevelScope MakeScope(float length)
     {
-        var go = new GameObject("LevelScope");
+        var go    = new GameObject("LevelScope");
         var scope = go.AddComponent<LevelScope>();
-        scope.LevelLength = length;
+        scope.SetConfig(MakeConfig(length));
         return scope;
     }
 

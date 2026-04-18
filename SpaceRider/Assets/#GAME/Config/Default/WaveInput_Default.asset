@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9079c9df863f2546959902c557f679d, type: 3}
+  m_Name: WaveInput_Default
+  m_EditorClassIdentifier: SpaceRider.Game::WaveInputConfig
+  freqMin: 0.1
+  freqMax: 5
+  freqInitial: 1
+  frequencyRate: 0.5
+  ampMin: 0
+  ampMax: 5
+  ampInitial: 1
+  amplitudeRate: 1
+  panInitial: 0
+  panRate: 2

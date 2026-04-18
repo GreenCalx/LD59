@@ -1,41 +1,26 @@
 using System;
 using UnityEngine;
 
-/// <summary>
-/// Drives virtualDistance on LevelScope using a constant base speed modulated
-/// by the wave's derivative at the hero. Clamped to [minMult, maxMult] of the
-/// base speed and to LevelLength.
-/// </summary>
 [DefaultExecutionOrder(-100)]
 public class ProgressDriver : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private LevelScope    levelScope;
     [SerializeField] private WaveGenerator waveGenerator;
-    [Tooltip("Root GameObject that contains all world content (obstacles, finish line, etc.). " +
-             "Scrolled along -Z by VirtualDistance each frame.")]
     [SerializeField] private Transform     world;
-
-    [Header("Speed")]
-    [SerializeField] private float baseScrollSpeed    = 10f;
-    [SerializeField] private float signalGain         = 0.05f;
-    [SerializeField] private float minSpeedMultiplier = 0.5f;
-    [SerializeField] private float maxSpeedMultiplier = 2.0f;
+    [SerializeField] private GameConfig    config;
 
     private bool _finished;
 
     public event Action OnFinish;
 
-    public float BaseScrollSpeed    { get => baseScrollSpeed;    set => baseScrollSpeed = value; }
-    public float SignalGain         { get => signalGain;         set => signalGain = value; }
-    public float MinSpeedMultiplier { get => minSpeedMultiplier; set => minSpeedMultiplier = value; }
-    public float MaxSpeedMultiplier { get => maxSpeedMultiplier; set => maxSpeedMultiplier = value; }
+    private float BaseScrollSpeed    => config?.progress?.baseScrollSpeed    ?? 10f;
+    private float SignalGain         => config?.progress?.signalGain         ?? 0.05f;
+    private float MinSpeedMultiplier => config?.progress?.minSpeedMultiplier ?? 0.5f;
+    private float MaxSpeedMultiplier => config?.progress?.maxSpeedMultiplier ?? 2f;
 
-    public void Setup(LevelScope scope, WaveGenerator gen)
-    {
-        levelScope    = scope;
-        waveGenerator = gen;
-    }
+    public void Setup(LevelScope scope, WaveGenerator gen) { levelScope = scope; waveGenerator = gen; }
+    public void SetConfig(GameConfig c) { config = c; }
 
     private void Update()
     {
@@ -43,33 +28,22 @@ public class ProgressDriver : MonoBehaviour
         Tick(Time.deltaTime);
     }
 
-    /// <summary>Advances the treadmill by dt seconds. Exposed for tests.</summary>
     public void Tick(float dt)
     {
         if (levelScope == null || waveGenerator == null) return;
-
-        if (_finished)
-        {
-            levelScope.ScrollSpeed = 0f;
-            return;
-        }
+        if (_finished) { levelScope.ScrollSpeed = 0f; return; }
 
         float derivative = waveGenerator.SampleDerivativeAtHero();
-        float multiplier = Mathf.Clamp(
-            1f + signalGain * derivative,
-            minSpeedMultiplier,
-            maxSpeedMultiplier);
+        float multiplier = Mathf.Clamp(1f + SignalGain * derivative, MinSpeedMultiplier, MaxSpeedMultiplier);
+        float speed      = BaseScrollSpeed * multiplier;
 
-        float speed = baseScrollSpeed * multiplier;
-        levelScope.ScrollSpeed = speed;
+        levelScope.ScrollSpeed    = speed;
         levelScope.VirtualDistance = levelScope.VirtualDistance + speed * dt;
 
-        // Scroll the world so content placed at local-Z = distance appears to
-        // approach the hero as progress advances.
         if (world != null)
         {
             Vector3 wp = world.position;
-            wp.z       = -levelScope.VirtualDistance;
+            wp.z = -levelScope.VirtualDistance;
             world.position = wp;
         }
 

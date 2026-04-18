@@ -1,45 +1,57 @@
 using UnityEngine;
 
-/// <summary>
-/// Progress + window authority for the treadmill-mode level.
-/// No longer owns world geometry — everything it describes is virtual or local.
-/// </summary>
 public class LevelScope : MonoBehaviour
 {
-    [Header("Level")]
-    [SerializeField, Min(0f)] private float levelLength = 100f;
-
-    [Header("Ribbon Window (local Z around hero)")]
-    [SerializeField, Min(0f)] private float lookAhead   = 30f;
-    [SerializeField, Min(0f)] private float decayLength = 5f;
+    [SerializeField] private GameConfig config;
 
     [Header("Runtime (written by ProgressDriver)")]
     [SerializeField] private float virtualDistance;
     [SerializeField] private float scrollSpeed;
 
-    /// <summary>Total virtual distance to the finish line. Unit: meters.</summary>
-    public float LevelLength { get => levelLength; set => levelLength = Mathf.Max(0f, value); }
+    public float LevelLength => config != null ? config.level.levelLength : 0f;
+    public float LookAhead   => config != null ? config.level.lookAhead   : 30f;
+    public float DecayLength => config != null ? config.level.decayLength : 5f;
 
-    /// <summary>How far in front of the hero the ribbon extends, in local Z.</summary>
-    public float LookAhead { get => lookAhead; set => lookAhead = Mathf.Max(0f, value); }
-
-    /// <summary>How far behind the hero the ribbon extends (fade zone), in local Z.</summary>
-    public float DecayLength { get => decayLength; set => decayLength = Mathf.Max(0f, value); }
-
-    /// <summary>Current progress along the virtual level. Advanced by ProgressDriver.</summary>
     public float VirtualDistance
     {
         get => virtualDistance;
-        set => virtualDistance = Mathf.Clamp(value, 0f, levelLength);
+        set => virtualDistance = Mathf.Clamp(value, 0f, LevelLength > 0f ? LevelLength : float.MaxValue);
     }
 
-    /// <summary>Current treadmill scroll speed in meters per second. Written by ProgressDriver.</summary>
     public float ScrollSpeed { get => scrollSpeed; set => scrollSpeed = value; }
 
-    /// <summary>0 at start, 1 at the finish line. Returns 1 if LevelLength is 0.</summary>
     public float Progress01 =>
-        levelLength <= 0f ? 1f : Mathf.Clamp01(virtualDistance / levelLength);
+        LevelLength <= 0f ? 1f : Mathf.Clamp01(virtualDistance / LevelLength);
 
-    /// <summary>True once VirtualDistance reaches or exceeds LevelLength.</summary>
-    public bool IsFinished => virtualDistance >= levelLength;
+    public bool IsFinished => LevelLength > 0f && virtualDistance >= LevelLength;
+
+    public void SetConfig(GameConfig c) { config = c; }
+
+    private void OnDrawGizmos()
+    {
+        if (!GameDebug.ShowGizmos || config == null) return;
+        float r      = config.level.playfieldRadius;
+        float length = config.level.levelLength;
+        Gizmos.color = new Color(1f, 0.3f, 0.3f, 0.6f);
+        DrawWireCylinder(transform.position, r, length);
+    }
+
+    // Draws a cylinder oriented along the Z-axis (the level's forward direction).
+    // Rings are in the XY plane; struts connect them every 8 steps.
+    private static void DrawWireCylinder(Vector3 origin, float radius, float length)
+    {
+        const int steps = 32;
+        Vector3 back  = origin;
+        Vector3 front = origin + Vector3.forward * length;
+        Vector3 prev  = Vector3.right * radius;
+        for (int i = 1; i <= steps; i++)
+        {
+            float angle = i / (float)steps * Mathf.PI * 2f;
+            Vector3 curr = new Vector3(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius, 0f);
+            Gizmos.DrawLine(back  + prev, back  + curr);
+            Gizmos.DrawLine(front + prev, front + curr);
+            if (i % 8 == 0) Gizmos.DrawLine(back + curr, front + curr);
+            prev = curr;
+        }
+    }
 }

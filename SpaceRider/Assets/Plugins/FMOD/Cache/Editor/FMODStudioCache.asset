@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Assets/#GAME/BGM/fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639121332797420902
+  lastModified: 639121353671771295
   FileSizes:
   - Name: Desktop
     Value: 918
@@ -40,13 +40,37 @@ MonoBehaviour:
     Data4: 490324598
   Banks:
   - {fileID: 8058862277923774482}
-  IsStream: 0
+  IsStream: 1
   Is3D: 1
   IsOneShot: 1
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
   Length: 16000
+--- !u!114 &-3434111398734431881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/BGM Main Loop/Pan
+  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
+  Name: Pan
+  StudioPath: 
+  Min: 0
+  Max: 1
+  Default: 0.5013889
+  ID:
+    data1: 2974312517
+    data2: 2326008675
+  Type: 0
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,7 +96,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: -8033650145506318753}
   cacheVersion: 131859
-  cacheTime: 639121332797420902
+  cacheTime: 639121353671771295
   SerializableEventsDict:
   - key: event:/BGM/BGM Main Loop
     index: 0
@@ -80,30 +104,6 @@ MonoBehaviour:
     index: 1
   - key: event:/BGM/BGM Drum
     index: 2
---- !u!114 &3767349555484576002
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/BGM Main Loop/Pan
-  m_EditorClassIdentifier: FMODUnityEditor::FMODUnity.EditorParamRef
-  Name: Pan
-  StudioPath: 
-  Min: 0
-  Max: 1
-  Default: 0.5013889
-  ID:
-    data1: 2974312517
-    data2: 2326008675
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
 --- !u!114 &7374593423985995384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124,11 +124,11 @@ MonoBehaviour:
     Data4: 1730654003
   Banks:
   - {fileID: 8058862277923774482}
-  IsStream: 0
+  IsStream: 1
   Is3D: 1
   IsOneShot: 1
   Parameters:
-  - {fileID: 3767349555484576002}
+  - {fileID: -3434111398734431881}
   MinDistance: 1
   MaxDistance: 20
   Length: 16000
@@ -147,7 +147,7 @@ MonoBehaviour:
   Path: Assets/#GAME/BGM/fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639121332797410933
+  lastModified: 639121353671736568
   FileSizes:
   - Name: Desktop
     Value: 723744
@@ -172,7 +172,7 @@ MonoBehaviour:
     Data4: -602786696
   Banks:
   - {fileID: 8058862277923774482}
-  IsStream: 0
+  IsStream: 1
   Is3D: 1
   IsOneShot: 1
   Parameters: []
