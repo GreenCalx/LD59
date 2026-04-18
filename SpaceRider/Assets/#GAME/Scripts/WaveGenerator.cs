@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.Collections;
+using Unity.VisualScripting.YamlDotNet.Core;
 using UnityEngine;
 
 [DefaultExecutionOrder(-90)]
@@ -20,6 +21,7 @@ public class WaveGenerator : MonoBehaviour
     private float _phase;
     private float _smAmp, _smFreq, _smPan;
     private bool  _initialized;
+    public FMODUnity.StudioEventEmitter bgm_emitter;
 
     public float Amplitude { get => amplitude; set => amplitude = value; }
     public float Frequency { get => frequency; set => frequency = value; }
@@ -39,10 +41,17 @@ public class WaveGenerator : MonoBehaviour
 
     private void OnDisable() => _initialized = false;
 
+
     private void Update()
     {
         if (!Application.isPlaying) return;
         Tick(Time.deltaTime);
+
+        float effective_pan = pan / 2f + 0.5f;
+        if (bgm_emitter != null)
+        {
+            bgm_emitter.SetParameter("Pan", effective_pan);
+        }
     }
 
     public void Tick(float dt)
