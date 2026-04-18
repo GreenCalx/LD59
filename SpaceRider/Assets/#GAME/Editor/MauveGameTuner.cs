@@ -71,6 +71,15 @@ public class MauveGameTuner : EditorWindow
             GameDebug.ShowGizmos = next;
             SceneView.RepaintAll();
         }
+
+        EditorGUILayout.Space(4);
+        GUI.enabled = _config != null;
+        if (GUILayout.Button("Save All Config Assets"))
+        {
+            AssetDatabase.SaveAssets();
+            Debug.Log("[MAUVE] Config assets saved.");
+        }
+        GUI.enabled = true;
         EditorGUILayout.Space(6);
     }
 
