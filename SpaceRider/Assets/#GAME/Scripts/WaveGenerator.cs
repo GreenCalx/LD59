@@ -26,11 +26,6 @@ public class WaveGenerator : MonoBehaviour
     public int Frequency { get => frequency; set => frequency = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
     public int Pan       { get => pan;       set => pan = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
 
-    public float amplitude_min = 0.1f;
-    public float amplitude_max = 10f;
-    public float frequency_min = 0.1f;
-    public float frequency_max = 1f;
-
     private float PanLateralScale        => config?.waveGenerator?.panLateralScale        ?? 0.2f;
     private float Bpm                    => config?.waveGenerator?.bpm                    ?? 120f;
     private float SampleDensity          => config?.waveGenerator?.sampleDensity          ?? 4f;
@@ -65,12 +60,16 @@ public class WaveGenerator : MonoBehaviour
 
     public float Mapped_frequency()
     {
-        return (float)frequency / Constants.INTEGER_RANGE * (frequency_max - frequency_min) + frequency_min;
+        float min = config?.waveGenerator?.frequencyMin ?? 0.1f;
+        float max = config?.waveGenerator?.frequencyMax ?? 1f;
+        return (float)frequency / Constants.INTEGER_RANGE * (max - min) + min;
     }
 
     public float Mapped_amplitude()
     {
-        return (float)amplitude / Constants.INTEGER_RANGE * (amplitude_max - amplitude_min) + amplitude_min;
+        float min = config?.waveGenerator?.amplitudeMin ?? 0.1f;
+        float max = config?.waveGenerator?.amplitudeMax ?? 10f;
+        return (float)amplitude / Constants.INTEGER_RANGE * (max - min) + min;
     }
 
     public float Mapped_pan()

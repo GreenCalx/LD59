@@ -16,3 +16,7 @@ MonoBehaviour:
   paramSmoothingDistance: 2
   panLateralScale: 0.2
   bpm: 120
+  amplitudeMin: 0.1
+  amplitudeMax: 10
+  frequencyMin: 0.1
+  frequencyMax: 1
