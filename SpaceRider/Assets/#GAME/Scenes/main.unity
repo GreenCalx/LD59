@@ -478,7 +478,112 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9147193823787874025, guid: 2997caa513f79a64d914ef3846d1eaaa, type: 3}
   m_PrefabInstance: {fileID: 5263241040856010271}
   m_PrefabAsset: {fileID: 0}
---- !u!43 &1229267247
+--- !u!1 &1246589526
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1246589528}
+  - component: {fileID: 1246589527}
+  m_Layer: 0
+  m_Name: LevelSCope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1246589527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246589526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838f3a311be068a40964ad570ff09e03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelScope
+  config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}
+  virtualDistance: 0
+  scrollSpeed: 0
+--- !u!4 &1246589528
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1246589526}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.03595, y: -0, z: 14.35625}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1472182414
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1472182416}
+  - component: {fileID: 1472182415}
+  m_Layer: 0
+  m_Name: ProgressiveDriver
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1472182415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472182414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 538d93f79876a7341a611b9cbb77186a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::ProgressDriver
+  levelScope: {fileID: 1246589527}
+  waveGenerator: {fileID: 6965607841046911353}
+  world: {fileID: 1815757113}
+  config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}
+--- !u!4 &1472182416
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1472182414}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1490248855 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4347488009876112394, guid: 181517dd95b2aad41b666c7f8f69dbc5, type: 3}
+  m_PrefabInstance: {fileID: 6965607841046911352}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1815757113 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6717591950789876167, guid: 2997caa513f79a64d914ef3846d1eaaa, type: 3}
+  m_PrefabInstance: {fileID: 5263241040856010271}
+  m_PrefabAsset: {fileID: 0}
+--- !u!43 &1821104558
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -656,111 +761,6 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
---- !u!1 &1246589526
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1246589528}
-  - component: {fileID: 1246589527}
-  m_Layer: 0
-  m_Name: LevelSCope
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1246589527
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246589526}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 838f3a311be068a40964ad570ff09e03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelScope
-  config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}
-  virtualDistance: 0
-  scrollSpeed: 0
---- !u!4 &1246589528
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246589526}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.03595, y: -0, z: 14.35625}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1472182414
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1472182416}
-  - component: {fileID: 1472182415}
-  m_Layer: 0
-  m_Name: ProgressiveDriver
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1472182415
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472182414}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 538d93f79876a7341a611b9cbb77186a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SpaceRider.Game::ProgressDriver
-  levelScope: {fileID: 1246589527}
-  waveGenerator: {fileID: 6965607841046911353}
-  world: {fileID: 1815757113}
-  config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}
---- !u!4 &1472182416
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1472182414}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1490248855 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4347488009876112394, guid: 181517dd95b2aad41b666c7f8f69dbc5, type: 3}
-  m_PrefabInstance: {fileID: 6965607841046911352}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1815757113 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6717591950789876167, guid: 2997caa513f79a64d914ef3846d1eaaa, type: 3}
-  m_PrefabInstance: {fileID: 5263241040856010271}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1775178217337627675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -818,8 +818,12 @@ PrefabInstance:
       value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
+      propertyPath: Params.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
       propertyPath: EventReference.Path
-      value: event:/BGM/BGM Drum
+      value: event:/BGM/BGM Main Loop
       objectReference: {fileID: 0}
     - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
       propertyPath: OverrideMaxDistance
@@ -831,19 +835,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
       propertyPath: EventReference.Guid.Data1
-      value: 338396332
+      value: -357505525
       objectReference: {fileID: 0}
     - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
       propertyPath: EventReference.Guid.Data2
-      value: 1309012035
+      value: 1267479956
       objectReference: {fileID: 0}
     - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
       propertyPath: EventReference.Guid.Data3
-      value: -898781538
+      value: -1584586595
       objectReference: {fileID: 0}
     - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
       propertyPath: EventReference.Guid.Data4
-      value: -602786696
+      value: 1730654003
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
+      propertyPath: Params.Array.data[0].Name
+      value: Pan
+      objectReference: {fileID: 0}
+    - target: {fileID: 4859290918443882579, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
+      propertyPath: Params.Array.data[0].Value
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5641223614641149619, guid: 31db5582d3edfcc4a955786cd866655f, type: 3}
       propertyPath: m_Name
