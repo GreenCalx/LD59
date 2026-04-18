@@ -12,8 +12,16 @@ public class ProgressDriver : MonoBehaviour
 
     private bool  _finished;
     private float _currentSpeed;
+    private float _lastDerivative;
+    private float _lastSlopeAccel;
+    private float _lastDragAccel;
 
     public event Action OnFinish;
+
+    public float CurrentSpeed   => _currentSpeed;
+    public float LastDerivative => _lastDerivative;
+    public float LastSlopeAccel => _lastSlopeAccel;
+    public float LastDragAccel  => _lastDragAccel;
 
     private float BaseScrollSpeed    => config?.progress?.baseScrollSpeed    ?? 10f;
     private float SignalGain         => config?.progress?.signalGain         ?? 5f;
@@ -40,6 +48,9 @@ public class ProgressDriver : MonoBehaviour
         float derivative  = waveGenerator.SampleDerivativeAtHero();
         float slopeAccel  = -SignalGain * derivative;
         float dragAccel   = (BaseScrollSpeed - _currentSpeed) * DragRate;
+        _lastDerivative   = derivative;
+        _lastSlopeAccel   = slopeAccel;
+        _lastDragAccel    = dragAccel;
         _currentSpeed    += (slopeAccel + dragAccel) * dt;
         _currentSpeed     = Mathf.Clamp(_currentSpeed,
                                 BaseScrollSpeed * MinSpeedMultiplier,
@@ -62,5 +73,37 @@ public class ProgressDriver : MonoBehaviour
             levelScope.ScrollSpeed = 0f;
             OnFinish?.Invoke();
         }
+    }
+
+    private void OnGUI()
+    {
+        if (!GameDebug.ShowGizmos) return;
+
+        float base_   = BaseScrollSpeed;
+        float minSpd  = base_ * MinSpeedMultiplier;
+        float maxSpd  = base_ * MaxSpeedMultiplier;
+        float range   = maxSpd - minSpd;
+
+        GUILayout.BeginArea(new Rect(10f, 10f, 300f, 130f), GUI.skin.box);
+
+        GUILayout.Label($"Speed:  {_currentSpeed:F2} m/s  (base {base_:F1})");
+
+        Rect bar = GUILayoutUtility.GetRect(280f, 18f);
+        GUI.Box(bar, GUIContent.none);
+        if (range > 0f)
+        {
+            float tBase = (base_ - minSpd) / range;
+            float tCur  = Mathf.Clamp01((_currentSpeed - minSpd) / range);
+            Rect fill   = new Rect(bar.x, bar.y, bar.width * tCur, bar.height);
+            GUI.Box(fill, GUIContent.none);
+            float baseX = bar.x + bar.width * tBase;
+            GUI.Box(new Rect(baseX - 1f, bar.y, 3f, bar.height), GUIContent.none);
+        }
+
+        GUILayout.Label($"Slope:      {_lastDerivative:+0.000;-0.000; 0.000}");
+        GUILayout.Label($"Slope accel:{_lastSlopeAccel:+0.00;-0.00; 0.00} m/s²");
+        GUILayout.Label($"Drag accel: {_lastDragAccel:+0.00;-0.00; 0.00} m/s²");
+
+        GUILayout.EndArea();
     }
 }

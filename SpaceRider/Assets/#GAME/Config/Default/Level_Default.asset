@@ -15,4 +15,4 @@ MonoBehaviour:
   levelLength: 1000
   lookAhead: 30
   decayLength: 5
-  playfieldRadius: 8
+  playfieldRadius: 100

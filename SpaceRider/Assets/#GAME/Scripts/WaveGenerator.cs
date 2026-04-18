@@ -31,7 +31,8 @@ public class WaveGenerator : MonoBehaviour
     private float ParamSmoothingDistance => config?.waveGenerator?.paramSmoothingDistance ?? 2f;
     private float LookAhead              => config?.level?.lookAhead                      ?? 30f;
     private float DecayLength            => config?.level?.decayLength                    ?? 5f;
-    private float VirtualDistance        => levelScope != null ? levelScope.VirtualDistance              : 0f;
+    private float EstimatedSpeed         => config?.progress?.baseScrollSpeed             ?? 10f;
+    private float VirtualDistance        => levelScope != null ? levelScope.VirtualDistance : 0f;
 
     public void SetLevelScope(LevelScope scope) { levelScope = scope; _initialized = false; }
     public void SetConfig(GameConfig c)         { config = c;         _initialized = false; }
@@ -46,11 +47,19 @@ public class WaveGenerator : MonoBehaviour
 
     public void Tick(float dt)
     {
-        _phase = (_phase + Bpm / 60f * Mathf.PI * 2f * dt) % (Mathf.PI * 2f);
+        _phase = (_phase + frequency * Bpm / 60f * Mathf.PI * 2f * dt) % (Mathf.PI * 2f);
         if (levelScope == null) return;
         EnsureInitialized();
         CullBehind();
         SpawnAhead();
+        SyncTransformToFront();
+    }
+
+    private void SyncTransformToFront()
+    {
+        if (_samples.Count == 0) return;
+        var front = _samples[_samples.Count - 1];
+        transform.localPosition = new Vector3(front.x, front.y, front.virtualZ - VirtualDistance);
     }
 
     private void EnsureInitialized()
@@ -64,9 +73,15 @@ public class WaveGenerator : MonoBehaviour
         float front   = VirtualDistance + LookAhead;
         float x       = -_smPan * PanLateralScale * DecayLength;
 
+        // Backtrack phase: samples nearer the front were emitted more recently.
+        // A sample at virtualZ vz was emitted (front - vz) virtual-distance units ago,
+        // which at EstimatedSpeed is (front - vz) / speed seconds ago.
+        float speed   = Mathf.Max(0.1f, EstimatedSpeed);
+        float omega   = _smFreq * Bpm / 60f * Mathf.PI * 2f;
         for (float vz = back; vz <= front + 1e-4f; vz += spacing)
         {
-            float y = _smAmp * Mathf.Sin(vz * Mathf.PI * 2f * _smFreq - _phase);
+            float phaseAtEmission = _phase - (front - vz) / speed * omega;
+            float y = _smAmp * Mathf.Sin(phaseAtEmission);
             _samples.Add(new WaveSample { virtualZ = vz, x = x, y = y });
             x += _smPan * PanLateralScale * spacing;
         }
@@ -97,7 +112,7 @@ public class WaveGenerator : MonoBehaviour
             _smPan  += (pan       - _smPan)  * alpha;
 
             float nextVZ = last.virtualZ + spacing;
-            float y = _smAmp * Mathf.Sin(nextVZ * Mathf.PI * 2f * _smFreq - _phase);
+            float y = _smAmp * Mathf.Sin(_phase);
             float x = last.x + _smPan * PanLateralScale * spacing;
             last = new WaveSample { virtualZ = nextVZ, x = x, y = y };
             _samples.Add(last);
@@ -151,6 +166,9 @@ public class WaveGenerator : MonoBehaviour
     {
         if (!GameDebug.ShowGizmos) return;
 
+        Vector3 origin = transform.parent != null ? transform.parent.position : Vector3.zero;
+        float   vd     = VirtualDistance;
+
         if (_initialized)
         {
             Gizmos.color = Color.cyan;
@@ -158,14 +176,17 @@ public class WaveGenerator : MonoBehaviour
             {
                 var s0 = _samples[i]; var s1 = _samples[i + 1];
                 Gizmos.DrawLine(
-                    transform.position + new Vector3(s0.x, s0.y, s0.virtualZ - VirtualDistance),
-                    transform.position + new Vector3(s1.x, s1.y, s1.virtualZ - VirtualDistance));
+                    origin + new Vector3(s0.x, s0.y, s0.virtualZ - vd),
+                    origin + new Vector3(s1.x, s1.y, s1.virtualZ - vd));
             }
         }
 
+        // Generator always shown at its synced world position (ribbon front)
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position + Vector3.forward * LookAhead, 0.5f);
+        Gizmos.DrawWireSphere(transform.position, 0.5f);
+
+        // Decay boundary is fixed relative to HeroBundle origin
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position - Vector3.forward * DecayLength, 0.5f);
+        Gizmos.DrawWireSphere(origin - Vector3.forward * DecayLength, 0.5f);
     }
 }

@@ -164,7 +164,7 @@ MonoBehaviour:
   Path: Assets/#GAME/BGM/fmod/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 639121387066655018
+  lastModified: 639121353671736568
   FileSizes:
   - Name: Desktop
     Value: 723744
@@ -194,7 +194,7 @@ MonoBehaviour:
   StringsBanks:
   - {fileID: 9075087582963784874}
   cacheVersion: 131859
-  cacheTime: 639121387066665013
+  cacheTime: 639121353671771295
   SerializableEventsDict:
   - key: event:/BGM/BGM Main Loop
     index: 0
@@ -320,7 +320,7 @@ MonoBehaviour:
   Path: Assets/#GAME/BGM/fmod/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 639121387066665013
+  lastModified: 639121353671771295
   FileSizes:
   - Name: Desktop
     Value: 918
