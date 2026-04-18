@@ -167,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::SpaceRiderCamera
   hero: {fileID: 0}
-  finishLine: {fileID: 0}
+  vanishingPoint: {fileID: 0}
   levelScope: {fileID: 0}
   waveGenerator: {fileID: 0}
   config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}

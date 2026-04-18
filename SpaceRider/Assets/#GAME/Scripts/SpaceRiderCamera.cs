@@ -5,7 +5,7 @@ public class SpaceRiderCamera : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform     hero;
-    [SerializeField] private Transform     finishLine;
+    [SerializeField] private Transform     vanishingPoint;
     [SerializeField] private LevelScope    levelScope;
     [SerializeField] private WaveGenerator waveGenerator;
     [SerializeField] private GameConfig    config;
@@ -38,12 +38,9 @@ public class SpaceRiderCamera : MonoBehaviour
 
     private void RotateCamera()
     {
-        Vector3 lookTarget = transform.position + new Vector3(0f, 0f, 100f);
-        if (finishLine != null)
-        {
-            Vector3 toFinish = finishLine.position - transform.position;
-            if (toFinish.z > 2f) lookTarget = finishLine.position;
-        }
+        Vector3 lookTarget = vanishingPoint != null
+            ? vanishingPoint.position
+            : transform.position + new Vector3(0f, 0f, 100f);
 
         Vector3 toTarget = lookTarget - transform.position;
         if (toTarget.sqrMagnitude < 1e-4f) return;
