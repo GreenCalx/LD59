@@ -1,0 +1,30 @@
+# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Unity asset meta files should NOT be ignored to avoid broken references
+
+# Visual Studio / Rider cache
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Generated solution / project files
+*.csproj
+*.sln
+*.slnx
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Design documents
+Assets/Design/*
