@@ -2,10 +2,11 @@ using Unity.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Black-box wave generator. Owns the signal parameters exposed to the player
-/// (amplitude, frequency, pan) and produces the wave spine as a flat array of
-/// world-space positions. The ribbon/spline system consumes this output.
+/// Black-box wave generator. Produces wave-spine positions in a local window
+/// around the hero (local Z ∈ [-DecayLength, +LookAhead]) while the spatial
+/// pattern scrolls past at rate LevelScope.VirtualDistance.
 /// </summary>
+[DefaultExecutionOrder(-90)]
 public class WaveGenerator : MonoBehaviour
 {
     [Header("Signal Parameters")]
@@ -19,65 +20,62 @@ public class WaveGenerator : MonoBehaviour
     [Header("References")]
     [SerializeField] private LevelScope levelScope;
 
-    private float _phase; // radians, advances each frame
+    private float _phase;
 
-    /// <summary>Vertical scale of the wave oscillation.</summary>
-    public float Amplitude  { get => amplitude;  set => amplitude = value; }
-    /// <summary>Oscillation cycles per unit of level length.</summary>
-    public float Frequency  { get => frequency;  set => frequency = value; }
-    /// <summary>Lateral bias [-1, 1] that tilts the ribbon left/right (pan).</summary>
-    public float Pan        { get => pan;         set => pan = Mathf.Clamp(value, -1f, 1f); }
-    /// <summary>Total length of the level along the Z axis, read from <see cref="LevelScope"/>.</summary>
-    public float LevelLength => levelScope != null ? levelScope.LevelLength : 100f;
-    /// <summary>Tempo in beats per minute. One beat advances the wave by one full cycle.</summary>
-    public float Bpm        { get => bpm;         set => bpm = Mathf.Max(0f, value); }
+    public float Amplitude { get => amplitude; set => amplitude = value; }
+    public float Frequency { get => frequency; set => frequency = value; }
+    public float Pan       { get => pan;       set => pan = Mathf.Clamp(value, -1f, 1f); }
+    public float Bpm       { get => bpm;       set => bpm = Mathf.Max(0f, value); }
+
+    public void SetLevelScope(LevelScope scope) => levelScope = scope;
 
     private void Update()
     {
-        // Advance phase: one beat = one full cycle (2π). Wrap to avoid float drift.
         _phase = (_phase + bpm / 60f * Mathf.PI * 2f * Time.deltaTime) % (Mathf.PI * 2f);
     }
 
     /// <summary>
-    /// Computes and returns <paramref name="resolution"/> evenly-spaced wave-spine positions
-    /// in world space, sampled from Z = 0 to Z = <see cref="LevelLength"/>.
-    /// <para>
-    /// The caller owns the returned <see cref="NativeArray{T}"/> and is responsible
-    /// for calling <c>Dispose()</c> on it.
-    /// </para>
+    /// Samples evenly-spaced wave-spine positions across the local window
+    /// [-DecayLength, +LookAhead]. Caller owns the returned NativeArray.
     /// </summary>
-    /// <param name="resolution">Number of sample points along the wave.</param>
-    /// <param name="allocator">
-    /// Memory allocator for the array. Use <see cref="Allocator.Temp"/> for single-frame
-    /// reads, <see cref="Allocator.TempJob"/> when scheduling a job, or
-    /// <see cref="Allocator.Persistent"/> to keep the array alive across frames.
-    /// </param>
     public NativeArray<Vector3> GetWavePoints(int resolution, Allocator allocator)
     {
         var points = new NativeArray<Vector3>(resolution, allocator, NativeArrayOptions.UninitializedMemory);
+        float zMin = -DecayLength;
+        float zMax = +LookAhead;
 
-        // Default: sine wave.
-        // TODO: replace with the proper signal wave computation.
-        //
-        // Contract each element must satisfy:
-        //   points[i].z  = i / (resolution - 1f) * levelLength   — forward position along the level
-        //   points[i].x  = lateral displacement driven by pan and wave shape
-        //   points[i].y  = vertical displacement driven by amplitude and wave shape
-        //
-        // The hero's acceleration is derived from the second derivative of Y w.r.t. Z,
-        // so wave continuity matters (prefer smooth functions, not piecewise linear).
         for (int i = 0; i < resolution; i++)
         {
-            float t      = resolution > 1 ? i / (resolution - 1f) : 0f;
-            float z      = t * LevelLength;
-            float theta  = t * frequency * Mathf.PI * 2f - _phase;
-            float sinVal = Mathf.Sin(theta);
-
-            // Pan rotates the oscillation plane: at pan=0 it's purely vertical (Y),
-            // at pan=±1 it's purely lateral (X).
-            points[i] = new Vector3(pan * sinVal * amplitude, sinVal * amplitude, z);
+            float t = resolution > 1 ? i / (resolution - 1f) : 0f;
+            float z = Mathf.Lerp(zMin, zMax, t);
+            points[i] = SampleAtLocalZ(z);
         }
 
         return points;
     }
+
+    /// <summary>
+    /// Samples the wave at a given local Z (relative to the hero).
+    /// The spatial pattern scrolls as VirtualDistance advances.
+    /// </summary>
+    public Vector3 SampleAtLocalZ(float localZ)
+    {
+        float virtualZ = localZ + VirtualDistance;
+        float theta    = virtualZ * frequency * Mathf.PI * 2f - _phase;
+        float sinVal   = Mathf.Sin(theta);
+        return new Vector3(pan * sinVal * amplitude, sinVal * amplitude, localZ);
+    }
+
+    /// <summary>
+    /// ∂y/∂virtualZ at the hero (local Z = 0). Used by ProgressDriver as the signal modifier.
+    /// </summary>
+    public float SampleDerivativeAtHero()
+    {
+        float theta = VirtualDistance * frequency * Mathf.PI * 2f - _phase;
+        return Mathf.Cos(theta) * frequency * Mathf.PI * 2f * amplitude;
+    }
+
+    private float VirtualDistance => levelScope != null ? levelScope.VirtualDistance : 0f;
+    private float LookAhead       => levelScope != null ? levelScope.LookAhead       : 30f;
+    private float DecayLength     => levelScope != null ? levelScope.DecayLength     : 5f;
 }

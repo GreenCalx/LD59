@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(git -C \"C:/Users/jmjma/Documents/GitHub/LD59\" add docs/superpowers/specs/2026-04-18-treadmill-levelscope-design.md)",
-      "Bash(git -C C:/Users/jmjma/Documents/GitHub/LD59 commit -m ' *)"
+      "Bash(git -C C:/Users/jmjma/Documents/GitHub/LD59 commit -m ' *)",
+      "Bash(git -C \"C:/Users/jmjma/Documents/GitHub/LD59\" add docs/superpowers/plans/2026-04-18-treadmill-levelscope.md)"
     ]
   }
 }

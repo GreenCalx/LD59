@@ -10,6 +10,7 @@ using UnityEngine.Splines;
 /// auto-rebuild its mesh whenever the spline changes.
 /// </summary>
 [ExecuteAlways]
+[DefaultExecutionOrder(-70)]
 [RequireComponent(typeof(SplineContainer))]
 public class WaveRibbonUpdater : MonoBehaviour
 {
