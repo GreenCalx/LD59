@@ -12,6 +12,9 @@ public class ProgressDriver : MonoBehaviour
     [Header("References")]
     [SerializeField] private LevelScope    levelScope;
     [SerializeField] private WaveGenerator waveGenerator;
+    [Tooltip("Root GameObject that contains all world content (obstacles, finish line, etc.). " +
+             "Scrolled along -Z by VirtualDistance each frame.")]
+    [SerializeField] private Transform     world;
 
     [Header("Speed")]
     [SerializeField] private float baseScrollSpeed    = 10f;
@@ -30,7 +33,7 @@ public class ProgressDriver : MonoBehaviour
 
     public void Setup(LevelScope scope, WaveGenerator gen)
     {
-        levelScope = scope;
+        levelScope    = scope;
         waveGenerator = gen;
     }
 
@@ -60,6 +63,15 @@ public class ProgressDriver : MonoBehaviour
         float speed = baseScrollSpeed * multiplier;
         levelScope.ScrollSpeed = speed;
         levelScope.VirtualDistance = levelScope.VirtualDistance + speed * dt;
+
+        // Scroll the world so content placed at local-Z = distance appears to
+        // approach the hero as progress advances.
+        if (world != null)
+        {
+            Vector3 wp = world.position;
+            wp.z       = -levelScope.VirtualDistance;
+            world.position = wp;
+        }
 
         if (levelScope.IsFinished)
         {

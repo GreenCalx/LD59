@@ -4,7 +4,18 @@
       "Bash(git -C \"C:/Users/jmjma/Documents/GitHub/LD59\" add docs/superpowers/specs/2026-04-18-treadmill-levelscope-design.md)",
       "Bash(git -C C:/Users/jmjma/Documents/GitHub/LD59 commit -m ' *)",
       "Bash(git -C \"C:/Users/jmjma/Documents/GitHub/LD59\" add docs/superpowers/plans/2026-04-18-treadmill-levelscope.md)",
-      "Bash(unity-mcp-cli run-system-tool *)"
+      "Bash(unity-mcp-cli run-system-tool *)",
+      "Bash(curl -s http://localhost:57638)",
+      "mcp__ai-game-developer__scene-list-opened",
+      "mcp__ai-game-developer__scene-get-data",
+      "mcp__ai-game-developer__gameobject-component-get",
+      "mcp__ai-game-developer__gameobject-component-add",
+      "mcp__ai-game-developer__gameobject-component-modify",
+      "mcp__ai-game-developer__scene-save"
     ]
-  }
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "ai-game-developer"
+  ]
 }
