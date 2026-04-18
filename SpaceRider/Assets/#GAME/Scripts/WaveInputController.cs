@@ -45,15 +45,19 @@ public class WaveInputController : MonoBehaviour
         float f = frequencyAxis.ReadValue<float>();
         if (f != 0f)
             waveGenerator.Frequency = Mathf.Clamp(
-                waveGenerator.Frequency + f * wi.frequencyRate * dt, wi.freqMin, wi.freqMax);
+                Mathf.RoundToInt(waveGenerator.Frequency + f * wi.frequencyRate * dt),
+                0, Constants.INTEGER_RANGE);
 
         float p = panAxis.ReadValue<float>();
         if (p != 0f)
-            waveGenerator.Pan = waveGenerator.Pan + p * wi.panRate * dt;
+            waveGenerator.Pan = Mathf.Clamp(
+                Mathf.RoundToInt(waveGenerator.Pan + p * wi.panRate * dt),
+                0, Constants.INTEGER_RANGE);
 
         float a = amplitudeAxis.ReadValue<float>();
         if (a != 0f)
             waveGenerator.Amplitude = Mathf.Clamp(
-                waveGenerator.Amplitude + a * wi.amplitudeRate * dt, wi.ampMin, wi.ampMax);
+                Mathf.RoundToInt(waveGenerator.Amplitude + a * wi.amplitudeRate * dt),
+                0, Constants.INTEGER_RANGE);
     }
 }

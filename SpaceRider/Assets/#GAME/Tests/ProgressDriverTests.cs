@@ -32,7 +32,7 @@ public class ProgressDriverTests
         _gen = genGo.AddComponent<WaveGenerator>();
         _gen.SetLevelScope(_scope);
         _gen.SetConfig(_config);
-        _gen.Amplitude = 0f; _gen.Frequency = 1f;
+        _gen.Amplitude = 0; _gen.Frequency = 1;
 
         var drvGo = new GameObject("Drv");
         _driver = drvGo.AddComponent<ProgressDriver>();
@@ -61,7 +61,7 @@ public class ProgressDriverTests
     {
         _config.progress.signalGain = 1000f;
         _config.progress.maxSpeedMultiplier = 2f;
-        _gen.Amplitude = 1f;
+        _gen.Amplitude = 1;
         _scope.VirtualDistance = 0f;
         _driver.Tick(0.016f);
         Assert.LessOrEqual(_scope.ScrollSpeed, 10f * 2f + 1e-3f);

@@ -7,9 +7,9 @@ using UnityEngine;
 public class WaveGenerator : MonoBehaviour
 {
     [Header("Signal Parameters (runtime, driven by WaveInputController)")]
-    [SerializeField] private float amplitude = 1f;
-    [SerializeField] private float frequency = 1f;
-    [SerializeField, Range(-1f, 1f)] private float pan = 0f;
+    [SerializeField, Range(0, Constants.INTEGER_RANGE)] private int amplitude = Constants.INTEGER_RANGE / 2;
+    [SerializeField, Range(0, Constants.INTEGER_RANGE)] private int frequency = Constants.INTEGER_RANGE / 2;
+    [SerializeField, Range(0, Constants.INTEGER_RANGE)] private int pan = Constants.INTEGER_RANGE / 2;
 
     [Header("References")]
     [SerializeField] private LevelScope levelScope;
@@ -21,11 +21,15 @@ public class WaveGenerator : MonoBehaviour
     private float _phase;
     private float _smAmp, _smFreq, _smPan;
     private bool  _initialized;
-    public FMODUnity.StudioEventEmitter bgm_emitter;
 
-    public float Amplitude { get => amplitude; set => amplitude = value; }
-    public float Frequency { get => frequency; set => frequency = value; }
-    public float Pan       { get => pan;       set => pan = Mathf.Clamp(value, -1f, 1f); }
+    public int Amplitude { get => amplitude; set => amplitude = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
+    public int Frequency { get => frequency; set => frequency = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
+    public int Pan       { get => pan;       set => pan = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
+
+    public float amplitude_min = 0.1f;
+    public float amplitude_max = 10f;
+    public float frequency_min = 0.1f;
+    public float frequency_max = 1f;
 
     private float PanLateralScale        => config?.waveGenerator?.panLateralScale        ?? 0.2f;
     private float Bpm                    => config?.waveGenerator?.bpm                    ?? 120f;
@@ -38,6 +42,7 @@ public class WaveGenerator : MonoBehaviour
 
     public void SetLevelScope(LevelScope scope) { levelScope = scope; _initialized = false; }
     public void SetConfig(GameConfig c)         { config = c;         _initialized = false; }
+    public FMODUnity.StudioEventEmitter bgm_emitter;
 
     private void OnDisable() => _initialized = false;
 
@@ -47,16 +52,31 @@ public class WaveGenerator : MonoBehaviour
         if (!Application.isPlaying) return;
         Tick(Time.deltaTime);
 
-        float effective_pan = pan / 2f + 0.5f;
+        float bgm_pan = (float)pan / Constants.INTEGER_RANGE;
         if (bgm_emitter != null)
         {
-            bgm_emitter.SetParameter("Pan", effective_pan);
+            bgm_emitter.SetParameter("Pan", bgm_pan);
         }
+    }
+
+    public float Mapped_frequency()
+    {
+        return (float)frequency / Constants.INTEGER_RANGE * (frequency_max - frequency_min) + frequency_min;
+    }
+
+    public float Mapped_amplitude()
+    {
+        return (float)amplitude / Constants.INTEGER_RANGE * (amplitude_max - amplitude_min) + amplitude_min;
+    }
+
+    public float Mapped_pan()
+    {
+        return (float)pan / Constants.INTEGER_RANGE * 2f - 1f;
     }
 
     public void Tick(float dt)
     {
-        _phase = (_phase + frequency * Bpm / 60f * Mathf.PI * 2f * dt) % (Mathf.PI * 2f);
+        _phase = (_phase + Mapped_frequency() * Bpm / 60f * Mathf.PI * 2f * dt) % (Mathf.PI * 2f);
         if (levelScope == null) return;
         EnsureInitialized();
         CullBehind();
@@ -74,7 +94,7 @@ public class WaveGenerator : MonoBehaviour
     private void EnsureInitialized()
     {
         if (_initialized) return;
-        _smAmp = amplitude; _smFreq = frequency; _smPan = pan;
+        _smAmp = Mapped_amplitude(); _smFreq = Mapped_frequency(); _smPan = Mapped_pan();
         _samples.Clear();
 
         float spacing = 1f / SampleDensity;
@@ -116,9 +136,9 @@ public class WaveGenerator : MonoBehaviour
         WaveSample last = _samples[_samples.Count - 1];
         while (last.virtualZ + spacing <= frontVZ + 1e-4f)
         {
-            _smAmp  += (amplitude - _smAmp)  * alpha;
-            _smFreq += (frequency - _smFreq) * alpha;
-            _smPan  += (pan       - _smPan)  * alpha;
+            _smAmp  += (Mapped_amplitude() - _smAmp)  * alpha;
+            _smFreq += (Mapped_frequency() - _smFreq) * alpha;
+            _smPan  += (Mapped_pan() - _smPan)  * alpha;
 
             float nextVZ = last.virtualZ + spacing;
             float y = _smAmp * Mathf.Sin(_phase);

@@ -4,18 +4,14 @@ using UnityEngine;
 public class WaveInputConfig : ScriptableObject
 {
     [Header("Frequency")]
-    [Min(0.01f)] public float freqMin = 0.1f;
-    public float freqMax       = 5f;
-    public float freqInitial   = 1f;
-    public float frequencyRate = 0.5f;
+    public int   freqInitial   = 500;
+    public float frequencyRate = 200f;
 
     [Header("Amplitude")]
-    public float ampMin        = 0f;
-    public float ampMax        = 5f;
-    public float ampInitial    = 1f;
-    public float amplitudeRate = 1f;
+    public int   ampInitial    = 500;
+    public float amplitudeRate = 200f;
 
     [Header("Pan")]
-    public float panInitial    = 0f;
-    public float panRate       = 2f;
+    public int   panInitial    = 500;
+    public float panRate       = 200f;
 }

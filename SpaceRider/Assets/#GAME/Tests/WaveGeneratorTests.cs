@@ -15,7 +15,7 @@ public class WaveGeneratorTests
         lc.levelLength = 1000f; lc.lookAhead = 30f; lc.decayLength = 5f; lc.playfieldRadius = 8f;
 
         var wc = ScriptableObject.CreateInstance<WaveGeneratorConfig>();
-        wc.sampleDensity = 4f; wc.paramSmoothingDistance = 2f; wc.panLateralScale = 0.2f; wc.bpm = 0f;
+        wc.sampleDensity = 4f; wc.paramSmoothingDistance = 2f; wc.panLateralScale = 0.2f; wc.bpm = 120f;
 
         _config = ScriptableObject.CreateInstance<GameConfig>();
         _config.level = lc; _config.waveGenerator = wc;
@@ -28,7 +28,7 @@ public class WaveGeneratorTests
         _gen = genGo.AddComponent<WaveGenerator>();
         _gen.SetLevelScope(_scope);
         _gen.SetConfig(_config);
-        _gen.Amplitude = 1f; _gen.Frequency = 1f; _gen.Pan = 0f;
+        _gen.Amplitude = 1; _gen.Frequency = 1; _gen.Pan = 0;
     }
 
     [TearDown]
@@ -64,9 +64,9 @@ public class WaveGeneratorTests
     [Test]
     public void Parameter_Change_Does_Not_Reshape_Already_Spawned_Samples()
     {
-        _gen.Amplitude = 1f;
+        _gen.Amplitude = 1;
         float yBefore = _gen.SampleAtLocalZ(10f).y;
-        _gen.Amplitude = 100f;
+        _gen.Amplitude = 100;
         _gen.Tick(0f);
         Assert.AreEqual(yBefore, _gen.SampleAtLocalZ(10f).y, 1e-4f);
     }
@@ -74,10 +74,10 @@ public class WaveGeneratorTests
     [Test]
     public void New_Amplitude_Only_Reaches_Samples_Spawned_After_Change()
     {
-        _gen.Amplitude = 1f;
-        _gen.Tick(0f);
+        _gen.Amplitude = 1;
+        _gen.Tick(1f);
         _scope.VirtualDistance = _config.level.lookAhead + _config.level.decayLength + 1f;
-        _gen.Amplitude = 10f;
+        _gen.Amplitude = 500;
         _gen.Tick(0f);
 
         float peak = 0f;
