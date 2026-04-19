@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d9a125d662f3794b96b83c920da93e7, type: 3}
-  m_Name: Level_Default
-  m_EditorClassIdentifier: SpaceRider.Game::LevelConfig
-  levelLength: 3000
-  lookAhead: 11.2
-  decayLength: 4.55
-  playfieldRadius: 80
+  m_Script: {fileID: 11500000, guid: d7e3a1f5c2b94087e6a50d3c8f1b2e94, type: 3}
+  m_Name: RibbonConfig_Default
+  m_EditorClassIdentifier: SpaceRider.Game::RibbonConfig
+  width: 4
+  segments: 256
+  ribbonOffset: {x: 0, y: -0.1, z: 0}
+  decayLength: 5

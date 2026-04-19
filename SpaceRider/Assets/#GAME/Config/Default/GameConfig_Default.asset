@@ -18,3 +18,5 @@ MonoBehaviour:
   progress: {fileID: 11400000, guid: 61426d858ac234c4eac358a57d811857, type: 2}
   camera: {fileID: 11400000, guid: 958741bdf999ff54fabc428d7394fe61, type: 2}
   surfer: {fileID: 11400000, guid: c1af397cf45e1c4469f9cca14b8702c7, type: 2}
+  ribbon: {fileID: 11400000, guid: daa8b18aa509b6042b488fa606c554cb, type: 2}
+  boundary: {fileID: 11400000, guid: 1350cb133c2a7904588599651585b699, type: 2}

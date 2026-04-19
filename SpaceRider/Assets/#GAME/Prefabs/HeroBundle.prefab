@@ -159,6 +159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1728220795535247670}
   - component: {fileID: 3193203010578136626}
+  - component: {fileID: 7840785188652752647}
   m_Layer: 0
   m_Name: HeroBundle
   m_TagString: Untagged
@@ -298,6 +299,25 @@ MonoBehaviour:
       m_Action: Amplitude
       m_Flags: 8
     m_Flags: 0
+--- !u!114 &7840785188652752647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6258477646084881745}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16539daaa0df713428ab2089cf0bc3c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::BoundaryMonitor
+  hero: {fileID: 4347488009876112394}
+  config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}
+  waveGenerator: {fileID: 1157119773178602790}
+  ribbonVisualizer: {fileID: 6728931831446754189}
+  boundaryVisual: {fileID: 0}
+  playerDeath: {fileID: 9042222393562637168}
+  levelScope: {fileID: 0}
 --- !u!1 &7579488140396715806
 GameObject:
   m_ObjectHideFlags: 0
@@ -1968,3 +1988,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5447885806404612269, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
   m_PrefabInstance: {fileID: 8633301569456845991}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9042222393562637168 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 771183517247608791, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
+  m_PrefabInstance: {fileID: 8633301569456845991}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2e4c7f1a9d3805e4c6b1f2a8e7d3c50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::PlayerDeath

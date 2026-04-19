@@ -10,12 +10,7 @@ public class CylinderBoundaryVisual : MonoBehaviour
     private MaterialPropertyBlock _mpb;
     private Mesh                  _mesh;
 
-    private static readonly int ProximityTId        = Shader.PropertyToID("_ProximityT");
-    private static readonly int GlowColorId         = Shader.PropertyToID("_GlowColor");
-    private static readonly int GridTilingId        = Shader.PropertyToID("_GridTiling");
-    private static readonly int GridLineWidthId     = Shader.PropertyToID("_GridLineWidth");
-    private static readonly int BaseAlphaId         = Shader.PropertyToID("_BaseAlpha");
-    private static readonly int ProximityMaxAlphaId = Shader.PropertyToID("_ProximityMaxAlpha");
+    private static readonly int ProximityTId = Shader.PropertyToID("_ProximityT");
 
     private void Awake()
     {
@@ -29,21 +24,16 @@ public class CylinderBoundaryVisual : MonoBehaviour
     public void SetProximityT(float t)
     {
         if (_renderer == null) return;
+        if (_mpb == null) _mpb = new MaterialPropertyBlock();
         _renderer.GetPropertyBlock(_mpb);
         _mpb.SetFloat(ProximityTId, Mathf.Clamp01(t));
-        if (config?.boundary != null)
-        {
-            _mpb.SetColor(GlowColorId,         config.boundary.glowColor);
-            _mpb.SetVector(GridTilingId,        new Vector4(config.boundary.gridTiling.x, config.boundary.gridTiling.y, 0f, 0f));
-            _mpb.SetFloat(GridLineWidthId,      config.boundary.gridLineWidth);
-            _mpb.SetFloat(BaseAlphaId,          config.boundary.baseAlpha);
-            _mpb.SetFloat(ProximityMaxAlphaId,  config.boundary.proximityMaxAlpha);
-        }
         _renderer.SetPropertyBlock(_mpb);
     }
 
     private void RebuildMesh()
     {
+        if (_filter == null)   _filter   = GetComponent<MeshFilter>();
+        if (_renderer == null) _renderer = GetComponent<MeshRenderer>();
         if (config?.level == null || config?.boundary == null) return;
 
         float radius = config.level.playfieldRadius;
@@ -100,6 +90,13 @@ public class CylinderBoundaryVisual : MonoBehaviour
         _mesh.RecalculateBounds();
         _mesh.RecalculateNormals();
         _filter.sharedMesh = _mesh;
+    }
+
+    public void BakeInEditor()
+    {
+        if (_filter == null)   _filter   = GetComponent<MeshFilter>();
+        if (_renderer == null) _renderer = GetComponent<MeshRenderer>();
+        RebuildMesh();
     }
 
 #if UNITY_EDITOR
