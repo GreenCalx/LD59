@@ -107,9 +107,35 @@ public class CylinderBoundaryVisual : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    private MaterialPropertyBlock _editorMpb;
+
     private void OnValidate() => UnityEditor.EditorApplication.delayCall += () =>
     {
         if (this != null) RebuildMesh();
     };
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying) return;
+        if (_mesh == null) return;
+
+        var mat = _renderer != null ? _renderer.sharedMaterial : null;
+        if (mat == null) return;
+
+        if (_editorMpb == null) _editorMpb = new MaterialPropertyBlock();
+        _editorMpb.SetFloat(ProximityTId,   0.5f);
+        _editorMpb.SetFloat(DrawRadiusId,   config?.boundary?.drawRadius ?? 20f);
+        _editorMpb.SetVector(HeroWorldPosId, transform.position);
+
+        Graphics.DrawMesh(
+            _mesh,
+            transform.localToWorldMatrix,
+            mat,
+            gameObject.layer,
+            Camera.current,
+            0,
+            _editorMpb
+        );
+    }
 #endif
 }

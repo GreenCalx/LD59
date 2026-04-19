@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteAlways]
 public class Asteroid : MonoBehaviour
 {
     [Header("Visuals")]
@@ -17,14 +18,13 @@ public class Asteroid : MonoBehaviour
     [Min(0.01f)] public float hitRadius = 0.5f;
 
     private FMODUnity.StudioEventEmitter soundFX;
-
     private Vector3 _spinAxis;
     private float   _spinSpeed;
 
     private void Start()
     {
+        if (!Application.isPlaying) return;
         if (prefabPool == null || prefabPool.Count == 0) return;
-
 
         float scale          = Random.Range(minScale, maxScale);
         transform.localScale = Vector3.one * scale;
@@ -51,44 +51,57 @@ public class Asteroid : MonoBehaviour
 
     private void Update()
     {
+        if (!Application.isPlaying) return;
         transform.Rotate(_spinAxis, _spinSpeed * Time.deltaTime, Space.Self);
     }
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
+    private GameObject _preview;
+    private const string PreviewName = "__AsteroidPreview__";
+
+    private void OnEnable()
+    {
+        if (!Application.isPlaying) RefreshPreview();
+    }
+
+    private void OnDisable()
+    {
+        DestroyPreview();
+    }
+
+    private void OnValidate()
+    {
+        if (!Application.isPlaying)
+            UnityEditor.EditorApplication.delayCall += () => { if (this) RefreshPreview(); };
+    }
+
+    private void RefreshPreview()
+    {
+        DestroyPreview();
+        if (prefabPool == null || prefabPool.Count == 0 || prefabPool[0] == null) return;
+
+        _preview = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefabPool[0], transform);
+        _preview.name      = PreviewName;
+        _preview.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
+
+        float mean = (minScale + maxScale) * 0.5f;
+        _preview.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        _preview.transform.localScale = Vector3.one * mean;
+    }
+
+    private void DestroyPreview()
+    {
+        if (_preview != null) DestroyImmediate(_preview);
+        var orphan = transform.Find(PreviewName);
+        if (orphan != null) DestroyImmediate(orphan.gameObject);
+        _preview = null;
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-
-        float meshR = GetPoolMeshRadius();
-        if (meshR > 0f)
-        {
-            Gizmos.color = new Color(1f, 0.6f, 0f, 0.25f);
-            Gizmos.DrawWireSphere(Vector3.zero, meshR * minScale);
-            Gizmos.color = new Color(1f, 0.6f, 0f, 0.8f);
-            Gizmos.DrawWireSphere(Vector3.zero, meshR * maxScale);
-        }
-
-        Gizmos.color = new Color(0f, 1f, 1f, 0.35f);
-        Gizmos.DrawWireSphere(Vector3.zero, hitRadius * minScale);
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(Vector3.zero, hitRadius * maxScale);
+        Gizmos.color  = new Color(0f, 1f, 1f, 0.4f);
+        Gizmos.DrawWireSphere(Vector3.zero, hitRadius * (minScale + maxScale) * 0.5f);
     }
-
-    private float GetPoolMeshRadius()
-    {
-        float max = 0f;
-        if (prefabPool == null) return max;
-        foreach (var prefab in prefabPool)
-        {
-            if (prefab == null) continue;
-            foreach (var mf in prefab.GetComponentsInChildren<MeshFilter>())
-            {
-                if (mf.sharedMesh == null) continue;
-                float r = mf.sharedMesh.bounds.extents.magnitude;
-                if (r > max) max = r;
-            }
-        }
-        return max;
-    }
-    #endif
+#endif
 }
