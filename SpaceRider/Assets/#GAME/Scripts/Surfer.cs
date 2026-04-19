@@ -10,13 +10,19 @@ public class Surfer : MonoBehaviour
     [SerializeField] private WaveGenerator   waveGenerator;
     [SerializeField] private GameConfig      config;
 
-    private Animator _animator;
-    private float    _smSlope;
-    private float    _smPan;
-    private float    _prevSmPan;
-    private float    _smPanVelocity;
+    private Animator    _animator;
+    private float       _smSlope;
+    private float       _smPan;
+    private float       _prevSmPan;
+    private float       _smPanVelocity;
+    private Vector3     _smPos;
+    private Vector3     _posVelocity;
+    private Quaternion  _smRot    = Quaternion.identity;
+    private float       _rotVelX, _rotVelY, _rotVelZ;
+    private bool        _smInited;
 
-    private void Awake() => _animator = GetComponentInChildren<Animator>();
+    private void Awake()   => _animator = GetComponentInChildren<Animator>();
+    private void OnEnable() { _smInited = false; _posVelocity = Vector3.zero; _rotVelX = _rotVelY = _rotVelZ = 0f; }
 
     private void Update()
     {
@@ -35,8 +41,15 @@ public class Surfer : MonoBehaviour
         Vector3 parentLocal = transform.parent != null
             ? transform.parent.InverseTransformPoint(worldPos) : worldPos;
         parentLocal.z = 0f;
-        transform.position = transform.parent != null
+        Vector3 targetPos = transform.parent != null
             ? transform.parent.TransformPoint(parentLocal) : parentLocal;
+
+        float posSmoothTime = config.surfer.positionSmoothTime;
+        if (!_smInited) { _smPos = targetPos; _smRot = transform.rotation; _posVelocity = Vector3.zero; _smInited = true; }
+        _smPos = posSmoothTime > 0f
+            ? Vector3.SmoothDamp(_smPos, targetPos, ref _posVelocity, posSmoothTime)
+            : targetPos;
+        transform.position = _smPos;
 
         if (!config.surfer.alignToTangent) return;
 
@@ -55,8 +68,24 @@ public class Surfer : MonoBehaviour
         float cosPitch = Mathf.Sqrt(Mathf.Max(0f, 1f - sinPitch * sinPitch));
         Quaternion yaw = Quaternion.LookRotation(flatFwd * cosPitch + Vector3.up * sinPitch, Vector3.up);
 
-        float pan      = waveGenerator != null ? waveGenerator.GetEffectivePanAtHero() : 0f;
-        transform.rotation = yaw * Quaternion.AngleAxis(-pan * maxTilt, Vector3.forward);
+        float pan         = waveGenerator != null ? waveGenerator.GetEffectivePanAtHero() : 0f;
+        Quaternion targetRot = yaw * Quaternion.AngleAxis(-pan * maxTilt, Vector3.forward);
+
+        float rotSmoothTime = config.surfer.rotationSmoothTime;
+        if (rotSmoothTime > 0f)
+        {
+            Vector3 ce = _smRot.eulerAngles;
+            Vector3 te = targetRot.eulerAngles;
+            float x = Mathf.SmoothDampAngle(ce.x, te.x, ref _rotVelX, rotSmoothTime);
+            float y = Mathf.SmoothDampAngle(ce.y, te.y, ref _rotVelY, rotSmoothTime);
+            float z = Mathf.SmoothDampAngle(ce.z, te.z, ref _rotVelZ, rotSmoothTime);
+            _smRot = Quaternion.Euler(x, y, z);
+        }
+        else
+        {
+            _smRot = targetRot;
+        }
+        transform.rotation = _smRot;
 
         DriveAnimator(pan);
     }
