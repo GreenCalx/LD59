@@ -11,6 +11,7 @@ public class ProgressDriver : MonoBehaviour
     [SerializeField] private GameConfig    config;
 
     private bool  _finished;
+    private bool  _stopped;
     private float _currentSpeed;
     private float _lastDerivative;
     private float _lastSlopeAccel;
@@ -32,6 +33,12 @@ public class ProgressDriver : MonoBehaviour
     public void Setup(LevelScope scope, WaveGenerator gen) { levelScope = scope; waveGenerator = gen; }
     public void SetConfig(GameConfig c) { config = c; }
 
+    public void Stop()
+    {
+        _stopped = true;
+        if (levelScope != null) levelScope.ScrollSpeed = 0f;
+    }
+
     private void Update()
     {
         if (!Application.isPlaying) return;
@@ -41,6 +48,7 @@ public class ProgressDriver : MonoBehaviour
     public void Tick(float dt)
     {
         if (levelScope == null || waveGenerator == null) return;
+        if (_stopped)  { levelScope.ScrollSpeed = 0f; return; }
         if (_finished) { levelScope.ScrollSpeed = 0f; return; }
 
         if (_currentSpeed == 0f) _currentSpeed = BaseScrollSpeed;

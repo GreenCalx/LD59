@@ -36,6 +36,7 @@ public class Asteroid : MonoBehaviour
         var sc      = gameObject.AddComponent<SphereCollider>();
         sc.radius    = hitRadius;
         sc.isTrigger = true;
+        GetComponent<HeroDamagerRoot>()?.Refresh();
 
         _spinAxis  = Random.onUnitSphere;
         _spinSpeed = Random.Range(minSpinSpeed, maxSpinSpeed)

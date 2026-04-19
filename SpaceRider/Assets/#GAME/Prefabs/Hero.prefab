@@ -222,6 +222,12 @@ MonoBehaviour:
   deathOverlay: {fileID: 0}
   fadeDuration: 0.4
   holdDuration: 2
+  waveGenerator: {fileID: 0}
+  surfer: {fileID: 0}
+  explosionTargets: []
+  explosionForce: 600
+  explosionRadius: 6
+  explosionUpward: 1.5
 --- !u!136 &582612625551594166
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -237,7 +243,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -312,6 +318,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6ae0bf1dd3dee8746adb834444c477e1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8619118585739329714}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6ae0bf1dd3dee8746adb834444c477e1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1508530811388671139}
   m_SourcePrefab: {fileID: 100100000, guid: 6ae0bf1dd3dee8746adb834444c477e1, type: 3}
 --- !u!1 &2662933543971154997 stripped
 GameObject:
@@ -340,6 +349,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1508530811388671139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2662933543971154997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e88ae4139bef748865bd32ab619fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::NeverCull
 --- !u!4 &3440595494717306511 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6ae0bf1dd3dee8746adb834444c477e1, type: 3}
@@ -408,10 +429,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9349e8b8c831e5940ab8c4267d024c86, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8632668924192318355}
   m_SourcePrefab: {fileID: 100100000, guid: 9349e8b8c831e5940ab8c4267d024c86, type: 3}
 --- !u!4 &7290735040690181005 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9349e8b8c831e5940ab8c4267d024c86, type: 3}
   m_PrefabInstance: {fileID: 7108753449703552102}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7955103278346570039 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9349e8b8c831e5940ab8c4267d024c86, type: 3}
+  m_PrefabInstance: {fileID: 7108753449703552102}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8632668924192318355
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7955103278346570039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e88ae4139bef748865bd32ab619fb7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::NeverCull

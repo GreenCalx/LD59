@@ -29,8 +29,27 @@ public class RibbonVisualizer : MonoBehaviour
     private MeshFilter _meshFilter;
     private MeshRenderer _meshRenderer;
     private float _boundaryScale = 1f;
+    private float _fadeAlpha     = 1f;
 
     public void SetBoundaryScale(float s) => _boundaryScale = Mathf.Clamp01(s);
+
+    public void FadeOut(float duration)
+    {
+        if (Application.isPlaying)
+            StartCoroutine(FadeOutCoroutine(duration));
+    }
+
+    private System.Collections.IEnumerator FadeOutCoroutine(float duration)
+    {
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed    += Time.unscaledDeltaTime;
+            _fadeAlpha  = 1f - Mathf.Clamp01(elapsed / duration);
+            yield return null;
+        }
+        _fadeAlpha = 0f;
+    }
 
     private void OnEnable()
     {
@@ -141,7 +160,7 @@ public class RibbonVisualizer : MonoBehaviour
             if (hasSurfer && t < tHero && tHero > tMin)
                 alpha = (t - tMin) / (tHero - tMin);
 
-            Color col = new Color(1f, 1f, 1f, alpha);
+            Color col = new Color(1f, 1f, 1f, alpha * _fadeAlpha);
 
             // Front face
             int fi = i * 2;
