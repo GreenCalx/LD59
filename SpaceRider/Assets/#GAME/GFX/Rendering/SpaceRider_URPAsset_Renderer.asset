@@ -24,7 +24,8 @@ MonoBehaviour:
     probeSamplingDebugMesh: {fileID: 0}
     probeSamplingDebugTexture: {fileID: 0}
     probeVolumeBlendStatesCS: {fileID: 0}
-  m_RendererFeatures: []
+  m_RendererFeatures:
+  - {fileID: 1617727147575589290}
   m_RendererFeatureMap: 
   m_UseNativeRenderPass: 0
   xrSystemData: {fileID: 0}
@@ -54,3 +55,23 @@ MonoBehaviour:
   m_DepthTextureFormat: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
+--- !u!114 &1617727147575589290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3c7e2f1d84b5e6c9a0b1234567890ab, type: 3}
+  m_Name: BandpassRetroFeature
+  m_EditorClassIdentifier: Assembly-CSharp::BandpassRetroFeature
+  m_Active: 1
+  settings:
+    material: {fileID: 2100000, guid: c3e5a7b9d1f234567890abcdef012345, type: 2}
+    bandCount: 8
+    scanlineStrength: 0.3
+    scanlineFrequency: 200
+    vignetteStrength: 0.5
+    chromaShift: 0
