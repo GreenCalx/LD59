@@ -50,10 +50,6 @@ MonoBehaviour:
   pan: 0
   levelScope: {fileID: 0}
   config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}
-  amplitude_min: 0.1
-  amplitude_max: 10
-  frequency_min: 0.1
-  frequency_max: 1
   bgm_emitter: {fileID: 0}
 --- !u!1 &1774566688091040424
 GameObject:

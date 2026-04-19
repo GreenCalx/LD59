@@ -13,6 +13,8 @@ public class Surfer : MonoBehaviour
     private Animator _animator;
     private float    _smSlope;
     private float    _smPan;
+    private float    _prevSmPan;
+    private float    _smPanVelocity;
 
     private void Awake() => _animator = GetComponentInChildren<Animator>();
 
@@ -64,18 +66,23 @@ public class Surfer : MonoBehaviour
         if (_animator == null || waveGenerator == null || config?.surfer == null) return;
         if (!Application.isPlaying) return;
 
-        float scale      = config.surfer.slopeAnimScale;
-        float smoothTime = config.surfer.animSmoothTime;
-        float lerpT      = smoothTime > 0f ? Time.deltaTime / smoothTime : 1f;
+        float scale          = config.surfer.slopeAnimScale;
+        float smoothTime     = config.surfer.animSmoothTime;
+        float lerpT          = smoothTime > 0f ? Time.deltaTime / smoothTime : 1f;
 
         float targetSlope = Mathf.Clamp(waveGenerator.SampleDerivativeAtHero() / scale, -1f, 1f);
-        float targetPan   = effectivePan;
-
         _smSlope = Mathf.Lerp(_smSlope, targetSlope, lerpT);
-        _smPan   = Mathf.Lerp(_smPan,   targetPan,   lerpT);
+
+        // Smooth the raw pan signal first, then derive velocity from that
+        _smPan = Mathf.Lerp(_smPan, effectivePan, lerpT);
+        float rawVelocity = Time.deltaTime > 0f ? (_smPan - _prevSmPan) / Time.deltaTime : 0f;
+        _prevSmPan = _smPan;
+
+        float targetPanVelocity = Mathf.Clamp(rawVelocity * config.surfer.panCurvatureScale, -1f, 1f);
+        _smPanVelocity = Mathf.Lerp(_smPanVelocity, targetPanVelocity, lerpT);
 
         _animator.SetFloat("Slope", _smSlope);
-        _animator.SetFloat("Pan",   _smPan);
+        _animator.SetFloat("Pan",   _smPanVelocity);
     }
 
     private void OnDrawGizmos()
