@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: SpaceRider.Game::WaveGeneratorConfig
   sampleDensity: 4
   paramSmoothingDistance: 2
-  panLateralScale: 0.2
+  panLateralScale: 0.7
   bpm: 120
-  amplitudeMin: 0.1
-  amplitudeMax: 10
-  frequencyMin: 0.1
-  frequencyMax: 1
-  maxTiltDegrees: 45
+  amplitudeMin: 3
+  amplitudeMax: 8
+  frequencyMin: 0.15
+  frequencyMax: 0.3
+  maxTiltDegrees: 70

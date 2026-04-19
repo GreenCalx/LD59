@@ -16,3 +16,4 @@ MonoBehaviour:
   signalGain: 0.05
   minSpeedMultiplier: 0.5
   maxSpeedMultiplier: 2
+  dragRate: 1
