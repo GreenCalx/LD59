@@ -6,7 +6,7 @@ public class HoopDetector : MonoBehaviour
 
     private bool _consumed;
 
-    void OnTriggerEnter(Collider iCollider)
+    void OnTriggerStay(Collider iCollider)
     {
         if (_consumed) return;
         Debug.Log("hoop traversed : " + gameObject.name);
@@ -17,11 +17,5 @@ public class HoopDetector : MonoBehaviour
         HoopTracker.Instance?.RegisterPass();
 
         Debug.Log("hoop RegisterPass invoked : " + gameObject.name);
-    }
-
-    void OnDrawGizmos()
-    {
-        Gizmos.color = _consumed ? Color.gray : Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, innerRadius);
     }
 }

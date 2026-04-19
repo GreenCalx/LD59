@@ -77,7 +77,8 @@ public class HoopCurvePath : MonoBehaviour
                 ? Quaternion.LookRotation(worldTangent.normalized, worldUp.normalized)
                 : Quaternion.identity;
 
-            Instantiate(hoopPrefab, worldPos, rot, transform);
+            GameObject newHoop = Instantiate(hoopPrefab, worldPos, rot, transform);
+            newHoop.layer = gameObject.layer;
             placed++;
         }
     }
