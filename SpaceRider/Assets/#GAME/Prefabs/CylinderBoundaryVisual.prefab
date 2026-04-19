@@ -104,3 +104,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::CylinderBoundaryVisual
   config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}
+  hero: {fileID: 0}

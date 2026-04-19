@@ -4,13 +4,16 @@ using UnityEngine;
 public class CylinderBoundaryVisual : MonoBehaviour
 {
     [SerializeField] private GameConfig config;
+    [SerializeField] private Transform  hero;
 
     private MeshFilter            _filter;
     private MeshRenderer          _renderer;
     private MaterialPropertyBlock _mpb;
     private Mesh                  _mesh;
 
-    private static readonly int ProximityTId = Shader.PropertyToID("_ProximityT");
+    private static readonly int ProximityTId   = Shader.PropertyToID("_ProximityT");
+    private static readonly int HeroWorldPosId = Shader.PropertyToID("_HeroWorldPos");
+    private static readonly int DrawRadiusId   = Shader.PropertyToID("_DrawRadius");
 
     private void Awake()
     {
@@ -27,6 +30,10 @@ public class CylinderBoundaryVisual : MonoBehaviour
         if (_mpb == null) _mpb = new MaterialPropertyBlock();
         _renderer.GetPropertyBlock(_mpb);
         _mpb.SetFloat(ProximityTId, Mathf.Clamp01(t));
+        if (hero != null)
+            _mpb.SetVector(HeroWorldPosId, hero.position);
+        if (config?.boundary != null)
+            _mpb.SetFloat(DrawRadiusId, config.boundary.drawRadius);
         _renderer.SetPropertyBlock(_mpb);
     }
 

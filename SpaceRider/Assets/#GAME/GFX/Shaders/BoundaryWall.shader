@@ -8,6 +8,8 @@ Shader "MAUVE/BoundaryWall"
         _GridLineWidth      ("Grid Line Width",       Range(0,0.5)) = 0.05
         _BaseAlpha          ("Base Alpha",            Range(0,1))   = 0.05
         _ProximityMaxAlpha  ("Proximity Max Alpha",   Range(0,1))   = 0.6
+        _HeroWorldPos       ("Hero World Pos",        Vector)       = (0, 0, 0, 0)
+        _DrawRadius         ("Draw Radius",           Float)        = 15
     }
 
     SubShader
@@ -39,6 +41,8 @@ Shader "MAUVE/BoundaryWall"
                 float  _GridLineWidth;
                 float  _BaseAlpha;
                 float  _ProximityMaxAlpha;
+                float4 _HeroWorldPos;
+                float  _DrawRadius;
             CBUFFER_END
 
             struct Attributes
@@ -51,18 +55,25 @@ Shader "MAUVE/BoundaryWall"
             {
                 float4 positionHCS : SV_POSITION;
                 float2 uv          : TEXCOORD0;
+                float3 worldPos    : TEXCOORD1;
             };
 
             Varyings Vert(Attributes IN)
             {
                 Varyings OUT;
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+                OUT.worldPos    = TransformObjectToWorld(IN.positionOS.xyz);
                 OUT.uv          = IN.uv;
                 return OUT;
             }
 
             half4 Frag(Varyings IN) : SV_Target
             {
+                // Sphere draw-in mask around hero
+                float dist       = distance(IN.worldPos, _HeroWorldPos.xyz);
+                float sphereMask = 1.0 - smoothstep(_DrawRadius * 0.75, _DrawRadius, dist);
+                if (sphereMask <= 0.0) discard;
+
                 float2 tiledUV = IN.uv * _GridTiling.xy;
 
                 // Grid: 1 on line, 0 inside cell
@@ -74,6 +85,8 @@ Shader "MAUVE/BoundaryWall"
 
                 // Extra pulse glow at high proximity
                 alpha += _ProximityT * _ProximityT * 0.15 * lineMask;
+
+                alpha *= sphereMask;
 
                 half3 col = _GlowColor.rgb * alpha;
                 return half4(col, 1.0);

@@ -16,8 +16,4 @@ MonoBehaviour:
   fmodParameterName: BoundaryProximity
   cylinderSegmentsAround: 64
   cylinderSegmentsAlong: 32
-  gridTiling: {x: 8, y: 20}
-  gridLineWidth: 0.05
-  baseAlpha: 0.05
-  proximityMaxAlpha: 0.6
-  glowColor: {r: 0, g: 0.8, b: 1, a: 1}
+  drawRadius: 50
