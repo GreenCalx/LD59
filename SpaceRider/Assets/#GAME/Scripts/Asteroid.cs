@@ -53,4 +53,42 @@ public class Asteroid : MonoBehaviour
     {
         transform.Rotate(_spinAxis, _spinSpeed * Time.deltaTime, Space.Self);
     }
+
+    #if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+
+        float meshR = GetPoolMeshRadius();
+        if (meshR > 0f)
+        {
+            Gizmos.color = new Color(1f, 0.6f, 0f, 0.25f);
+            Gizmos.DrawWireSphere(Vector3.zero, meshR * minScale);
+            Gizmos.color = new Color(1f, 0.6f, 0f, 0.8f);
+            Gizmos.DrawWireSphere(Vector3.zero, meshR * maxScale);
+        }
+
+        Gizmos.color = new Color(0f, 1f, 1f, 0.35f);
+        Gizmos.DrawWireSphere(Vector3.zero, hitRadius * minScale);
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(Vector3.zero, hitRadius * maxScale);
+    }
+
+    private float GetPoolMeshRadius()
+    {
+        float max = 0f;
+        if (prefabPool == null) return max;
+        foreach (var prefab in prefabPool)
+        {
+            if (prefab == null) continue;
+            foreach (var mf in prefab.GetComponentsInChildren<MeshFilter>())
+            {
+                if (mf.sharedMesh == null) continue;
+                float r = mf.sharedMesh.bounds.extents.magnitude;
+                if (r > max) max = r;
+            }
+        }
+        return max;
+    }
+    #endif
 }
