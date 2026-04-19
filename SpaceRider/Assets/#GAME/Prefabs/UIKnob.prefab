@@ -215,10 +215,10 @@ MonoBehaviour:
   parameter: 0
   knobImage: {fileID: 1781693473264392295}
   knobGauge: {fileID: 3205506992485173880}
-  minAngle: -135
-  maxAngle: 135
-  gaugeArcStart: -135
-  gaugeArcSpan: 270
+  minAngle: -90
+  maxAngle: 90
+  gaugeArcStart: -35
+  gaugeArcSpan: 190
   gaugeCenter: {x: 0.5, y: 0.5}
   gaugeColorMin: {r: 0, g: 1, b: 0, a: 1}
   gaugeColorMax: {r: 1, g: 0, b: 0, a: 1}
