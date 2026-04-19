@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIKnob : MonoBehaviour
 {
@@ -6,6 +7,7 @@ public class UIKnob : MonoBehaviour
 
     [SerializeField] private WaveParam     parameter;
     [SerializeField] private RectTransform knobImage;
+    [SerializeField] private Image         knobGauge;
     [SerializeField] private float         minAngle = -135f;
     [SerializeField] private float         maxAngle =  135f;
 
@@ -15,6 +17,8 @@ public class UIKnob : MonoBehaviour
     {
         if (knobImage == null)
             knobImage = transform.Find("knobImage")?.GetComponent<RectTransform>();
+        if (knobGauge == null)
+            knobGauge = transform.Find("knobGauge")?.GetComponent<Image>();
     }
 
     private void LateUpdate()
@@ -34,7 +38,11 @@ public class UIKnob : MonoBehaviour
             _                   => 0,
         };
 
-        float angle = Mathf.Lerp(minAngle, maxAngle, value / (float)Constants.INTEGER_RANGE);
+        float t = value / (float)Constants.INTEGER_RANGE;
+        float angle = Mathf.Lerp(minAngle, maxAngle, t);
         knobImage.localEulerAngles = new Vector3(0f, 0f, angle);
+
+        if (knobGauge != null)
+            knobGauge.fillAmount = t;
     }
 }
