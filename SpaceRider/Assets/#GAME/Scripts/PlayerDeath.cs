@@ -17,6 +17,9 @@ public class PlayerDeath : MonoBehaviour
     [SerializeField] private RibbonVisualizer ribbonVisualizer;
     [SerializeField] private float            ribbonFadeDuration = 1f;
 
+    [Header("Death Impact")]
+    [SerializeField] private float propelForce = 12f;
+
     [Header("Death Explosion")]
     [SerializeField] private Transform[] explosionTargets;
     [SerializeField] private float       explosionForce        = 1200f;
@@ -26,12 +29,12 @@ public class PlayerDeath : MonoBehaviour
 
     private bool     _dead;
     private Animator _animator;
+    private Vector3  _impactNormal = Vector3.back;
 
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
 
-        // Auto-resolve refs from the HeroBundle root so no manual cross-prefab wiring is needed
         Transform root = transform.root;
         if (progressDriver   == null) progressDriver   = root.GetComponentInChildren<ProgressDriver>();
         if (waveGenerator    == null) waveGenerator    = root.GetComponentInChildren<WaveGenerator>();
@@ -59,8 +62,16 @@ public class PlayerDeath : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (_dead) return;
-        if (other.GetComponentInParent<HeroDamager>() != null)
-            Die();
+        if (other.GetComponentInParent<HeroDamager>() == null) return;
+
+        // Approximate surface normal: from closest surface point toward hero center
+        Vector3 closest = other.ClosestPoint(transform.position);
+        Vector3 dir     = transform.position - closest;
+        _impactNormal   = dir.sqrMagnitude > 1e-4f
+            ? dir.normalized
+            : (transform.position - other.transform.position).normalized;
+
+        Die();
     }
 
     public void Die()
@@ -73,7 +84,11 @@ public class PlayerDeath : MonoBehaviour
         if (progressDriver   != null) progressDriver.Stop();
         if (ribbonVisualizer != null) ribbonVisualizer.FadeOut(ribbonFadeDuration);
 
-        Explode(transform.position);
+        // Release the hero into free physics and bounce it off the surface
+        var rb         = GetComponent<Rigidbody>();
+        rb.isKinematic = false;
+        rb.useGravity  = false;
+        rb.AddForce(_impactNormal * propelForce, ForceMode.VelocityChange);
 
         if (_animator != null)
         {
@@ -86,6 +101,10 @@ public class PlayerDeath : MonoBehaviour
 
     private IEnumerator DeathSequence()
     {
+        // Let hero travel one physics step along the impact normal before blowing apart
+        yield return new WaitForFixedUpdate();
+        Explode(transform.position);
+
         yield return new WaitForSecondsRealtime(GetDeathAnimLength());
 
         if (deathOverlay != null)
@@ -93,7 +112,6 @@ public class PlayerDeath : MonoBehaviour
             deathOverlay.gameObject.SetActive(true);
             deathOverlay.alpha = 0f;
             float elapsed = 0f;
-            // Use WaitForSecondsRealtime steps so timeScale=0 never stalls the fade
             while (elapsed < fadeDuration)
             {
                 yield return new WaitForSecondsRealtime(0.016f);
@@ -114,16 +132,11 @@ public class PlayerDeath : MonoBehaviour
         foreach (var t in explosionTargets)
         {
             if (t == null) continue;
-
-            // Fully detach from hierarchy so nothing can drive this transform anymore
             t.SetParent(null, worldPositionStays: true);
-
-            // Destroy any MonoBehaviours that could override the transform (BoomerBeat, etc.)
-            // Scene is reloaded on death so this is safe to be destructive
             foreach (var mb in t.GetComponents<MonoBehaviour>())
                 Destroy(mb);
-
             var rb = t.gameObject.AddComponent<Rigidbody>();
+            rb.useGravity = false;
             rb.AddExplosionForce(explosionForce, center, explosionRadius, explosionUpward, ForceMode.Impulse);
             rb.AddTorque(Random.insideUnitSphere * explosionAngularForce, ForceMode.Impulse);
         }
@@ -135,6 +148,6 @@ public class PlayerDeath : MonoBehaviour
             foreach (var clip in _animator.runtimeAnimatorController.animationClips)
                 if (clip.name == "Armature|Death")
                     return clip.length;
-        return 2.46f; // fallback keeps timing consistent even without an animator
+        return 2.46f;
     }
 }
