@@ -53,6 +53,13 @@ public class WaveInputController : MonoBehaviour
             waveGenerator.Pan = Mathf.Clamp(
                 Mathf.RoundToInt(waveGenerator.Pan + p * wi.panRate * dt),
                 0, Constants.INTEGER_RANGE);
+        else if (waveGenerator.Pan != wi.panInitial)
+        {
+            int step = Mathf.Max(1, Mathf.RoundToInt(wi.panRate * dt));
+            waveGenerator.Pan = waveGenerator.Pan > wi.panInitial
+                ? Mathf.Max(wi.panInitial, waveGenerator.Pan - step)
+                : Mathf.Min(wi.panInitial, waveGenerator.Pan + step);
+        }
 
         float a = amplitudeAxis.ReadValue<float>();
         if (a != 0f)

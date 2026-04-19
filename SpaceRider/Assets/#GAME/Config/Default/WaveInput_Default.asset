@@ -17,4 +17,4 @@ MonoBehaviour:
   ampInitial: 500
   amplitudeRate: 200
   panInitial: 500
-  panRate: 200
+  panRate: 50
