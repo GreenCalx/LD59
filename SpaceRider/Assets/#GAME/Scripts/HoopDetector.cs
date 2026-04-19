@@ -9,11 +9,14 @@ public class HoopDetector : MonoBehaviour
     void OnTriggerEnter(Collider iCollider)
     {
         if (_consumed) return;
-        if (iCollider.GetComponent<HoopCollector>() == null) return;
+        Debug.Log("hoop traversed : " + gameObject.name);
+        if (iCollider.GetComponentInParent<Surfer>() == null) return;
 
         _consumed = true;
         enabled   = false;
         HoopTracker.Instance?.RegisterPass();
+
+        Debug.Log("hoop RegisterPass invoked : " + gameObject.name);
     }
 
     void OnDrawGizmos()
