@@ -3,8 +3,20 @@ using UnityEngine.SceneManagement;
 
 public class TitleScreen : MonoBehaviour
 {
-    public void Start()
+    [SerializeField] private string mainSceneName = "main";
+
+    private bool _loading;
+
+    private void Update()
     {
-        SceneManager.LoadScene("main");
+        if (_loading) return;
+        if (Input.anyKeyDown)
+            Load();
+    }
+
+    private void Load()
+    {
+        _loading = true;
+        SceneManager.LoadScene(mainSceneName);
     }
 }
