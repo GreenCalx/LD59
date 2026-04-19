@@ -20,4 +20,4 @@ MonoBehaviour:
   amplitudeMax: 8
   frequencyMin: 0.15
   frequencyMax: 0.3
-  maxTiltDegrees: 70
+  maxTiltDegrees: 50

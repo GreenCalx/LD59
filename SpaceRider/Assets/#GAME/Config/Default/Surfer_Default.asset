@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: SpaceRider.Game::SurferConfig
   maxTiltDegrees: 45
   alignToTangent: 1
+  positionSmoothTime: 0.15
+  rotationSmoothTime: 0.15
   slopeAnimScale: 1
   animSmoothTime: 0.15
   panCurvatureScale: 12.94
