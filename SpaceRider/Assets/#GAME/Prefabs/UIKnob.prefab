@@ -217,7 +217,7 @@ MonoBehaviour:
   knobGauge: {fileID: 3205506992485173880}
   minAngle: -90
   maxAngle: 90
-  gaugeArcStart: -35
+  gaugeArcStart: -37
   gaugeArcSpan: 190
   gaugeCenter: {x: 0.5, y: 0.5}
   gaugeColorMin: {r: 0, g: 1, b: 0, a: 1}
