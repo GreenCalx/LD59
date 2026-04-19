@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2531072149608462453}
+  - component: {fileID: 9145517971419452657}
   m_Layer: 0
   m_Name: Hoops
   m_TagString: Untagged
@@ -32,6 +33,20 @@ Transform:
   - {fileID: 8702422887690803153}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9145517971419452657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5700732256795328846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ea48c8f47485643b8be45725c476b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::HoopDetector
+  innerRadius: 5
+  passCheckOffset: 1
 --- !u!1001 &9173708192729231418
 PrefabInstance:
   m_ObjectHideFlags: 0
