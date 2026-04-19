@@ -19,6 +19,10 @@ public class WaveInputController : MonoBehaviour
         EnsureDefaultBinding(panAxis,       "<Keyboard>/a", "<Keyboard>/d");
         EnsureDefaultBinding(amplitudeAxis, "<Keyboard>/e", "<Keyboard>/q");
 
+        EnsureGamepadBinding(panAxis,       "<Gamepad>/leftStick/x");
+        EnsureGamepadBinding(amplitudeAxis, "<Gamepad>/leftStick/y");
+        EnsureGamepadBinding(frequencyAxis, "<Gamepad>/rightStick/y");
+
         if (waveGenerator != null && config?.waveInput != null)
         {
             waveGenerator.Frequency = config.waveInput.freqInitial;
@@ -31,6 +35,13 @@ public class WaveInputController : MonoBehaviour
     {
         if (action.bindings.Count > 0) return;
         action.AddCompositeBinding("1DAxis").With("Negative", negative).With("Positive", positive);
+    }
+
+    private static void EnsureGamepadBinding(InputAction action, string gamepadPath)
+    {
+        foreach (var b in action.bindings)
+            if (b.path == gamepadPath) return;
+        action.AddBinding(gamepadPath);
     }
 
     private void OnEnable()  { frequencyAxis.Enable();  panAxis.Enable();  amplitudeAxis.Enable(); }
