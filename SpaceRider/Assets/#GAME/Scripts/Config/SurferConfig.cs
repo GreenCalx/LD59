@@ -14,4 +14,8 @@ public class SurferConfig : ScriptableObject
     [Min(0.01f)] public float slopeAnimScale    = 1f;
     [Min(0.01f)] public float animSmoothTime    = 0.15f;
     [Min(0.01f)] public float panCurvatureScale = 3f;
+
+    [Header("Trails")]
+    [Tooltip("Trails play when speed exceeds baseScrollSpeed * this multiplier.")]
+    [Min(0f)] public float trailSpeedThreshold = 1.2f;
 }

@@ -5,8 +5,9 @@ public class GameServices : MonoBehaviour
     public static GameServices Instance { get; private set; }
 
     [Header("Scene Services")]
-    [SerializeField] public WaveGenerator waveGenerator;
-    [SerializeField] public LevelScope    levelScope;
+    [SerializeField] public WaveGenerator  waveGenerator;
+    [SerializeField] public LevelScope     levelScope;
+    [SerializeField] public ProgressDriver progressDriver;
 
     private void Awake()
     {

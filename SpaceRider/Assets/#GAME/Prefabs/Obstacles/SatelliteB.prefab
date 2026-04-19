@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1208386988109959046}
   - component: {fileID: 6446717136564760290}
   - component: {fileID: 3459947833642839900}
+  - component: {fileID: 4528575576532560306}
   m_Layer: 0
   m_Name: SatelliteB
   m_TagString: Untagged
@@ -77,6 +78,19 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 1000
+--- !u!114 &4528575576532560306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8722816529485673543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8c102b757c10d74fb7cfe0dc6b79937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::SpaceyRotator
+  angularVelocity: {x: 0, y: 5, z: 0}
 --- !u!1001 &4432167353088138681
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -85,6 +99,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1208386988109959046}
     m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -124,6 +150,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'

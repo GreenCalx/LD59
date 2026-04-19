@@ -23,13 +23,11 @@ public class Surfer : MonoBehaviour
     private Quaternion      _smRot    = Quaternion.identity;
     private float           _rotVelX, _rotVelY, _rotVelZ;
     private bool            _smInited;
-    private float           _prevSpeed;
-    private float           _smAccel;
 
     private void Awake()
     {
         _animator       = GetComponentInChildren<Animator>();
-        _progressDriver = transform.root.GetComponentInChildren<ProgressDriver>();
+        _progressDriver = GameServices.Instance?.progressDriver;
     }
     private void OnEnable() { _smInited = false; _posVelocity = Vector3.zero; _rotVelX = _rotVelY = _rotVelZ = 0f; }
 
@@ -105,17 +103,15 @@ public class Surfer : MonoBehaviour
     {
         if (!Application.isPlaying || trails == null || trails.Count == 0 || _progressDriver == null) return;
 
-        float speed    = _progressDriver.CurrentSpeed;
-        float rawAccel = Time.deltaTime > 0f ? (speed - _prevSpeed) / Time.deltaTime : 0f;
-        _prevSpeed     = speed;
-        _smAccel       = Mathf.Lerp(_smAccel, rawAccel, Time.deltaTime * 5f);
-
-        bool gaining = _smAccel > 0f;
+        float speed     = _progressDriver.CurrentSpeed;
+        float baseSpeed = config?.progress?.baseScrollSpeed ?? 10f;
+        float threshold = config?.surfer?.trailSpeedThreshold ?? 1.2f;
+        bool  fast      = speed > baseSpeed * threshold;
         foreach (var trail in trails)
         {
             if (trail == null) continue;
-            if (gaining  && !trail.isPlaying) trail.Play();
-            if (!gaining &&  trail.isPlaying) trail.Stop();
+            if (fast  && !trail.isPlaying) trail.Play();
+            if (!fast &&  trail.isPlaying) trail.Stop();
         }
     }
 
