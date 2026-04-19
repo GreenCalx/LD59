@@ -28,6 +28,9 @@ public class RibbonVisualizer : MonoBehaviour
     private Mesh _mesh;
     private MeshFilter _meshFilter;
     private MeshRenderer _meshRenderer;
+    private float _boundaryScale = 1f;
+
+    public void SetBoundaryScale(float s) => _boundaryScale = Mathf.Clamp01(s);
 
     private void OnEnable()
     {
@@ -63,7 +66,7 @@ public class RibbonVisualizer : MonoBehaviour
     private void RebuildMesh(Spline spline)
     {
         int N       = Segments;
-        float halfW = Width * 0.5f;
+        float halfW = Width * 0.5f * _boundaryScale;
 
         // --- Determine visible t-range [tMin .. tMax] ---
         // Ribbon runs: waveSource ---(opaque)--- surfer ---(fade)--- surfer+decay

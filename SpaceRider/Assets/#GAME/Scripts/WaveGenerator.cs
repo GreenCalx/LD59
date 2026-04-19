@@ -39,6 +39,10 @@ public class WaveGenerator : MonoBehaviour
     public void SetLevelScope(LevelScope scope) { levelScope = scope; _initialized = false; }
     public void SetConfig(GameConfig c)         { config = c;         _initialized = false; }
     public FMODUnity.StudioEventEmitter bgm_emitter;
+    private float _boundaryProximity;
+
+    public void  SetBoundaryProximity(float t) => _boundaryProximity = Mathf.Clamp01(t);
+    public float GetBoundaryProximity()        => _boundaryProximity;
 
     private void OnDisable() => _initialized = false;
 
@@ -53,9 +57,10 @@ public class WaveGenerator : MonoBehaviour
         float bgm_amplitude = (float)amplitude / Constants.INTEGER_RANGE;
         if (bgm_emitter != null)
         {
-            bgm_emitter.SetParameter("Pan", bgm_pan);
+            bgm_emitter.SetParameter("Pan",       bgm_pan);
             bgm_emitter.SetParameter("Frequency", bgm_frequency);
             bgm_emitter.SetParameter("Amplitude", bgm_amplitude);
+            bgm_emitter.SetParameter(config?.boundary?.fmodParameterName ?? "BoundaryProximity", _boundaryProximity);
         }
     }
 

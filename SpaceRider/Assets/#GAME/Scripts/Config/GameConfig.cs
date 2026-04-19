@@ -10,4 +10,5 @@ public class GameConfig : ScriptableObject
     public CameraConfig        camera;
     public SurferConfig        surfer;
     public RibbonConfig        ribbon;
+    public BoundaryConfig      boundary;
 }
