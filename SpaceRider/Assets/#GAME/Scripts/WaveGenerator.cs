@@ -22,6 +22,7 @@ public class WaveGenerator : MonoBehaviour
     private float _phase;
     private float _smAmp, _smFreq, _smPan;
     private bool  _initialized;
+    private bool  _stopped;
 
     public int Amplitude { get => amplitude; set => amplitude = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
     public int Frequency { get => frequency; set => frequency = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
@@ -45,7 +46,9 @@ public class WaveGenerator : MonoBehaviour
     public void  SetBoundaryProximity(float t) => _boundaryProximity = Mathf.Clamp01(t);
     public float GetBoundaryProximity()        => _boundaryProximity;
 
-    private void OnDisable() => _initialized = false;
+    public void Stop() => _stopped = true;
+
+    private void OnDisable() { _initialized = false; _stopped = false; }
 
 
     private void Update()
@@ -90,7 +93,7 @@ public class WaveGenerator : MonoBehaviour
         if (levelScope == null) return;
         EnsureInitialized();
         CullBehind();
-        SpawnAhead();
+        if (!_stopped) SpawnAhead();
         SyncTransformToFront();
     }
 

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5426159405107952291}
-  - component: {fileID: 1742532089314799991}
   - component: {fileID: 6431936346466944540}
   - component: {fileID: 3362210546814429446}
   m_Layer: 0
@@ -34,14 +33,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 180, z: 0}
---- !u!33 &1742532089314799991
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1546802146561138243}
-  m_Mesh: {fileID: -5495902117074765545, guid: 19edac4be313a1a48af4de973ce53845, type: 3}
 --- !u!137 &6431936346466944540
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
@@ -68,6 +59,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9f1f783e31d8c1f4a9155b1979758c13, type: 2}
+  - {fileID: 2100000, guid: 501e27c41c0990f44abb773e7384f77a, type: 2}
   - {fileID: 2100000, guid: e8832ad7202403c4ba5e9b92dddc50fb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -95,7 +87,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -5495902117074765545, guid: 19edac4be313a1a48af4de973ce53845, type: 3}
+  m_Mesh: {fileID: -2195061376223890297, guid: 19edac4be313a1a48af4de973ce53845, type: 3}
   m_Bones: []
   m_BlendShapeWeights: []
   m_RootBone: {fileID: 0}
