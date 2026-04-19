@@ -13,9 +13,6 @@ public class Asteroid : MonoBehaviour
     [Min(0f)] public float minSpinSpeed = 8f;
     [Min(0f)] public float maxSpinSpeed = 40f;
 
-    [Header("Collision")]
-    [Tooltip("Trigger sphere radius in local space (world radius = scale * hitRadius)")]
-    [Min(0.01f)] public float hitRadius = 0.5f;
 
     private FMODUnity.StudioEventEmitter soundFX;
     private Vector3 _spinAxis;
@@ -36,9 +33,13 @@ public class Asteroid : MonoBehaviour
         visual.transform.localRotation = Quaternion.identity;
         visual.transform.localScale    = Vector3.one;
 
-        var sc      = gameObject.AddComponent<SphereCollider>();
-        sc.radius    = hitRadius;
-        sc.isTrigger = true;
+        foreach (var mf in visual.GetComponentsInChildren<MeshFilter>())
+        {
+            if (mf.sharedMesh == null) continue;
+            var mc        = mf.gameObject.AddComponent<MeshCollider>();
+            mc.sharedMesh = mf.sharedMesh;
+            mc.convex     = false;
+        }
         GetComponent<HeroDamagerRoot>()?.Refresh();
 
         _spinAxis  = Random.onUnitSphere;
@@ -97,11 +98,6 @@ public class Asteroid : MonoBehaviour
         _preview = null;
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-        Gizmos.color  = new Color(0f, 1f, 1f, 0.4f);
-        Gizmos.DrawWireSphere(Vector3.zero, hitRadius * (minScale + maxScale) * 0.5f);
-    }
+
 #endif
 }

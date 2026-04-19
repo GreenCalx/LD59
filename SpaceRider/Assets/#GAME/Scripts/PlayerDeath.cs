@@ -65,14 +65,31 @@ public class PlayerDeath : MonoBehaviour
         if (_dead) return;
         if (other.GetComponentInParent<HeroDamager>() == null) return;
 
-        // Approximate surface normal: from closest surface point toward hero center
-        Vector3 closest = other.ClosestPoint(transform.position);
-        Vector3 dir     = transform.position - closest;
-        _impactNormal   = dir.sqrMagnitude > 1e-4f
-            ? dir.normalized
-            : (transform.position - other.transform.position).normalized;
-
+        _impactNormal = ComputeImpactNormal(other);
         Die();
+    }
+
+    private Vector3 ComputeImpactNormal(Collider other)
+    {
+        // ClosestPoint is only valid on convex shapes; non-convex MeshColliders need ComputePenetration.
+        bool isNonConvexMesh = other is MeshCollider mc && !mc.convex;
+        if (isNonConvexMesh)
+        {
+            var selfCol = GetComponent<Collider>();
+            if (selfCol != null && Physics.ComputePenetration(
+                    selfCol, transform.position, transform.rotation,
+                    other, other.transform.position, other.transform.rotation,
+                    out Vector3 dir, out float _))
+                return dir;
+        }
+        else
+        {
+            Vector3 closest = other.ClosestPoint(transform.position);
+            Vector3 dir     = transform.position - closest;
+            if (dir.sqrMagnitude > 1e-4f) return dir.normalized;
+        }
+
+        return (transform.position - other.transform.position).normalized;
     }
 
     public void Die()
