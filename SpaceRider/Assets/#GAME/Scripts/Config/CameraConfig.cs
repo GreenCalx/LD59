@@ -10,6 +10,7 @@ public class CameraConfig : ScriptableObject
     [Header("Rotation")]
     [Range(0f, 1f)] public float rollInfluence = 0.35f;
     public float lookSharpness = 8f;
+    public Vector3 rotationOffset = Vector3.zero;
 
     [Header("Field of View")]
     [Range(10f, 120f)] public float baseFov = 60f;

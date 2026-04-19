@@ -49,7 +49,8 @@ public class SpaceRiderCamera : MonoBehaviour
         float lookSharpness = config?.camera?.lookSharpness ?? 8f;
 
         Vector3 blendedUp = Vector3.Slerp(Vector3.up, hero.up, rollInfluence).normalized;
-        Quaternion targetRot = Quaternion.LookRotation(toTarget, blendedUp);
+        Vector3    rotOffset = config?.camera?.rotationOffset ?? Vector3.zero;
+        Quaternion targetRot = Quaternion.LookRotation(toTarget, blendedUp) * Quaternion.Euler(rotOffset);
         transform.rotation   = Quaternion.Slerp(transform.rotation, targetRot, Time.deltaTime * lookSharpness);
     }
 
