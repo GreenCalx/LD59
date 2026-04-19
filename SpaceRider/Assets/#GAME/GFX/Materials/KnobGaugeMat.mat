@@ -29,8 +29,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ArcSpan: 154.1
-    - _ArcStart: -35.5
+    - _ArcSpan: 200
+    - _ArcStart: -39
     - _ColorMask: 15
     - _Fill: 1
     - _Stencil: 0

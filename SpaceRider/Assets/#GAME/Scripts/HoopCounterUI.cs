@@ -9,19 +9,33 @@ public class HoopCounterUI : MonoBehaviour
     void OnEnable()
     {
         if (HoopTracker.Instance != null)
-            HoopTracker.Instance.OnCountersChanged += UpdateUI;
-        UpdateUI(HoopTracker.Instance?.TotalPassed ?? 0, HoopTracker.Instance?.Combo ?? 0);
+        {
+            HoopTracker.Instance.OnScoreChanged += UpdateScore;
+            HoopTracker.Instance.OnChainUpdated += UpdateChain;
+        }
+        UpdateScore(HoopTracker.Instance?.TotalScore ?? 0);
+        UpdateChain(0, 0);
     }
 
     void OnDisable()
     {
         if (HoopTracker.Instance != null)
-            HoopTracker.Instance.OnCountersChanged -= UpdateUI;
+        {
+            HoopTracker.Instance.OnScoreChanged -= UpdateScore;
+            HoopTracker.Instance.OnChainUpdated -= UpdateChain;
+        }
     }
 
-    void UpdateUI(int total, int combo)
+    void UpdateScore(int score)
     {
-        if (totalText != null) totalText.text = $"HOOPS  {total}";
-        if (comboText != null) comboText.text = $"COMBO  x{combo}";
+        if (totalText != null) totalText.text = $"SCORE  {score}";
+    }
+
+    void UpdateChain(int passed, int total)
+    {
+        if (comboText == null) return;
+        comboText.text = (total > 0 && passed > 0 && passed < total)
+            ? $"CHAIN  {passed}/{total}"
+            : "";
     }
 }

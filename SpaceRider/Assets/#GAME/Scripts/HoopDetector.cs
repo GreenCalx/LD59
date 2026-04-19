@@ -2,20 +2,22 @@ using UnityEngine;
 
 public class HoopDetector : MonoBehaviour
 {
-    [SerializeField] private float innerRadius = 2f;
-
-    private bool _consumed;
+    public bool IsConsumed { get; private set; }
 
     void OnTriggerStay(Collider iCollider)
     {
-        if (_consumed) return;
-        Debug.Log("hoop traversed : " + gameObject.name);
+        if (IsConsumed) return;
         if (iCollider.GetComponentInParent<Surfer>() == null) return;
 
-        _consumed = true;
-        enabled   = false;
-        HoopTracker.Instance?.RegisterPass();
+        IsConsumed = true;
+        enabled = false;
+        GetComponentInParent<HoopChain>()?.RegisterPass();
+        Debug.Log($"[HoopDetector] pass on {transform.parent.name}");
+    }
 
-        Debug.Log("hoop RegisterPass invoked : " + gameObject.name);
+    public void ForceConsume()
+    {
+        IsConsumed = true;
+        enabled = false;
     }
 }
