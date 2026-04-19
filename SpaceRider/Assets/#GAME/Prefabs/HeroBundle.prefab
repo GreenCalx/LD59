@@ -1968,17 +1968,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3061614563479877959}
     - target: {fileID: 771183517247608791, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
-      propertyPath: surfer
-      value: 
-      objectReference: {fileID: 8380582141355343426}
-    - target: {fileID: 771183517247608791, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
       propertyPath: waveGenerator
       value: 
       objectReference: {fileID: 1157119773178602790}
-    - target: {fileID: 771183517247608791, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
-      propertyPath: explosionTargets.Array.size
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 771183517247608791, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
       propertyPath: 'explosionTargets.Array.data[0]'
       value: 
@@ -1987,10 +1979,6 @@ PrefabInstance:
       propertyPath: 'explosionTargets.Array.data[1]'
       value: 
       objectReference: {fileID: 6572829140419252275}
-    - target: {fileID: 771183517247608791, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
-      propertyPath: 'explosionTargets.Array.data[2]'
-      value: 
-      objectReference: {fileID: 1360723625201166122}
     - target: {fileID: 5073047229377729132, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
       propertyPath: m_Name
       value: Hero
@@ -2040,27 +2028,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
---- !u!4 &1360723625201166122 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7290735040690181005, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
-  m_PrefabInstance: {fileID: 8633301569456845991}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4347488009876112394 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5447885806404612269, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
   m_PrefabInstance: {fileID: 8633301569456845991}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8380582141355343426 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 252880009687698149, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}
-  m_PrefabInstance: {fileID: 8633301569456845991}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46253ed4cfc91fc42afdd8b5ebd4f8b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!114 &9042222393562637168 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 771183517247608791, guid: 82910f2d0f336b24297623e9e0d98217, type: 3}

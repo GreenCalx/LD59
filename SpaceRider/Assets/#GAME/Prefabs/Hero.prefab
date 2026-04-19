@@ -163,6 +163,7 @@ Transform:
   - {fileID: 3440595494717306511}
   - {fileID: 7290735040690181005}
   - {fileID: 7776945780430131602}
+  - {fileID: 9030327369692300487}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &252880009687698149
@@ -180,6 +181,9 @@ MonoBehaviour:
   splineContainer: {fileID: 0}
   waveGenerator: {fileID: 0}
   config: {fileID: 11400000, guid: bb77811178945ee45a44c78152c57735, type: 2}
+  trails:
+  - {fileID: 2304746179225657069}
+  - {fileID: 5552011055257920817}
 --- !u!54 &4908875014512951115
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -223,13 +227,16 @@ MonoBehaviour:
   fadeDuration: 0.4
   holdDuration: 2
   waveGenerator: {fileID: 0}
-  surfer: {fileID: 0}
+  surfer: {fileID: 252880009687698149}
   progressDriver: {fileID: 0}
   ribbonVisualizer: {fileID: 0}
   ribbonFadeDuration: 1
   propelForce: 12
   soundFX: {fileID: 0}
-  explosionTargets: []
+  explosionTargets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 7290735040690181005}
   explosionForce: 600
   explosionRadius: 6
   explosionUpward: 1.5
@@ -257,6 +264,72 @@ CapsuleCollider:
   m_Height: 3.31
   m_Direction: 1
   m_Center: {x: 0, y: 1.35, z: 0}
+--- !u!1 &9122670041879598682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9030327369692300487}
+  - component: {fileID: 6918781302479345526}
+  - component: {fileID: 3063397716362656348}
+  m_Layer: 6
+  m_Name: HoopCollector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9030327369692300487
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9122670041879598682}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5447885806404612269}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &6918781302479345526
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9122670041879598682}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.77
+  m_Center: {x: 0, y: 1.65, z: 0}
+--- !u!114 &3063397716362656348
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9122670041879598682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f322dccf7a8f11408a599a949474be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::HoopCollector
 --- !u!1001 &2897444186566578532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -445,6 +518,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 74d1ea64862467244adeaa6f4ace143b, type: 3}
+--- !u!198 &2304746179225657069 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3477803066552356400, guid: 74d1ea64862467244adeaa6f4ace143b, type: 3}
+  m_PrefabInstance: {fileID: 3440672076337320157}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4758611535533812450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7905579848496626239, guid: 74d1ea64862467244adeaa6f4ace143b, type: 3}
@@ -600,5 +678,10 @@ PrefabInstance:
 --- !u!4 &1223102410404008254 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7905579848496626239, guid: 74d1ea64862467244adeaa6f4ace143b, type: 3}
+  m_PrefabInstance: {fileID: 9029461985475865345}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5552011055257920817 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3477803066552356400, guid: 74d1ea64862467244adeaa6f4ace143b, type: 3}
   m_PrefabInstance: {fileID: 9029461985475865345}
   m_PrefabAsset: {fileID: 0}

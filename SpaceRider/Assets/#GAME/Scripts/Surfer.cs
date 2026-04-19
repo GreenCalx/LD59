@@ -1,6 +1,7 @@
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
+using System.Collections.Generic;
 
 [ExecuteAlways]
 [DefaultExecutionOrder(-50)]
@@ -9,19 +10,27 @@ public class Surfer : MonoBehaviour
     [SerializeField] private SplineContainer splineContainer;
     [SerializeField] private WaveGenerator   waveGenerator;
     [SerializeField] private GameConfig      config;
+    [SerializeField] private List<ParticleSystem> trails;
 
-    private Animator    _animator;
-    private float       _smSlope;
-    private float       _smPan;
-    private float       _prevSmPan;
-    private float       _smPanVelocity;
-    private Vector3     _smPos;
-    private Vector3     _posVelocity;
-    private Quaternion  _smRot    = Quaternion.identity;
-    private float       _rotVelX, _rotVelY, _rotVelZ;
-    private bool        _smInited;
+    private Animator        _animator;
+    private ProgressDriver  _progressDriver;
+    private float           _smSlope;
+    private float           _smPan;
+    private float           _prevSmPan;
+    private float           _smPanVelocity;
+    private Vector3         _smPos;
+    private Vector3         _posVelocity;
+    private Quaternion      _smRot    = Quaternion.identity;
+    private float           _rotVelX, _rotVelY, _rotVelZ;
+    private bool            _smInited;
+    private float           _prevSpeed;
+    private float           _smAccel;
 
-    private void Awake()   => _animator = GetComponentInChildren<Animator>();
+    private void Awake()
+    {
+        _animator       = GetComponentInChildren<Animator>();
+        _progressDriver = transform.root.GetComponentInChildren<ProgressDriver>();
+    }
     private void OnEnable() { _smInited = false; _posVelocity = Vector3.zero; _rotVelX = _rotVelY = _rotVelZ = 0f; }
 
     private void Update()
@@ -50,6 +59,8 @@ public class Surfer : MonoBehaviour
             ? Vector3.SmoothDamp(_smPos, targetPos, ref _posVelocity, posSmoothTime)
             : targetPos;
         transform.position = _smPos;
+
+        UpdateTrails();
 
         if (!config.surfer.alignToTangent) return;
 
@@ -88,6 +99,24 @@ public class Surfer : MonoBehaviour
         transform.rotation = _smRot;
 
         DriveAnimator(pan);
+    }
+
+    private void UpdateTrails()
+    {
+        if (!Application.isPlaying || trails == null || trails.Count == 0 || _progressDriver == null) return;
+
+        float speed    = _progressDriver.CurrentSpeed;
+        float rawAccel = Time.deltaTime > 0f ? (speed - _prevSpeed) / Time.deltaTime : 0f;
+        _prevSpeed     = speed;
+        _smAccel       = Mathf.Lerp(_smAccel, rawAccel, Time.deltaTime * 5f);
+
+        bool gaining = _smAccel > 0f;
+        foreach (var trail in trails)
+        {
+            if (trail == null) continue;
+            if (gaining  && !trail.isPlaying) trail.Play();
+            if (!gaining &&  trail.isPlaying) trail.Stop();
+        }
     }
 
     private void DriveAnimator(float effectivePan)
