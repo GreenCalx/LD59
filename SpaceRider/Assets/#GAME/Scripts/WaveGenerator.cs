@@ -14,6 +14,7 @@ public class WaveGenerator : MonoBehaviour
     [Header("References")]
     [SerializeField] private LevelScope levelScope;
     [SerializeField] private GameConfig config;
+    [SerializeField] private Transform  model;
 
     private struct WaveSample { public float virtualZ, x, y; }
 
@@ -98,6 +99,9 @@ public class WaveGenerator : MonoBehaviour
         if (_samples.Count == 0) return;
         var front = _samples[_samples.Count - 1];
         transform.localPosition = new Vector3(front.x, front.y, front.virtualZ - VirtualDistance);
+
+        if (model != null)
+            model.localRotation = Quaternion.AngleAxis(-_smPan * MaxTiltDegrees, Vector3.forward);
     }
 
     private void EnsureInitialized()
