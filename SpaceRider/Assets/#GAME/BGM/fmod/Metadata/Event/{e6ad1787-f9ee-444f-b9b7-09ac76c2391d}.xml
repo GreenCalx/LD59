@@ -228,6 +228,8 @@
 			<destination>{12c4505d-eafa-4136-9f39-36637bc80b2e}</destination>
 			<destination>{6d000492-ac82-408f-8999-7dbfa5283f79}</destination>
 			<destination>{acb304bd-74c9-45a0-a754-eaf3aa449acb}</destination>
+			<destination>{64f0b729-18c1-4597-86dc-1f3ea601545c}</destination>
+			<destination>{7d623d26-a2af-4d3e-8acd-ad68bb02237a}</destination>
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{8c558cd6-12e1-4a74-91ed-ee7b3a457046}">
@@ -304,6 +306,19 @@
 		</relationship>
 	</object>
 	<object class="MixerBusFader" id="{acb304bd-74c9-45a0-a754-eaf3aa449acb}" />
+	<object class="GainEffect" id="{64f0b729-18c1-4597-86dc-1f3ea601545c}">
+		<property name="gain">
+			<value>-12</value>
+		</property>
+	</object>
+	<object class="GainEffect" id="{7d623d26-a2af-4d3e-8acd-ad68bb02237a}">
+		<property name="bypass">
+			<value>true</value>
+		</property>
+		<property name="gain">
+			<value>-80</value>
+		</property>
+	</object>
 	<object class="AutomationCurve" id="{a8b298ae-33da-428d-a940-d09b73338012}">
 		<relationship name="parameter">
 			<destination>{9069eb0c-13f4-451a-b76c-007fe7f6294d}</destination>

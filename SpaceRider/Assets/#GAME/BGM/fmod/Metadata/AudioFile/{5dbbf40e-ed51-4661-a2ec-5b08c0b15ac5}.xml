@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{5dbbf40e-ed51-4661-a2ec-5b08c0b15ac5}">
+		<property name="assetPath">
+			<value>satelite.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>11.949666666666667</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b2be94b1-a7fe-4d15-9db0-640c5bb634f9}</destination>
+		</relationship>
+	</object>
+</objects>

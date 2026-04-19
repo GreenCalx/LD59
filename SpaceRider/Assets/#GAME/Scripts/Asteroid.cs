@@ -16,12 +16,15 @@ public class Asteroid : MonoBehaviour
     [Tooltip("Trigger sphere radius in local space (world radius = scale * hitRadius)")]
     [Min(0.01f)] public float hitRadius = 0.5f;
 
+    private FMODUnity.StudioEventEmitter soundFX;
+
     private Vector3 _spinAxis;
     private float   _spinSpeed;
 
     private void Start()
     {
         if (prefabPool == null || prefabPool.Count == 0) return;
+
 
         float scale          = Random.Range(minScale, maxScale);
         transform.localScale = Vector3.one * scale;
@@ -41,6 +44,9 @@ public class Asteroid : MonoBehaviour
         _spinAxis  = Random.onUnitSphere;
         _spinSpeed = Random.Range(minSpinSpeed, maxSpinSpeed)
                    * (Random.value > 0.5f ? 1f : -1f);
+
+        soundFX = GetComponent<FMODUnity.StudioEventEmitter>();
+        if (soundFX != null) soundFX.SetParameter("Size", (scale - minScale) / (maxScale - minScale));
     }
 
     private void Update()

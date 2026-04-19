@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5404425148297605862}
   - component: {fileID: 6455690772068061781}
+  - component: {fileID: 5120882976722042267}
   m_Layer: 0
   m_Name: SatelliteA
   m_TagString: Untagged
@@ -45,6 +46,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ede5d5e821552b4458636041767e6ab4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::HeroDamagerRoot
+--- !u!114 &5120882976722042267
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2506471939257583911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1443886027
+      Data2: 1119896406
+      Data3: -212399474
+      Data4: -1447275867
+    Path: event:/FX/satelite
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 2
+  AllowFadeout: 1
+  TriggerOnce: 0
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params: []
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 150
 --- !u!1001 &2135426140516360046
 PrefabInstance:
   m_ObjectHideFlags: 0
