@@ -114,8 +114,8 @@ public class WaveGenerator : MonoBehaviour
         for (float vz = back; vz <= front + 1e-4f; vz += spacing)
         {
             float phaseAtEmission = _phase - (front - vz) / speed * omega;
-            float a = _smAmp * Mathf.Sin(phaseAtEmission);
-            _samples.Add(new WaveSample { virtualZ = vz, x = x, y = a });
+            float y = _smAmp * Mathf.Sin(phaseAtEmission);
+            _samples.Add(new WaveSample { virtualZ = vz, x = x, y = y });
             x += _smPan * PanLateralScale * spacing;
         }
         _initialized = true;
@@ -148,10 +148,8 @@ public class WaveGenerator : MonoBehaviour
             float nextVZ          = last.virtualZ + spacing;
             float omega           = _smFreq * Bpm / 60f * Mathf.PI * 2f;
             float phaseAtEmission = _phase - (frontVZ - nextVZ) / speed * omega;
-            float a               = _smAmp * Mathf.Sin(phaseAtEmission);
-            float tiltRad         = _smPan * MaxTiltDegrees * Mathf.Deg2Rad;
-            float x = last.x + _smPan * PanLateralScale * spacing - a * Mathf.Sin(tiltRad);
-            float y = a * Mathf.Cos(tiltRad);
+            float y = _smAmp * Mathf.Sin(phaseAtEmission);
+            float x = last.x + _smPan * PanLateralScale * spacing;
             last = new WaveSample { virtualZ = nextVZ, x = x, y = y };
             _samples.Add(last);
         }

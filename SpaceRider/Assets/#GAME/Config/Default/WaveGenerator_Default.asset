@@ -19,5 +19,5 @@ MonoBehaviour:
   amplitudeMin: 0.1
   amplitudeMax: 10
   frequencyMin: 0.1
-  frequencyMax: 0.7
-  maxTiltDegrees: 25
+  frequencyMax: 1
+  maxTiltDegrees: 45
