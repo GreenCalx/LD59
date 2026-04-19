@@ -6,3 +6,14 @@ CLAUDE.md
 SpaceRider/fmod_editor.log
 SpaceRider/.vsconfig
 SpaceRider/Assets/Plugins/FMOD/Cache/Editor/FMODStudioCache.asset
+.claude/settings.local.json
+.claude/settings.local.rhookx-backup.json
+.mcp.json
+SpaceRider/Assets/\#GAME/BGM/fmod/.cache/buildrecords/Desktop/Master.br
+SpaceRider/Assets/\#GAME/BGM/fmod/.cache/fsbcache/Desktop/2705E812.fobj
+SpaceRider/Assets/\#GAME/BGM/fmod/.cache/fsbcache/Desktop/379F1507.fobj
+SpaceRider/Assets/\#GAME/BGM/fmod/.cache/fsbcache/Desktop/790AF566.fobj
+SpaceRider/Assets/\#GAME/BGM/fmod/.cache/{9e14d3de-47bb-4c0a-bc53-088a1ef74cf1}.pdc
+SpaceRider/Assets/\#GAME/BGM/fmod/.cache/{a9f2f82f-4b55-4881-8183-ccf5ae616798}.pdc
+SpaceRider/Assets/\#GAME/BGM/fmod/.cache/{b71f2f8c-6c2a-4b36-9133-efd9e4c50412}.pdc
+SpaceRider/Assets/Plugins/FMOD/Resources/FMODStudioSettings.asset
