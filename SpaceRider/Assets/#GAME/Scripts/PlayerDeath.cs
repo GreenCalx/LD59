@@ -19,6 +19,7 @@ public class PlayerDeath : MonoBehaviour
 
     [Header("Death Impact")]
     [SerializeField] private float propelForce = 12f;
+    public FMODUnity.StudioEventEmitter soundFX;
 
     [Header("Death Explosion")]
     [SerializeField] private Transform[] explosionTargets;
@@ -78,6 +79,8 @@ public class PlayerDeath : MonoBehaviour
     {
         if (_dead) return;
         _dead = true;
+
+        if (soundFX != null) soundFX.Play();
 
         if (surfer           != null) surfer.enabled = false;
         if (waveGenerator    != null) waveGenerator.Stop();
