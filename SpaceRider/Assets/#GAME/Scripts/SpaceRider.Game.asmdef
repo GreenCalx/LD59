@@ -6,7 +6,8 @@
         "Unity.Mathematics",
         "Unity.Collections",
         "Unity.InputSystem",
-        "FMODUnity"
+        "FMODUnity",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
