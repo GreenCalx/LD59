@@ -26,7 +26,7 @@ public class HoopChain : MonoBehaviour
         _total = _hoops.Count;
         Debug.Log($"[HoopChain] {gameObject.name} — {_total} hoops");
 
-        _visuals = _hoops.ConvertAll(h => h.GetComponent<HoopVisual>());
+        _visuals = _hoops.ConvertAll(h => h.GetComponentInParent<HoopVisual>(true));
 
         if (_total > 0)
             _visuals[0]?.SetHighlight(true);

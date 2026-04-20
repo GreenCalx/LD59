@@ -13,7 +13,7 @@ public class HoopDetector : MonoBehaviour
 
     void Awake()
     {
-        _visual = GetComponent<HoopVisual>();
+        _visual = GetComponentInParent<HoopVisual>(true);
     }
 
     void OnTriggerEnter(Collider iCollider)
