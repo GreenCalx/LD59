@@ -204,72 +204,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &8970147627338294556
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8179510419106714103}
-  - component: {fileID: 4141448062161585191}
-  - component: {fileID: 1341331835140004991}
-  m_Layer: 6
-  m_Name: MissZone
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8179510419106714103
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8970147627338294556}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3962312581954660118}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &4141448062161585191
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8970147627338294556}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 20, y: 20, z: 0.5}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1341331835140004991
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8970147627338294556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1956c2171cd1247468a69a59dc175a68, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SpaceRider.Game::MissDetector
 --- !u!1001 &2262692801766722842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -472,62 +406,10 @@ PrefabInstance:
       value: All them hoops
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 8920485771729431952, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-    - {fileID: 5676283223554091698, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-    - {fileID: 5891191962244382209, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-    - {fileID: 2693211618120992737, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 682223219324839913, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8179510419106714103}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8078129539243700738, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4689112625768957544}
-    - targetCorrespondingSourceObject: {fileID: 11058165275802265, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6891092587582480813}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
---- !u!4 &3962312581954660118 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 682223219324839913, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-  m_PrefabInstance: {fileID: 4578832798174314751}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4588043753145973350 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 11058165275802265, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-  m_PrefabInstance: {fileID: 4578832798174314751}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6891092587582480813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4588043753145973350}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4ee649e62bf69469df792fb29922ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SpaceRider.Game::HoopChain
---- !u!1 &5733082530477994749 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8078129539243700738, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}
-  m_PrefabInstance: {fileID: 4578832798174314751}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4689112625768957544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5733082530477994749}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d4ee649e62bf69469df792fb29922ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SpaceRider.Game::HoopChain
 --- !u!4 &7549232361919015006 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6291259292612192417, guid: 50dc372f15e9ba1488c5a53703ed0b97, type: 3}

@@ -75,6 +75,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2531072149608462453}
+  - component: {fileID: 8977883123038603483}
   m_Layer: 0
   m_Name: Hoops
   m_TagString: Untagged
@@ -100,6 +101,19 @@ Transform:
   - {fileID: 8845917378320848203}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8977883123038603483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5700732256795328846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50e6ae9681f3d80488163201fc348c86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::HoopVisual
+  dissolveDuration: 0.35
 --- !u!1 &7237056135845753346
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,6 +181,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ea48c8f47485643b8be45725c476b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::HoopDetector
+  OnHoopCollected:
+    m_PersistentCalls:
+      m_Calls: []
+  CollectSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1001 &9173708192729231418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -215,6 +239,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 41f954fcc2e12754d89df48609f55a43, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 4756af70ff0cb6448b5f3a1f58fc8455, type: 2}
     - target: {fileID: 919132149155446097, guid: 41f954fcc2e12754d89df48609f55a43, type: 3}
       propertyPath: m_Name
       value: circle
