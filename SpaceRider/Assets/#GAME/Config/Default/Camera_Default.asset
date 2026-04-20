@@ -12,11 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d20a987267197444bc58f0495326c53, type: 3}
   m_Name: Camera_Default
   m_EditorClassIdentifier: SpaceRider.Game::CameraConfig
-  offset: {x: 0, y: 8, z: -10}
+  offset: {x: 0, y: 5, z: -11}
   positionSmoothTime: 0.18
-  rollInfluence: 0.037
+  rollInfluence: 0.18
   lookSharpness: 8
-  rotationOffset: {x: 16, y: 0, z: 0}
-  baseFov: 60
+  rotationOffset: {x: 18, y: 0, z: 0}
+  baseFov: 65
   fovSpeedScale: 0.4
   fovSmoothTime: 0.25
+  waveAmplitudeOffsetScale: 0.3
+  swellSmoothTime: 0.3
+  waveSlopePitchScale: -4
+  speedPitchScale: -0.3
+  pitchSmoothTime: 0.1
+  maxPitchDegrees: 8
+  speedPullbackScale: 0.08
