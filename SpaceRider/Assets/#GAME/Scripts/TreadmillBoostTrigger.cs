@@ -3,8 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class TreadmillBoostTrigger : MonoBehaviour
 {
-    [Tooltip("The booster to activate when the hero crosses this trigger.")]
-    [SerializeField] private TreadmillBooster target;
+    [Tooltip("Boosters to activate when the hero crosses this trigger.")]
+    [SerializeField] private TreadmillBooster[] targets;
 
     private bool _fired;
 
@@ -15,16 +15,21 @@ public class TreadmillBoostTrigger : MonoBehaviour
 
         _fired  = true;
         enabled = false;
-        target?.Activate();
+        foreach (var t in targets)
+            t?.Activate();
     }
 
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        if (target == null) return;
+        if (targets == null) return;
         Gizmos.color = _fired ? Color.gray : Color.yellow;
-        Gizmos.DrawLine(transform.position, target.transform.position);
         Gizmos.DrawWireSphere(transform.position, 0.4f);
+        foreach (var t in targets)
+        {
+            if (t == null) continue;
+            Gizmos.DrawLine(transform.position, t.transform.position);
+        }
     }
 #endif
 }
