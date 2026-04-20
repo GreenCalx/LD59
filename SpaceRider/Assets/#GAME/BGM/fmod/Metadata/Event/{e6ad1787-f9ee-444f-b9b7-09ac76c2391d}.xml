@@ -61,9 +61,6 @@
 	<object class="EventAutomatableProperties" id="{f321b770-37aa-4144-bc5e-d3df063f2c40}" />
 	<object class="MarkerTrack" id="{86a289fa-6f0a-4de0-9f63-bd6e59bd52d5}" />
 	<object class="GroupTrack" id="{3e358f0d-7f7c-4a77-80ae-c7b47079b467}">
-		<relationship name="automationTracks">
-			<destination>{ec1880a5-3847-4599-990e-85b82109b4a5}</destination>
-		</relationship>
 		<relationship name="modules">
 			<destination>{32e8a631-0d8b-458b-9977-ba89cb6e53e9}</destination>
 		</relationship>
@@ -120,11 +117,6 @@
 		</relationship>
 	</object>
 	<object class="MixerBusPanner" id="{ba3ba675-8d68-4b5e-b732-fb26768686ff}" />
-	<object class="AutomationTrack" id="{ec1880a5-3847-4599-990e-85b82109b4a5}">
-		<relationship name="automator">
-			<destination>{9ef33aa8-7394-41a7-a7c6-bc783dac6123}</destination>
-		</relationship>
-	</object>
 	<object class="SingleSound" id="{32e8a631-0d8b-458b-9977-ba89cb6e53e9}">
 		<property name="length">
 			<value>16</value>
