@@ -58,7 +58,7 @@
 			<destination>{add537e0-8161-4180-8c19-6ccde833771a}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{1af3cc03-40bf-455b-a00c-f54a570e67a8}</destination>
+			<destination>{e508d584-358e-46c6-8dfd-bf28fd899229}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{eee75829-b02e-4abd-909f-b519d0317412}">
@@ -154,6 +154,7 @@
 	<object class="MixerBusEffectChain" id="{420c8d65-0551-49f9-b57a-130796ef0361}">
 		<relationship name="effects">
 			<destination>{d8639a2e-527a-4620-a43e-ca2cd433f9ad}</destination>
+			<destination>{ee6ac13a-051c-406b-8cc5-7a040f323cc8}</destination>
 			<destination>{c6c2a17d-c7ba-4875-8a09-5f98f6bc5e2f}</destination>
 			<destination>{8c8f3340-a334-4924-a631-3137646912e1}</destination>
 			<destination>{d0a0d568-f2eb-4146-835c-a7775d4d168f}</destination>
@@ -170,6 +171,11 @@
 	</object>
 	<object class="MixerBusPanner" id="{6d2d032b-cfa2-4c4c-9001-ae81cf832a40}" />
 	<object class="MixerBusFader" id="{d8639a2e-527a-4620-a43e-ca2cd433f9ad}" />
+	<object class="GainEffect" id="{ee6ac13a-051c-406b-8cc5-7a040f323cc8}">
+		<property name="gain">
+			<value>-3</value>
+		</property>
+	</object>
 	<object class="DelayEffect" id="{c6c2a17d-c7ba-4875-8a09-5f98f6bc5e2f}">
 		<property name="delay">
 			<value>80</value>
@@ -348,18 +354,18 @@
 			<value>0</value>
 		</property>
 		<property name="curveShape">
-			<value>0.245858997</value>
+			<value>0.295773208</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{99b6985d-005b-4e4f-9dd0-2db022bc8863}">
 		<property name="position">
-			<value>0.15000000000000002</value>
+			<value>0.10000000000000001</value>
 		</property>
 		<property name="value">
-			<value>-11</value>
+			<value>-12</value>
 		</property>
 		<property name="curveShape">
-			<value>-0.654199183</value>
+			<value>-0.875252962</value>
 		</property>
 	</object>
 	<object class="AutomationPoint" id="{344be850-1609-45dc-ae81-e8c2a471d6df}">
