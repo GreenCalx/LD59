@@ -31,8 +31,8 @@ public class EscapeMenu : MonoBehaviour
     void Start()
     {
         float master = PlayerPrefs.GetFloat(PREF_MASTER, 1f);
-        float music  = PlayerPrefs.GetFloat(PREF_MUSIC,  1f);
-        float fx     = PlayerPrefs.GetFloat(PREF_FX,     1f);
+        float music  = PlayerPrefs.GetFloat(PREF_MUSIC,  0.5f);
+        float fx     = PlayerPrefs.GetFloat(PREF_FX,     0.5f);
 
         InitSlider(masterSlider, master, OnMasterChanged);
         InitSlider(musicSlider,  music,  OnMusicChanged);
