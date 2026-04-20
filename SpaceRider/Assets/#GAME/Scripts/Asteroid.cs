@@ -17,10 +17,12 @@ public class Asteroid : MonoBehaviour
     public bool spinY = true;
     public bool spinZ = true;
 
+    // Name used to track the designer-placed visual child.
+    internal const string VisualChildName = "__AsteroidVisual__";
+
     private FMODUnity.StudioEventEmitter soundFX;
     private Vector3 _spinAxis;
 
-    // Called when the component is first added or Reset from the Inspector context menu.
     private void Reset()
     {
         spinSpeed = Random.Range(10f, 15f);
@@ -28,18 +30,30 @@ public class Asteroid : MonoBehaviour
 
     private void Start()
     {
-#if UNITY_EDITOR
-        DestroyPreview();   // clean up any lingering edit-mode preview on Play
-#endif
         if (!Application.isPlaying) return;
-        if (prefabPool == null || prefabPool.Count == 0) return;
+
+        // If a visual was pre-placed via the editor button, use it.
+        // Otherwise pick a random one from the pool.
+        var existingVisual = transform.Find(VisualChildName);
+        GameObject visual;
+
+        if (existingVisual != null)
+        {
+            visual = existingVisual.gameObject;
+            // Restore normal hide flags stripped during edit-time placement
+            visual.hideFlags = HideFlags.None;
+        }
+        else
+        {
+            if (prefabPool == null || prefabPool.Count == 0) return;
+            int idx = Random.Range(0, prefabPool.Count);
+            visual  = Instantiate(prefabPool[idx], transform);
+        }
 
         float scale          = Random.Range(minScale, maxScale);
         transform.localScale = Vector3.one * scale;
         transform.rotation   = Random.rotation;
 
-        int idx    = Random.Range(0, prefabPool.Count);
-        var visual = Instantiate(prefabPool[idx], transform);
         visual.transform.localPosition = Vector3.zero;
         visual.transform.localRotation = Quaternion.identity;
         visual.transform.localScale    = Vector3.one;
@@ -53,7 +67,6 @@ public class Asteroid : MonoBehaviour
         }
         GetComponent<HeroDamagerRoot>()?.Refresh();
 
-        // Build spin axis from bools; fall back to Y if all unchecked.
         Vector3 axis = new Vector3(spinX ? 1f : 0f, spinY ? 1f : 0f, spinZ ? 1f : 0f);
         _spinAxis    = axis.sqrMagnitude > 0.001f ? axis.normalized : Vector3.up;
 
@@ -68,53 +81,61 @@ public class Asteroid : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    private GameObject _preview;
-    private const string PreviewName = "__AsteroidPreview__";
-
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-    static void FlushAllPreviews()
+    internal void SpawnVisual(int index)
     {
-        foreach (var go in Resources.FindObjectsOfTypeAll<GameObject>())
-            if (go.name == PreviewName)
-                DestroyImmediate(go);
+        // Destroy any previously spawned visual child
+        var existing = transform.Find(VisualChildName);
+        if (existing != null) DestroyImmediate(existing.gameObject);
+
+        if (prefabPool == null || index >= prefabPool.Count || prefabPool[index] == null) return;
+
+        float mean  = (minScale + maxScale) * 0.5f;
+        var visual  = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefabPool[index], transform);
+        visual.name = VisualChildName;
+        visual.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        visual.transform.localScale = Vector3.one * mean;
+
+        UnityEditor.EditorUtility.SetDirty(gameObject);
     }
 
-    private void OnEnable()
+    internal void ClearVisual()
     {
-        if (!Application.isPlaying) RefreshPreview();
-    }
-
-    private void OnDisable()
-    {
-        DestroyPreview();
-    }
-
-    private void OnValidate()
-    {
-        if (!Application.isPlaying)
-            UnityEditor.EditorApplication.delayCall += () => { if (this) RefreshPreview(); };
-    }
-
-    private void RefreshPreview()
-    {
-        DestroyPreview();
-        if (prefabPool == null || prefabPool.Count == 0 || prefabPool[0] == null) return;
-
-        _preview = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefabPool[0], transform);
-        _preview.name      = PreviewName;
-        _preview.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
-
-        float mean = (minScale + maxScale) * 0.5f;
-        _preview.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        _preview.transform.localScale = Vector3.one * mean;
-    }
-
-    private void DestroyPreview()
-    {
-        if (_preview != null) DestroyImmediate(_preview);
-        var orphan = transform.Find(PreviewName);
-        if (orphan != null) DestroyImmediate(orphan.gameObject);
-        _preview = null;
+        var existing = transform.Find(VisualChildName);
+        if (existing != null) DestroyImmediate(existing.gameObject);
     }
 #endif
 }
+
+#if UNITY_EDITOR
+[UnityEditor.CustomEditor(typeof(Asteroid))]
+public class AsteroidEditor : UnityEditor.Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        var asteroid = (Asteroid)target;
+        if (asteroid.prefabPool == null || asteroid.prefabPool.Count == 0) return;
+
+        UnityEditor.EditorGUILayout.Space();
+        UnityEditor.EditorGUILayout.LabelField("Spawn Visual", UnityEditor.EditorStyles.boldLabel);
+
+        for (int i = 0; i < asteroid.prefabPool.Count; i++)
+        {
+            var prefab = asteroid.prefabPool[i];
+            if (prefab == null) continue;
+            if (GUILayout.Button(prefab.name))
+            {
+                UnityEditor.Undo.RegisterFullObjectHierarchyUndo(asteroid.gameObject, "Spawn Asteroid Visual");
+                asteroid.SpawnVisual(i);
+            }
+        }
+
+        if (GUILayout.Button("Clear Visual"))
+        {
+            UnityEditor.Undo.RegisterFullObjectHierarchyUndo(asteroid.gameObject, "Clear Asteroid Visual");
+            asteroid.ClearVisual();
+        }
+    }
+}
+#endif
