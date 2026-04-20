@@ -9,7 +9,7 @@ public class TreadmillBooster : MonoBehaviour
     public Vector3 direction = new Vector3(0f, 0f, -1f);
 
     [Tooltip("If true, boost starts immediately on play. If false, wait for Activate().")]
-    public bool activeOnStart = true;
+    public bool activeOnStart = false;
 
     private void Start()
     {
