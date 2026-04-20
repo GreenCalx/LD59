@@ -6,8 +6,6 @@ public class Asteroid : MonoBehaviour
 {
     [Header("Visuals")]
     public List<GameObject> prefabPool;
-    [Min(0f)] public float minScale = 6f;
-    [Min(0f)] public float maxScale = 20f;
 
     [Header("Spin")]
     [Tooltip("Spin speed in deg/sec. Negative = reverse direction. Defaults to a random value (10–15) when first added.")]
@@ -50,9 +48,7 @@ public class Asteroid : MonoBehaviour
             visual  = Instantiate(prefabPool[idx], transform);
         }
 
-        float scale          = Random.Range(minScale, maxScale);
-        transform.localScale = Vector3.one * scale;
-        transform.rotation   = Random.rotation;
+        transform.rotation = Random.rotation;
 
         visual.transform.localPosition = Vector3.zero;
         visual.transform.localRotation = Quaternion.identity;
@@ -71,7 +67,7 @@ public class Asteroid : MonoBehaviour
         _spinAxis    = axis.sqrMagnitude > 0.001f ? axis.normalized : Vector3.up;
 
         soundFX = GetComponent<FMODUnity.StudioEventEmitter>();
-        if (soundFX != null) soundFX.SetParameter("Size", transform.localScale.x / 50f);
+        if (soundFX != null) soundFX.SetParameter("Size", transform.localScale.x);
     }
 
     private void Update()
@@ -89,11 +85,10 @@ public class Asteroid : MonoBehaviour
 
         if (prefabPool == null || index >= prefabPool.Count || prefabPool[index] == null) return;
 
-        float mean  = (minScale + maxScale) * 0.5f;
         var visual  = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefabPool[index], transform);
         visual.name = VisualChildName;
         visual.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        visual.transform.localScale = Vector3.one * mean;
+        visual.transform.localScale = Vector3.one;
 
         UnityEditor.EditorUtility.SetDirty(gameObject);
     }
