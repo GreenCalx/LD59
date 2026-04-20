@@ -68,6 +68,8 @@ MonoBehaviour:
     Value: 0.5
   - Name: Drum
     Value: 1
+  - Name: trigger ending
+    Value: 0
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objects serializationModel="Studio.02.03.00">
-	<object class="AudioFile" id="{b911fe07-1840-4d76-aee2-d2005e667ebc}">
+	<object class="AudioFile" id="{71508fc1-e057-4910-94d5-066984bda1e0}">
 		<property name="assetPath">
-			<value>saucer.wav</value>
+			<value>BGM_ENDING.wav</value>
 		</property>
 		<property name="isStreaming">
 			<value>true</value>
 		</property>
 		<property name="frequencyInKHz">
-			<value>48</value>
+			<value>44.0999985</value>
 		</property>
 		<property name="channelCount">
-			<value>1</value>
+			<value>2</value>
 		</property>
 		<property name="length">
-			<value>1.9896875000000001</value>
+			<value>20</value>
 		</property>
 		<relationship name="masterAssetFolder">
 			<destination>{b2be94b1-a7fe-4d15-9db0-640c5bb634f9}</destination>
