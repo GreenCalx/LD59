@@ -26,7 +26,11 @@ public class FlyingSaucer : MonoBehaviour
     [Header("Orbit")]
     [Min(0f)] public float orbitRadius        = 8f;
     [Min(0f)] public float orbitSpeed         = 60f;   // degrees / second
-    [Min(0f)] public float positionSmoothTime = 0.4f;
+    [Min(0f)] public float positionSmoothTime = 0.1f;
+    [Tooltip("How strongly the orbit is pulled toward the hero's forward direction. 0 = free orbit, 1 = strongly front-biased.")]
+    [Range(0f, 1f)] public float frontBias    = 0.6f;
+    [Tooltip("Speed at which the orbit angle is attracted toward the front-bias target (deg/sec).")]
+    [Min(0f)] public float frontBiasSpeed     = 160f;
 
     [Header("Wiggle")]
     public float wiggleAmplitude  = 1.5f;
@@ -42,8 +46,10 @@ public class FlyingSaucer : MonoBehaviour
     public float yawSpeed  = 45f;
     public float rollSway  = 12f;  // degrees of peak roll when idling
 
-    [Header("Events")]
-    [Tooltip("Fired just before the saucer is destroyed. Hook up VFX / FMOD here.")]
+    [Header("Death")]
+    [Tooltip("Optional prefab instantiated at the saucer's position on death (VFX explosion). Detached so it survives the GO being destroyed.")]
+    public GameObject explosionPrefab;
+    [Tooltip("Fired just before the saucer is destroyed. Hook up FMOD here.")]
     public UnityEvent OnDeath;
 
     // ── runtime state ────────────────────────────────────────────────────────
@@ -53,6 +59,7 @@ public class FlyingSaucer : MonoBehaviour
     private Vector3   _velPos;
     private float     _baseLocalY;
     private Transform _hero;
+    private Vector3   _lastParentWorldPos;
 
     // ── lifecycle ────────────────────────────────────────────────────────────
 
@@ -74,8 +81,9 @@ public class FlyingSaucer : MonoBehaviour
 
     private void Start()
     {
-        _baseLocalY = transform.localPosition.y;
-        _orbitAngle = Random.Range(0f, 360f);   // randomise start so multiple saucers don't align
+        _baseLocalY         = transform.localPosition.y;
+        _orbitAngle         = Random.Range(0f, 360f);
+        _lastParentWorldPos = transform.parent != null ? transform.parent.position : Vector3.zero;
     }
 
     private void Update()
@@ -124,7 +132,33 @@ public class FlyingSaucer : MonoBehaviour
     {
         if (_hero == null) return;
 
+        // Cancel treadmill scroll: measure how far the parent moved this frame
+        // in world space and push the saucer back by the same amount so it
+        // appears to float freely while still being a child of the treadmill GO.
+        if (transform.parent != null)
+        {
+            Vector3 parentDelta  = transform.parent.position - _lastParentWorldPos;
+            transform.position  -= parentDelta;
+        }
+        _lastParentWorldPos = transform.parent != null ? transform.parent.position : Vector3.zero;
+
         _orbitAngle += orbitSpeed * Time.deltaTime;
+
+        // Bias the orbit angle toward the hero's forward direction.
+        // We compute the "ideal front angle" (angle of hero.forward projected on XZ),
+        // then nudge _orbitAngle toward it each frame — wonky because orbitSpeed also
+        // keeps spinning, so they fight each other pleasantly.
+        if (frontBias > 0f)
+        {
+            Vector3 heroFwd      = _hero.forward;
+            heroFwd.y            = 0f;
+            if (heroFwd.sqrMagnitude > 0.001f)
+            {
+                float targetAngle = Mathf.Atan2(heroFwd.x, heroFwd.z) * Mathf.Rad2Deg;
+                float delta       = Mathf.DeltaAngle(_orbitAngle, targetAngle);
+                _orbitAngle      += delta * frontBias * frontBiasSpeed * Time.deltaTime / 90f;
+            }
+        }
 
         float   wiggle    = Mathf.Sin((Time.time + wigglePhaseOffset) * wiggleFrequency) * wiggleAmplitude;
         Vector3 radialDir = Quaternion.AngleAxis(_orbitAngle, Vector3.up) * Vector3.right;
@@ -140,6 +174,9 @@ public class FlyingSaucer : MonoBehaviour
         Vector3 lp = transform.localPosition;
         lp.y = _baseLocalY + Mathf.Sin(Time.time * bobFrequency) * bobAmplitude;
         transform.localPosition = lp;
+
+        // Keep parent pos in sync so UpdateOrbit has a clean baseline on transition
+        _lastParentWorldPos = transform.parent != null ? transform.parent.position : Vector3.zero;
     }
 
     // ── rotation helper ──────────────────────────────────────────────────────
@@ -172,6 +209,13 @@ public class FlyingSaucer : MonoBehaviour
     {
         if (_dead) return;
         _dead = true;
+
+        if (explosionPrefab != null)
+        {
+            var vfx = Instantiate(explosionPrefab, transform.position, transform.rotation);
+            vfx.transform.SetParent(null);   // detach so it survives this GO being destroyed
+        }
+
         OnDeath.Invoke();
         Destroy(gameObject);
     }
