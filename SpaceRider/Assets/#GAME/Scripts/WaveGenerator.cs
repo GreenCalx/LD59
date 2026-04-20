@@ -27,6 +27,7 @@ public class WaveGenerator : MonoBehaviour
     public int Amplitude { get => amplitude; set => amplitude = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
     public int Frequency { get => frequency; set => frequency = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
     public int Pan       { get => pan;       set => pan = Mathf.Clamp(value, 0, Constants.INTEGER_RANGE); }
+    [Range(-1300f, 0f)] public float drum_kick_in = -800f;
 
     private float PanLateralScale        => config?.waveGenerator?.panLateralScale        ?? 0.2f;
     private float MaxTiltDegrees         => config?.waveGenerator?.maxTiltDegrees         ?? 30f;
@@ -41,6 +42,7 @@ public class WaveGenerator : MonoBehaviour
     public void SetLevelScope(LevelScope scope) { levelScope = scope; _initialized = false; }
     public void SetConfig(GameConfig c)         { config = c;         _initialized = false; }
     public FMODUnity.StudioEventEmitter bgm_emitter;
+    public GameObject world;
     private float _boundaryProximity;
 
     public void  SetBoundaryProximity(float t) => _boundaryProximity = Mathf.Clamp01(t);
@@ -61,10 +63,21 @@ public class WaveGenerator : MonoBehaviour
         float bgm_amplitude = (float)amplitude / Constants.INTEGER_RANGE;
         if (bgm_emitter != null)
         {
-            bgm_emitter.SetParameter("Pan",       bgm_pan);
+            bgm_emitter.SetParameter("Pan", bgm_pan);
             bgm_emitter.SetParameter("Frequency", bgm_frequency);
             bgm_emitter.SetParameter("Amplitude", bgm_amplitude);
             bgm_emitter.SetParameter(config?.boundary?.fmodParameterName ?? "BoundaryProximity", _boundaryProximity);
+            if (world != null)
+            {
+                if (world.transform.position.z > drum_kick_in)
+                {
+                    bgm_emitter.SetParameter("Drum", 0f);
+                }
+                else
+                {
+                    bgm_emitter.SetParameter("Drum", 1f);
+                }
+            }
         }
     }
 
