@@ -119,7 +119,9 @@ public class LaserCannon : MonoBehaviour
     private void UpdateCharging()
     {
         // Show a dim tracking beam that drifts toward the player area
-        ShowBeam(GetPlayerAreaTarget(), chargeIntensityScale);
+        Vector3 chargeTarget = GetPlayerAreaTarget();
+        float   hitDist      = CastBeam(chargeTarget);
+        ShowBeam(chargeTarget, hitDist, chargeIntensityScale);
 
         if (_phaseTimer <= 0f)
         {
@@ -131,8 +133,9 @@ public class LaserCannon : MonoBehaviour
 
     private void UpdateFiring()
     {
-        ShowBeam(_aimTarget, 1f);
-        DamageCheck();
+        float hitDist = CastBeam(_aimTarget);
+        ShowBeam(_aimTarget, hitDist, 1f);
+        DamageCheck(hitDist);
 
         if (_phaseTimer <= 0f)
             EnterPhase(Phase.Cooldown);
@@ -183,11 +186,21 @@ public class LaserCannon : MonoBehaviour
         return _hero.position + right * disc.x + up * disc.y;
     }
 
-    private void ShowBeam(Vector3 target, float intensityScale)
+    // Returns the distance to the first collider along the beam (laserLength if nothing hit).
+    private float CastBeam(Vector3 target)
     {
         Vector3 origin    = Origin;
         Vector3 direction = (target - origin).normalized;
-        Vector3 endpoint  = origin + direction * laserLength;
+        if (Physics.SphereCast(origin, hitRadius, direction, out RaycastHit hit, laserLength))
+            return hit.distance;
+        return laserLength;
+    }
+
+    private void ShowBeam(Vector3 target, float hitDistance, float intensityScale)
+    {
+        Vector3 origin    = Origin;
+        Vector3 direction = (target - origin).normalized;
+        Vector3 endpoint  = origin + direction * hitDistance;
 
         _line.SetPosition(0, origin);
         _line.SetPosition(1, endpoint);
@@ -201,19 +214,19 @@ public class LaserCannon : MonoBehaviour
         _line.SetPropertyBlock(_mpb);
     }
 
-    private void DamageCheck()
+    private void DamageCheck(float hitDistance)
     {
         if (_heroDeathComp == null || _playerDead) return;
 
         Vector3 origin    = Origin;
         Vector3 direction = (_aimTarget - origin).normalized;
 
-        if (Physics.SphereCast(origin, hitRadius, direction, out RaycastHit hit, laserLength))
+        if (Physics.SphereCast(origin, hitRadius, direction, out RaycastHit hit, hitDistance + 0.1f))
         {
             var death = hit.collider.GetComponentInParent<PlayerDeath>();
             if (death != null)
             {
-                _playerDead = true;
+                _playerDead   = true;
                 _line.enabled = false;
                 death.Die();
             }

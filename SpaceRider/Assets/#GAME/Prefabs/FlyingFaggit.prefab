@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2667894978721729817}
   - component: {fileID: 5715665514972567024}
   - component: {fileID: 1686026763150682317}
+  - component: {fileID: 860937433373305108}
   m_Layer: 0
   m_Name: FlyingFaggit
   m_TagString: Untagged
@@ -123,6 +124,18 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: -1
   OverrideMaxDistance: -1
+--- !u!114 &860937433373305108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8399539670719037768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46161df0685ff345a95129c6b90ef94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::HeroDamager
 --- !u!1001 &1548335013685009538
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -217,7 +230,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ad33921535d9da945ae6c44032a240b5, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1061035598631261871}
+      addedObject: {fileID: 8413275460340713727}
   m_SourcePrefab: {fileID: 100100000, guid: ad33921535d9da945ae6c44032a240b5, type: 3}
 --- !u!4 &1366405983697632105 stripped
 Transform:
@@ -229,8 +242,8 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ad33921535d9da945ae6c44032a240b5, type: 3}
   m_PrefabInstance: {fileID: 1548335013685009538}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &1061035598631261871
-MeshCollider:
+--- !u!135 &8413275460340713727
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -247,7 +260,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Radius: 1.54
+  m_Center: {x: 0, y: 0.0073742857, z: 1.4286144}
