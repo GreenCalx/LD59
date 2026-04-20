@@ -49,10 +49,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   prefabPool:
-  - {fileID: 919132149155446097, guid: 4b1feb9757998af48abca3b868ddb61d, type: 3}
-  - {fileID: 919132149155446097, guid: 6c7b9200320e7ca43a01e70760369b99, type: 3}
-  - {fileID: 919132149155446097, guid: 9d813fec4814ba04892326ee857b6a3c, type: 3}
-  - {fileID: 919132149155446097, guid: 8aee34b3c12e5564cac6263e696ad142, type: 3}
+  - {fileID: 6820745446348555931, guid: 59b10869e07509640a39477697bd263c, type: 3}
+  - {fileID: 8252676793422192997, guid: c663704a0174c634fbe5fb5c02b45f44, type: 3}
+  - {fileID: 1366566789015656204, guid: a57557ea926c0664e90be4328d328994, type: 3}
+  - {fileID: 3795645358364485575, guid: 2b2abebdef9608243a675668e9829f89, type: 3}
   spinSpeed: 12
   spinX: 1
   spinY: 1

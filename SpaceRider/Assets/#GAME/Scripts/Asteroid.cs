@@ -54,19 +54,6 @@ public class Asteroid : MonoBehaviour
         visual.transform.localRotation = Quaternion.identity;
         visual.transform.localScale    = Vector3.one;
 
-        // Build a kill-detection sphere from the visual's mesh bounds.
-        // Mesh.bounds is readable even when isReadable=0, unlike vertex data
-        // (which is stripped in builds, causing dynamic MeshColliders to have no shape).
-        float killRadius = 1f;
-        foreach (var mf in visual.GetComponentsInChildren<MeshFilter>())
-        {
-            if (mf.sharedMesh == null) continue;
-            float r = mf.sharedMesh.bounds.extents.magnitude;
-            if (r > killRadius) killRadius = r;
-        }
-        var sphere    = gameObject.AddComponent<SphereCollider>();
-        sphere.radius = killRadius;
-
         var rb         = gameObject.AddComponent<Rigidbody>();
         rb.isKinematic = true;
         rb.useGravity  = false;
