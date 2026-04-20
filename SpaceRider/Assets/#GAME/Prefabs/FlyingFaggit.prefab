@@ -81,7 +81,7 @@ MonoBehaviour:
   orbitSpeed: 60
   positionSmoothTime: 0.4
   frontBias: 0.8
-  frontBiasSpeed: 40
+  frontBiasSpeed: 60
   wiggleAmplitude: 1.5
   wiggleFrequency: 1.2
   wigglePhaseOffset: 0
