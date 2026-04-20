@@ -28,6 +28,9 @@ public class Asteroid : MonoBehaviour
 
     private void Start()
     {
+#if UNITY_EDITOR
+        DestroyPreview();   // clean up any lingering edit-mode preview on Play
+#endif
         if (!Application.isPlaying) return;
         if (prefabPool == null || prefabPool.Count == 0) return;
 
@@ -68,6 +71,14 @@ public class Asteroid : MonoBehaviour
     private GameObject _preview;
     private const string PreviewName = "__AsteroidPreview__";
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    static void FlushAllPreviews()
+    {
+        foreach (var go in Resources.FindObjectsOfTypeAll<GameObject>())
+            if (go.name == PreviewName)
+                DestroyImmediate(go);
+    }
+
     private void OnEnable()
     {
         if (!Application.isPlaying) RefreshPreview();
@@ -89,12 +100,7 @@ public class Asteroid : MonoBehaviour
         DestroyPreview();
         if (prefabPool == null || prefabPool.Count == 0 || prefabPool[0] == null) return;
 
-        // InstantiatePrefab with a parent fails when this GO is inside a prefab
-        // asset (Prefab Mode). Fall back to regular Instantiate in that case.
-        bool inPrefabAsset = UnityEditor.EditorUtility.IsPersistent(gameObject);
-        _preview = inPrefabAsset
-            ? Instantiate(prefabPool[0], transform)
-            : (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefabPool[0], transform);
+        _preview = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefabPool[0], transform);
         _preview.name      = PreviewName;
         _preview.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
 
