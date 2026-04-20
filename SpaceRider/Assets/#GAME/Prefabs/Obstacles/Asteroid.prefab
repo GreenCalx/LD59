@@ -54,9 +54,8 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: 8aee34b3c12e5564cac6263e696ad142, type: 3}
   minScale: 6
   maxScale: 20
-  minSpinSpeed: 8
-  maxSpinSpeed: 40
-  hitRadius: 0.5
+  minSpinSpeed: 10
+  maxSpinSpeed: 14
 --- !u!114 &5369259222846539723
 MonoBehaviour:
   m_ObjectHideFlags: 0
