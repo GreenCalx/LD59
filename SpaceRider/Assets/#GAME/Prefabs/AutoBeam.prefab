@@ -140,4 +140,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: SpaceRider.Game::TreadmillBooster
   extraSpeed: 4
   direction: {x: 0, y: 0, z: -1}
-  activeOnStart: 1
+  activeOnStart: 0
