@@ -13,8 +13,9 @@ public class EscapeMenu : MonoBehaviour
     [SerializeField] Slider musicSlider;
     [SerializeField] Slider fxSlider;
 
-    [Header("Resume Button")]
+    [Header("Buttons")]
     [SerializeField] Button resumeButton;
+    [SerializeField] Button quitButton;
 
     [Header("Navigation")]
     [SerializeField] float sliderStep     = 0.05f;  // per key press
@@ -42,7 +43,7 @@ public class EscapeMenu : MonoBehaviour
         SetFmodParam("music_volume",  music);
         SetFmodParam("fx_volume",     fx);
 
-        _items = new Selectable[] { masterSlider, musicSlider, fxSlider, resumeButton };
+        _items = new Selectable[] { masterSlider, musicSlider, fxSlider, resumeButton, quitButton };
 
         menuPanel.SetActive(false);
     }
@@ -141,6 +142,15 @@ public class EscapeMenu : MonoBehaviour
     {
         if (!_isPaused) return;
         Toggle();
+    }
+
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 
     // ── Slider callbacks ──────────────────────────────────────────────────────

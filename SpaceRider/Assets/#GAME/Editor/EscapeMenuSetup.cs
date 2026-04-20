@@ -38,8 +38,10 @@ public static class EscapeMenuSetup
 
         AddSpacer(column.transform, 20);
 
-        // ── 6. Resume button ──────────────────────────────────────────────────
+        // ── 6. Buttons ────────────────────────────────────────────────────────
         Button resumeBtn = AddButton(column.transform, "RESUME", font);
+        AddSpacer(column.transform, 8);
+        Button quitBtn = AddButton(column.transform, "QUIT", font);
 
         // ── 7. Add EscapeMenu component and wire references ───────────────────
         // Attach to UIOverlay so it lives alongside the other UI controllers.
@@ -52,12 +54,14 @@ public static class EscapeMenuSetup
         so.FindProperty("musicSlider")  .objectReferenceValue = musicSlider;
         so.FindProperty("fxSlider")     .objectReferenceValue = fxSlider;
         so.FindProperty("resumeButton") .objectReferenceValue = resumeBtn;
+        so.FindProperty("quitButton")   .objectReferenceValue = quitBtn;
         so.ApplyModifiedProperties();
 
-        // Wire Resume button → EscapeMenu.Resume()
+        // Wire buttons → EscapeMenu methods
         UnityEditor.Events.UnityEventTools.AddPersistentListener(
-            resumeBtn.onClick,
-            escMenu.Resume);
+            resumeBtn.onClick, escMenu.Resume);
+        UnityEditor.Events.UnityEventTools.AddPersistentListener(
+            quitBtn.onClick, escMenu.Quit);
 
         // ── 8. Mark scene dirty ───────────────────────────────────────────────
         EditorSceneManager.MarkSceneDirty(
