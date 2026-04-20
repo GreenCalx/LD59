@@ -51,6 +51,7 @@ public static class EscapeMenuSetup
         so.FindProperty("masterSlider") .objectReferenceValue = masterSlider;
         so.FindProperty("musicSlider")  .objectReferenceValue = musicSlider;
         so.FindProperty("fxSlider")     .objectReferenceValue = fxSlider;
+        so.FindProperty("resumeButton") .objectReferenceValue = resumeBtn;
         so.ApplyModifiedProperties();
 
         // Wire Resume button → EscapeMenu.Resume()
@@ -173,6 +174,9 @@ public static class EscapeMenuSetup
         hlg.childForceExpandHeight = true;
         hlg.spacing                = 12;
 
+        // Highlight background (ignored by layout, sits behind everything)
+        Image highlightImg = AddHighlightOverlay(row);
+
         // Label
         GameObject labelGO = new GameObject("Label");
         labelGO.transform.SetParent(row.transform, false);
@@ -187,6 +191,12 @@ public static class EscapeMenuSetup
 
         // Slider
         Slider slider = BuildSlider(row.transform);
+
+        // Wire highlight
+        MenuItemHighlight mih = slider.gameObject.AddComponent<MenuItemHighlight>();
+        SerializedObject mihSo = new SerializedObject(mih);
+        mihSo.FindProperty("highlightImage").objectReferenceValue = highlightImg;
+        mihSo.ApplyModifiedProperties();
 
         return slider;
     }
@@ -273,10 +283,14 @@ public static class EscapeMenuSetup
         Button btn = go.AddComponent<Button>();
         ColorBlock cb = btn.colors;
         cb.normalColor      = new Color(0.15f, 0.15f, 0.15f);
-        cb.highlightedColor = new Color(0.3f, 0.3f, 0.3f);
+        cb.highlightedColor = new Color(0.15f, 0.15f, 0.15f);
+        cb.selectedColor    = new Color(0.15f, 0.15f, 0.15f);
         cb.pressedColor     = new Color(0.05f, 0.05f, 0.05f);
         btn.colors          = cb;
         btn.targetGraphic   = img;
+
+        // Highlight overlay (sits on top of the button background, behind the text)
+        Image highlightImg = AddHighlightOverlay(go);
 
         GameObject textGO = new GameObject("Text");
         textGO.transform.SetParent(go.transform, false);
@@ -293,7 +307,38 @@ public static class EscapeMenuSetup
         tmp.color     = Color.white;
         if (font != null) tmp.font = font;
 
+        // Wire highlight
+        MenuItemHighlight mih = btn.gameObject.AddComponent<MenuItemHighlight>();
+        SerializedObject mihSo = new SerializedObject(mih);
+        mihSo.FindProperty("highlightImage").objectReferenceValue = highlightImg;
+        mihSo.ApplyModifiedProperties();
+
         return btn;
+    }
+
+    static Image AddHighlightOverlay(GameObject parent)
+    {
+        GameObject go = new GameObject("Highlight");
+        go.transform.SetParent(parent.transform, false);
+
+        RectTransform rt = go.AddComponent<RectTransform>();
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+
+        // Keep it out of any LayoutGroup calculations.
+        LayoutElement le = go.AddComponent<LayoutElement>();
+        le.ignoreLayout = true;
+
+        Image img = go.AddComponent<Image>();
+        img.color        = new Color(1f, 1f, 1f, 0f);
+        img.raycastTarget = false;
+
+        // Place behind siblings so it doesn't block clicks.
+        go.transform.SetAsFirstSibling();
+
+        return img;
     }
 
     static void AddSpacer(Transform parent, float height)
