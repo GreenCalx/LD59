@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5715665514972567024}
   - component: {fileID: 1686026763150682317}
   - component: {fileID: 860937433373305108}
+  - component: {fileID: 2862620350687090984}
   m_Layer: 0
   m_Name: AggressiveFaggit
   m_TagString: Untagged
@@ -137,6 +138,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46161df0685ff345a95129c6b90ef94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::HeroDamager
+--- !u!64 &2862620350687090984
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8399539670719037768}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1001 &1548335013685009538
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -228,39 +251,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ad33921535d9da945ae6c44032a240b5, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8413275460340713727}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad33921535d9da945ae6c44032a240b5, type: 3}
 --- !u!4 &1366405983697632105 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ad33921535d9da945ae6c44032a240b5, type: 3}
   m_PrefabInstance: {fileID: 1548335013685009538}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1854818581614928339 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ad33921535d9da945ae6c44032a240b5, type: 3}
-  m_PrefabInstance: {fileID: 1548335013685009538}
-  m_PrefabAsset: {fileID: 0}
---- !u!135 &8413275460340713727
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1854818581614928339}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.54
-  m_Center: {x: 0, y: 0.0073742857, z: 1.4286144}

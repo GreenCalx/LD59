@@ -153,7 +153,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -169,18 +169,30 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 2404302905622260857}
+      addedObject: {fileID: 1822177321367675638}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1822177321367675638}
+      addedObject: {fileID: 824922267939551335}
   m_SourcePrefab: {fileID: 100100000, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
 --- !u!1 &3549770440529141992 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
   m_PrefabInstance: {fileID: 4432167353088138681}
   m_PrefabAsset: {fileID: 0}
---- !u!64 &2404302905622260857
-MeshCollider:
+--- !u!114 &1822177321367675638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3549770440529141992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46161df0685ff345a95129c6b90ef94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::HeroDamager
+--- !u!65 &824922267939551335
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -197,22 +209,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -6857641406972132972, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}
---- !u!114 &1822177321367675638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3549770440529141992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f46161df0685ff345a95129c6b90ef94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: SpaceRider.Game::HeroDamager
+  serializedVersion: 3
+  m_Size: {x: 0.99, y: 23.998833, z: 2.82}
+  m_Center: {x: 0.06959844, y: 0, z: 1.06}
 --- !u!4 &4181734936708627026 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 77738e60d1cd3d141a3e2c32b0aef2d1, type: 3}

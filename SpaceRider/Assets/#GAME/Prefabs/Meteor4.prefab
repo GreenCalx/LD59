@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4604657919770541437}
   - component: {fileID: 596969315665949400}
   - component: {fileID: 3435168066173093394}
-  - component: {fileID: 6936866104604952381}
+  - component: {fileID: 802533029696102453}
+  - component: {fileID: 3394206583601267168}
   m_Layer: 0
   m_Name: Meteor4
   m_TagString: Untagged
@@ -92,28 +93,45 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6936866104604952381
-MeshCollider:
+--- !u!54 &802533029696102453
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3795645358364485575}
-  m_Material: {fileID: 0}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &3394206583601267168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3795645358364485575}
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 6564026922528973013, guid: 8aee34b3c12e5564cac6263e696ad142, type: 3}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f46161df0685ff345a95129c6b90ef94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SpaceRider.Game::HeroDamager
 --- !u!1 &3896382873850097204
 GameObject:
   m_ObjectHideFlags: 0
