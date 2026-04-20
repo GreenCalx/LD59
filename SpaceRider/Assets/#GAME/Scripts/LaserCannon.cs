@@ -6,6 +6,7 @@ using UnityEngine.Events;
 ///
 /// Prefab setup:
 ///   Root — LaserCannon + SphereCollider (trigger, detection radius)
+///          + Rigidbody (kinematic) for trigger events
 ///   └── (optional) child GO "Muzzle" — sets the beam origin point
 ///
 /// Assign a Material using MAUVE/LaserBeam to laserMaterial.
@@ -19,13 +20,21 @@ public class LaserCannon : MonoBehaviour
 
     [Header("Laser")]
     [Tooltip("Width of the LineRenderer beam in world units.")]
-    [Min(0f)] public float laserWidth  = 0.5f;
-    [Tooltip("Max radial offset from the player's centre — 0 = dead-on, higher = more spread.")]
-    [Min(0f)] public float laserSpread = 4f;
-    [Tooltip("How far the beam extends when it doesn't hit anything.")]
-    [Min(0f)] public float laserLength = 80f;
+    [Min(0f)] public float laserWidth       = 0.5f;
+    [Tooltip("World units per second the beam tip travels from muzzle outward on fire.")]
+    [Min(0f)] public float beamExtendSpeed  = 2f;
+    [Tooltip("Maximum beam length / how far the beam extends when nothing is hit.")]
+    [Min(0f)] public float laserLength      = 80f;
     [Tooltip("Radius of the sphere cast used for hit detection.")]
-    [Min(0f)] public float hitRadius   = 0.6f;
+    [Min(0f)] public float hitRadius        = 0.6f;
+
+    [Header("Spread — Static")]
+    [Tooltip("Aim offset locked once at fire start, held for the full burst. Set to 0 to disable.")]
+    [Min(0f)] public float staticSpread = 3f;
+
+    [Header("Spread — Dynamic")]
+    [Tooltip("Aim offset randomised every frame while firing. Mutually exclusive with Static — set one to 0. Default 0.")]
+    [Min(0f)] public float dynamicSpread = 0f;
 
     [Header("Timing")]
     [Tooltip("Seconds of charge-up before the beam fires. A dim tracking beam is shown.")]
@@ -50,22 +59,23 @@ public class LaserCannon : MonoBehaviour
 
     // ── state ────────────────────────────────────────────────────────────────
     private enum Phase { Idle, Charging, Firing, Cooldown }
-    private Phase      _phase      = Phase.Idle;
-    private float      _phaseTimer;
-    private Transform  _hero;
+    private Phase       _phase = Phase.Idle;
+    private float       _phaseTimer;
+    private Transform   _hero;
     private PlayerDeath _heroDeathComp;
-    private Vector3    _aimTarget;   // locked target for current fire burst
-    private bool       _playerDead;
+    private Vector3     _aimTarget;       // direction target locked at fire start
+    private Vector3     _staticAimOffset; // world-space offset locked at fire start
+    private float       _beamCurrentLength;
+    private bool        _playerDead;
 
-    private LineRenderer _line;
+    private LineRenderer         _line;
     private MaterialPropertyBlock _mpb;
-    private float _baseIntensity;
+    private float                 _baseIntensity;
 
     // ── lifecycle ────────────────────────────────────────────────────────────
 
     private void Awake()
     {
-        // Auto-create LineRenderer if not already on the GO
         _line = GetComponent<LineRenderer>();
         if (_line == null) _line = gameObject.AddComponent<LineRenderer>();
 
@@ -84,7 +94,6 @@ public class LaserCannon : MonoBehaviour
 
         _mpb = new MaterialPropertyBlock();
 
-        // Auto-size the detection collider
         var sc = GetComponent<SphereCollider>();
         if (sc != null) { sc.isTrigger = true; sc.radius = detectionRange; }
     }
@@ -118,24 +127,29 @@ public class LaserCannon : MonoBehaviour
 
     private void UpdateCharging()
     {
-        // Show a dim tracking beam that drifts toward the player area
-        Vector3 chargeTarget = GetPlayerAreaTarget();
-        float   hitDist      = CastBeam(chargeTarget);
+        // Dim tracking beam follows player area during charge
+        Vector3 chargeTarget = GetSpreadTarget(dynamicSpread > 0f ? dynamicSpread : staticSpread);
+        float   hitDist      = CastBeam(chargeTarget, laserLength);
         ShowBeam(chargeTarget, hitDist, chargeIntensityScale);
 
         if (_phaseTimer <= 0f)
-        {
-            // Lock aim at player position + random offset within spread disc
-            _aimTarget = GetPlayerAreaTarget();
             EnterPhase(Phase.Firing);
-        }
     }
 
     private void UpdateFiring()
     {
-        float hitDist = CastBeam(_aimTarget);
-        ShowBeam(_aimTarget, hitDist, 1f);
-        DamageCheck(hitDist);
+        // Extend beam tip outward at beamExtendSpeed
+        _beamCurrentLength = Mathf.MoveTowards(_beamCurrentLength, laserLength,
+                                                beamExtendSpeed * Time.deltaTime);
+
+        // Static spread: reuse the locked offset. Dynamic: new random each frame.
+        Vector3 target = staticSpread > 0f
+            ? (_hero != null ? _hero.position + _staticAimOffset : _aimTarget)
+            : GetSpreadTarget(dynamicSpread);
+
+        float hitDist = CastBeam(target, _beamCurrentLength);
+        ShowBeam(target, hitDist, 1f);
+        DamageCheck(target, hitDist);
 
         if (_phaseTimer <= 0f)
             EnterPhase(Phase.Cooldown);
@@ -144,27 +158,41 @@ public class LaserCannon : MonoBehaviour
     private void UpdateCooldown()
     {
         _line.enabled = false;
-
         if (_phaseTimer <= 0f)
-            EnterPhase(Phase.Charging);   // fire again while player is still in range
+            EnterPhase(Phase.Charging);
     }
 
     private void EnterPhase(Phase next)
     {
-        _phase      = next;
+        _phase = next;
         switch (next)
         {
             case Phase.Charging:
-                _phaseTimer = chargeTime;
+                _phaseTimer   = chargeTime;
                 _line.enabled = true;
                 OnChargeStart.Invoke();
                 break;
+
             case Phase.Firing:
-                _phaseTimer = fireTime;
+                _phaseTimer        = fireTime;
+                _beamCurrentLength = 0f;
+                // Lock static offset once here; dynamic recalculates every frame
+                if (staticSpread > 0f)
+                {
+                    _staticAimOffset = RandomDiscOffset(staticSpread);
+                    _aimTarget       = _hero != null
+                        ? _hero.position + _staticAimOffset
+                        : Origin + transform.forward * laserLength;
+                }
+                else
+                {
+                    _aimTarget = GetSpreadTarget(dynamicSpread);
+                }
                 OnFire.Invoke();
                 break;
+
             case Phase.Cooldown:
-                _phaseTimer = cooldownTime;
+                _phaseTimer   = cooldownTime;
                 _line.enabled = false;
                 OnCooldown.Invoke();
                 break;
@@ -173,55 +201,50 @@ public class LaserCannon : MonoBehaviour
 
     // ── helpers ──────────────────────────────────────────────────────────────
 
-    // Returns a point near the player's position offset by a random amount within laserSpread.
-    private Vector3 GetPlayerAreaTarget()
+    private Vector3 GetSpreadTarget(float spread)
     {
         if (_hero == null) return Origin + transform.forward * laserLength;
-
-        Vector3 toHero    = (_hero.position - Origin).normalized;
-        Vector3 right     = Vector3.Cross(toHero, Vector3.up).normalized;
-        Vector3 up        = Vector3.Cross(right, toHero).normalized;
-
-        Vector2 disc      = Random.insideUnitCircle * laserSpread;
-        return _hero.position + right * disc.x + up * disc.y;
+        return _hero.position + RandomDiscOffset(spread);
     }
 
-    // Returns the distance to the first collider along the beam (laserLength if nothing hit).
-    private float CastBeam(Vector3 target)
+    private Vector3 RandomDiscOffset(float radius)
     {
-        Vector3 origin    = Origin;
-        Vector3 direction = (target - origin).normalized;
-        if (Physics.SphereCast(origin, hitRadius, direction, out RaycastHit hit, laserLength))
+        if (radius <= 0f || _hero == null) return Vector3.zero;
+        Vector3 toHero = (_hero.position - Origin).normalized;
+        Vector3 right  = Vector3.Cross(toHero, Vector3.up).normalized;
+        Vector3 up     = Vector3.Cross(right, toHero).normalized;
+        Vector2 disc   = Random.insideUnitCircle * radius;
+        return right * disc.x + up * disc.y;
+    }
+
+    // Returns distance to first collider along direction toward target, clamped to maxDist.
+    private float CastBeam(Vector3 target, float maxDist)
+    {
+        Vector3 direction = (target - Origin).normalized;
+        if (Physics.SphereCast(Origin, hitRadius, direction, out RaycastHit hit, maxDist))
             return hit.distance;
-        return laserLength;
+        return maxDist;
     }
 
     private void ShowBeam(Vector3 target, float hitDistance, float intensityScale)
     {
-        Vector3 origin    = Origin;
-        Vector3 direction = (target - origin).normalized;
-        Vector3 endpoint  = origin + direction * hitDistance;
-
-        _line.SetPosition(0, origin);
-        _line.SetPosition(1, endpoint);
+        Vector3 direction = (target - Origin).normalized;
+        _line.SetPosition(0, Origin);
+        _line.SetPosition(1, Origin + direction * hitDistance);
         _line.startWidth = laserWidth;
         _line.endWidth   = laserWidth;
         _line.enabled    = true;
 
-        // Adjust intensity via property block so the shared material isn't modified
         _line.GetPropertyBlock(_mpb);
         _mpb.SetFloat("_Intensity", _baseIntensity * intensityScale);
         _line.SetPropertyBlock(_mpb);
     }
 
-    private void DamageCheck(float hitDistance)
+    private void DamageCheck(Vector3 target, float hitDistance)
     {
         if (_heroDeathComp == null || _playerDead) return;
-
-        Vector3 origin    = Origin;
-        Vector3 direction = (_aimTarget - origin).normalized;
-
-        if (Physics.SphereCast(origin, hitRadius, direction, out RaycastHit hit, hitDistance + 0.1f))
+        Vector3 direction = (target - Origin).normalized;
+        if (Physics.SphereCast(Origin, hitRadius, direction, out RaycastHit hit, hitDistance + 0.1f))
         {
             var death = hit.collider.GetComponentInParent<PlayerDeath>();
             if (death != null)
@@ -247,7 +270,9 @@ public class LaserCannon : MonoBehaviour
         {
             Gizmos.color = new Color(1f, 0.2f, 0.2f, 0.6f);
             Gizmos.DrawLine(Origin, _aimTarget);
-            Gizmos.DrawWireSphere(_hero.position, laserSpread);
+            float spread = staticSpread > 0f ? staticSpread : dynamicSpread;
+            if (spread > 0f)
+                Gizmos.DrawWireSphere(_hero.position, spread);
         }
     }
 #endif

@@ -91,12 +91,11 @@ public class FlyingSaucer : MonoBehaviour
     {
         if (_dead) return;
 
-        // ── state: enter / leave harassment ───────────────────────────────
+        // ── state: leave harassment if hero out of range ──────────────────
         if (_hero != null)
         {
-            float dist = Vector3.Distance(transform.position, _hero.position);
-            if (!_harassing && dist < detectionRange) _harassing = true;
-            if ( _harassing && dist > leaveRange)     _harassing = false;
+            if (_harassing && Vector3.Distance(transform.position, _hero.position) > leaveRange)
+                _harassing = false;
         }
         else
         {
@@ -116,7 +115,8 @@ public class FlyingSaucer : MonoBehaviour
     public void OnHeroEntered(Transform heroTransform)
     {
         if (_dead || _hero != null) return;
-        _hero = heroTransform;
+        _hero       = heroTransform;
+        _harassing  = true;
     }
 
     // ── body hit: die if an obstacle (HeroDamager) enters the body collider ─

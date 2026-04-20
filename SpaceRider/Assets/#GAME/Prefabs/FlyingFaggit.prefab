@@ -78,9 +78,9 @@ MonoBehaviour:
   detectionRange: 75
   leaveRange: 9999
   orbitRadius: 8
-  orbitSpeed: 60
+  orbitSpeed: 80
   positionSmoothTime: 0.4
-  frontBias: 0.8
+  frontBias: 0.7
   frontBiasSpeed: 60
   wiggleAmplitude: 1.5
   wiggleFrequency: 1.2
