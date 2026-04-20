@@ -190,6 +190,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ea48c8f47485643b8be45725c476b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::HoopDetector
+  OnHoopCollected:
+    m_PersistentCalls:
+      m_Calls: []
+  CollectSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &5136704291925970091
 GameObject:
   m_ObjectHideFlags: 0
@@ -467,6 +477,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4ee649e62bf69469df792fb29922ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::HoopChain
+  PerfectChainSound:
+    Guid:
+      Data1: -1618537738
+      Data2: 1219046001
+      Data3: 993402755
+      Data4: -589934008
+    Path: event:/FX/hoop_combo
+  PassSound:
+    Guid:
+      Data1: 2094018148
+      Data2: 1105935522
+      Data3: 953979521
+      Data4: 648002091
+    Path: event:/FX/hoop
 --- !u!1 &5711288198091587813
 GameObject:
   m_ObjectHideFlags: 0
@@ -624,6 +648,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ea48c8f47485643b8be45725c476b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::HoopDetector
+  OnHoopCollected:
+    m_PersistentCalls:
+      m_Calls: []
+  CollectSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &8287036425184655072
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,6 +758,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ea48c8f47485643b8be45725c476b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::HoopDetector
+  OnHoopCollected:
+    m_PersistentCalls:
+      m_Calls: []
+  CollectSound:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!1 &9056174833623711941
 GameObject:
   m_ObjectHideFlags: 0

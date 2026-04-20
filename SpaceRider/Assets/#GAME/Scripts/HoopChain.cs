@@ -5,6 +5,7 @@ using UnityEngine;
 public class HoopChain : MonoBehaviour
 {
     [SerializeField] EventReference PerfectChainSound;
+    [SerializeField] EventReference PassSound;
 
     int                 _total;
     int                 _passed;
@@ -48,6 +49,10 @@ public class HoopChain : MonoBehaviour
     {
         AdvanceHighlight();
         _passed++;
+
+        if (!PassSound.IsNull)
+            RuntimeManager.PlayOneShot(PassSound, transform.position);
+
         HoopTracker.Instance?.NotifyPass();
         HoopTracker.Instance?.UpdateChain(_passed, _total);
         Resolve();
