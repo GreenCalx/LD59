@@ -217,13 +217,20 @@ public class LaserCannon : MonoBehaviour
         return right * disc.x + up * disc.y;
     }
 
-    // Returns distance to first collider along direction toward target, clamped to maxDist.
+    // Returns distance to the first NON-PLAYER collider along the beam (laserLength if nothing hit).
+    // The player's body is a trigger so we use SphereCastAll and skip any hit that has PlayerDeath.
     private float CastBeam(Vector3 target, float maxDist)
     {
         Vector3 direction = (target - Origin).normalized;
-        if (Physics.SphereCast(Origin, hitRadius, direction, out RaycastHit hit, maxDist))
-            return hit.distance;
-        return maxDist;
+        var hits = Physics.SphereCastAll(Origin, hitRadius, direction, maxDist,
+                                         Physics.AllLayers, QueryTriggerInteraction.Collide);
+        float closest = maxDist;
+        foreach (var hit in hits)
+        {
+            if (hit.collider.GetComponentInParent<PlayerDeath>() != null) continue;
+            if (hit.distance < closest) closest = hit.distance;
+        }
+        return closest;
     }
 
     private void ShowBeam(Vector3 target, float hitDistance, float intensityScale)
@@ -240,18 +247,32 @@ public class LaserCannon : MonoBehaviour
         _line.SetPropertyBlock(_mpb);
     }
 
-    private void DamageCheck(Vector3 target, float hitDistance)
+    // Damage check uses QueryTriggerInteraction.Collide so it detects the player's trigger collider.
+    // Also destroys any FlyingSaucer in the beam path.
+    private void DamageCheck(Vector3 target, float beamReach)
     {
-        if (_heroDeathComp == null || _playerDead) return;
+        if (_playerDead) return;
         Vector3 direction = (target - Origin).normalized;
-        if (Physics.SphereCast(Origin, hitRadius, direction, out RaycastHit hit, hitDistance + 0.1f))
+        var hits = Physics.SphereCastAll(Origin, hitRadius, direction, beamReach,
+                                         Physics.AllLayers, QueryTriggerInteraction.Collide);
+        foreach (var hit in hits)
         {
+            // Player
             var death = hit.collider.GetComponentInParent<PlayerDeath>();
             if (death != null)
             {
                 _playerDead   = true;
                 _line.enabled = false;
                 death.Die();
+                return;
+            }
+
+            // Flying saucer
+            var saucer = hit.collider.GetComponentInParent<FlyingSaucer>();
+            if (saucer != null)
+            {
+                saucer.Die();
+                return;
             }
         }
     }

@@ -217,7 +217,7 @@ Transform:
   m_GameObject: {fileID: 2829290347674177083}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.58, z: 96.2}
+  m_LocalPosition: {x: 0, y: 6.4, z: 96.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -314,7 +314,7 @@ Transform:
   m_GameObject: {fileID: 8787732483169337045}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 159.2, z: -14.35}
+  m_LocalPosition: {x: 0, y: 168.5, z: -14.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -443,12 +443,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 442aec3c96ce26c47b375bad47ccd02e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::LaserCannon
-  detectionRange: 568.5
-  laserWidth: 10
-  beamExtendSpeed: 10
+  detectionRange: 600
+  laserWidth: 15
+  beamExtendSpeed: 20
   laserLength: 1000
   hitRadius: 5
-  staticSpread: 3
+  staticSpread: 5
   dynamicSpread: 0
   chargeTime: 1.5
   fireTime: 1
@@ -530,8 +530,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 442aec3c96ce26c47b375bad47ccd02e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SpaceRider.Game::LaserCannon
-  detectionRange: 40
-  laserWidth: 2
+  detectionRange: 400
+  laserWidth: 5
   beamExtendSpeed: 50
   laserLength: 500
   hitRadius: 2

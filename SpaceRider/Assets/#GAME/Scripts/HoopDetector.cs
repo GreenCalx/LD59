@@ -45,6 +45,5 @@ public class HoopDetector : MonoBehaviour
     {
         IsConsumed = true;
         enabled    = false;
-        _visual?.TriggerDissolve();
     }
 }
