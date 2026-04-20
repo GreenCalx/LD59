@@ -1,16 +1,14 @@
 using UnityEngine;
+using TMPro;
 
 public class UIGameOver : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public TextMeshProUGUI scoreTxt;
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        if (scoreTxt == null) return;
+        int score = HoopTracker.Instance != null ? HoopTracker.Instance.TotalScore : 0;
+        scoreTxt.text = score.ToString();
     }
 }
