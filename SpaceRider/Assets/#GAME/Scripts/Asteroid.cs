@@ -47,7 +47,7 @@ public class Asteroid : MonoBehaviour
                    * (Random.value > 0.5f ? 1f : -1f);
 
         soundFX = GetComponent<FMODUnity.StudioEventEmitter>();
-        if (soundFX != null) soundFX.SetParameter("Size", (scale - minScale) / (maxScale - minScale));
+        if (soundFX != null) soundFX.SetParameter("Size", transform.localScale.x / 50f);
     }
 
     private void Update()
