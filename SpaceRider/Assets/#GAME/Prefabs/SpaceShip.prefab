@@ -445,13 +445,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: SpaceRider.Game::LaserCannon
   detectionRange: 600
   laserWidth: 15
-  beamExtendSpeed: 2
+  beamExtendSpeed: 250
   laserLength: 1000
   hitRadius: 5
   staticSpread: 5
   dynamicSpread: 0
   chargeTime: 1.5
-  fireTime: 1
+  fireTime: 1.5
   cooldownTime: 3
   laserMaterial: {fileID: 2100000, guid: fa04f4cec12034042b72df19ff315873, type: 2}
   chargeIntensityScale: 0.4
@@ -532,13 +532,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: SpaceRider.Game::LaserCannon
   detectionRange: 400
   laserWidth: 5
-  beamExtendSpeed: 2
+  beamExtendSpeed: 250
   laserLength: 500
   hitRadius: 2
   staticSpread: 0
   dynamicSpread: 8
   chargeTime: 1
-  fireTime: 1
+  fireTime: 1.5
   cooldownTime: 5
   laserMaterial: {fileID: 2100000, guid: fa04f4cec12034042b72df19ff315873, type: 2}
   chargeIntensityScale: 0.2
