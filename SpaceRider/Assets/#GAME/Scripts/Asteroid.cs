@@ -10,13 +10,21 @@ public class Asteroid : MonoBehaviour
     [Min(0f)] public float maxScale = 20f;
 
     [Header("Spin")]
-    [Min(0f)] public float minSpinSpeed = 8f;
-    [Min(0f)] public float maxSpinSpeed = 40f;
-
+    [Tooltip("Spin speed in deg/sec. Negative = reverse direction. Defaults to a random value (10–15) when first added.")]
+    public float spinSpeed = 12f;
+    [Tooltip("Axes that contribute to the spin direction (local space).")]
+    public bool spinX = true;
+    public bool spinY = true;
+    public bool spinZ = true;
 
     private FMODUnity.StudioEventEmitter soundFX;
     private Vector3 _spinAxis;
-    private float   _spinSpeed;
+
+    // Called when the component is first added or Reset from the Inspector context menu.
+    private void Reset()
+    {
+        spinSpeed = Random.Range(10f, 15f);
+    }
 
     private void Start()
     {
@@ -42,9 +50,9 @@ public class Asteroid : MonoBehaviour
         }
         GetComponent<HeroDamagerRoot>()?.Refresh();
 
-        _spinAxis  = Random.onUnitSphere;
-        _spinSpeed = Random.Range(minSpinSpeed, maxSpinSpeed)
-                   * (Random.value > 0.5f ? 1f : -1f);
+        // Build spin axis from bools; fall back to Y if all unchecked.
+        Vector3 axis = new Vector3(spinX ? 1f : 0f, spinY ? 1f : 0f, spinZ ? 1f : 0f);
+        _spinAxis    = axis.sqrMagnitude > 0.001f ? axis.normalized : Vector3.up;
 
         soundFX = GetComponent<FMODUnity.StudioEventEmitter>();
         if (soundFX != null) soundFX.SetParameter("Size", transform.localScale.x / 50f);
@@ -53,7 +61,7 @@ public class Asteroid : MonoBehaviour
     private void Update()
     {
         if (!Application.isPlaying) return;
-        transform.Rotate(_spinAxis, _spinSpeed * Time.deltaTime, Space.Self);
+        transform.Rotate(_spinAxis, spinSpeed * Time.deltaTime, Space.Self);
     }
 
 #if UNITY_EDITOR
@@ -81,7 +89,12 @@ public class Asteroid : MonoBehaviour
         DestroyPreview();
         if (prefabPool == null || prefabPool.Count == 0 || prefabPool[0] == null) return;
 
-        _preview = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefabPool[0], transform);
+        // InstantiatePrefab with a parent fails when this GO is inside a prefab
+        // asset (Prefab Mode). Fall back to regular Instantiate in that case.
+        bool inPrefabAsset = UnityEditor.EditorUtility.IsPersistent(gameObject);
+        _preview = inPrefabAsset
+            ? Instantiate(prefabPool[0], transform)
+            : (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefabPool[0], transform);
         _preview.name      = PreviewName;
         _preview.hideFlags = HideFlags.DontSave | HideFlags.NotEditable;
 
@@ -97,7 +110,5 @@ public class Asteroid : MonoBehaviour
         if (orphan != null) DestroyImmediate(orphan.gameObject);
         _preview = null;
     }
-
-
 #endif
 }
