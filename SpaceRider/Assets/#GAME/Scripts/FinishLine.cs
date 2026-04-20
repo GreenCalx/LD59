@@ -15,10 +15,17 @@ public class FinishLine : MonoBehaviour
     private void OnEnable()  { if (progressDriver != null) progressDriver.OnFinish += HandleFinish; }
     private void OnDisable() { if (progressDriver != null) progressDriver.OnFinish -= HandleFinish; }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponentInParent<PlayerDeath>() == null) return;
+        HandleFinish();
+    }
+
     private void HandleFinish()
     {
         if (_triggered) return;
         _triggered = true;
+        GameResult.IsWin = true;
         Time.timeScale = 0f;
         if (Application.isPlaying && !string.IsNullOrEmpty(gameOverSceneName))
             SceneManager.LoadSceneAsync(gameOverSceneName, LoadSceneMode.Additive);

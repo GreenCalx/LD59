@@ -445,7 +445,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SpaceRider.Game::LaserCannon
   detectionRange: 600
   laserWidth: 15
-  beamExtendSpeed: 20
+  beamExtendSpeed: 2
   laserLength: 1000
   hitRadius: 5
   staticSpread: 5
@@ -532,7 +532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: SpaceRider.Game::LaserCannon
   detectionRange: 400
   laserWidth: 5
-  beamExtendSpeed: 50
+  beamExtendSpeed: 2
   laserLength: 500
   hitRadius: 2
   staticSpread: 0
