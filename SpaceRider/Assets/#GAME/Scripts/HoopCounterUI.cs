@@ -6,7 +6,7 @@ public class HoopCounterUI : MonoBehaviour
     [SerializeField] private TMP_Text totalText;
     [SerializeField] private TMP_Text comboText;
 
-    void OnEnable()
+    void Start()
     {
         if (HoopTracker.Instance != null)
         {
@@ -17,7 +17,7 @@ public class HoopCounterUI : MonoBehaviour
         UpdateChain(0, 0);
     }
 
-    void OnDisable()
+    void OnDestroy()
     {
         if (HoopTracker.Instance != null)
         {
