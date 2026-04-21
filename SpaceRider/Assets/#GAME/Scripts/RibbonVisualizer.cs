@@ -195,6 +195,9 @@ public class RibbonVisualizer : MonoBehaviour
             tris[idx++] = b0; tris[idx++] = b3; tris[idx++] = b2;
         }
 
+        if (_mesh==null)
+            return;
+
         _mesh.Clear();
         _mesh.vertices  = verts;
         _mesh.normals   = norms;
